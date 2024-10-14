@@ -10,9 +10,16 @@ import UIKit
 class VerificationCodeViewController: ViewController {
     var accountNum: String = ""
     var accountType: AccountType = .mobile
+    var verificationCodeType: VerificationCodeType = .login
 
     override var rootView: AnyView? {
-        return AnyView(VerificationCodeView(accountNum: accountNum, accountType: accountType))
+        return AnyView(
+            VerificationCodeView(
+                accountNum: accountNum,
+                accountType: accountType,
+                verificationCodeType: verificationCodeType
+            )
+        )
     }
 
     override func viewDidLoad() {

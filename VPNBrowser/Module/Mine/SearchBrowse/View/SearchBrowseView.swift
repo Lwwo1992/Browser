@@ -47,9 +47,9 @@ struct SearchBrowseView: View {
     private func handleTap(for item: BrowserOption) {
         switch item {
         case .favorites:
-            Util.topViewController().navigationController?.pushViewController(FootprintViewController(), animated: true)
+            Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 0), animated: true)
         case .history:
-            Util.topViewController().navigationController?.pushViewController(FootprintViewController(), animated: true)
+            Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 1), animated: true)
         default:
             break
         }

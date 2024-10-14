@@ -8,6 +8,12 @@
 import UIKit
 
 class BindingViewController: ViewController {
+    var type: AccountType = .mobile
+    
+    override var rootView: AnyView? {
+        return AnyView(BindingView(type: type))
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }

@@ -11,15 +11,21 @@ enum AccountType: Int {
     case account = 1, mobile, mailbox
 }
 
+enum VerificationCodeType {
+    case login
+    case replace
+}
+
 struct VerificationCodeView: View {
     var accountNum: String = ""
     var accountType: AccountType = .mobile
+    var verificationCodeType: VerificationCodeType = .login
 
     @State private var verifyCode = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("账户密码登录")
+            Text("请输入验证码")
                 .font(.system(size: 35, weight: .bold))
 
             Text("验证码已发送至 \(accountNum)")
@@ -37,6 +43,8 @@ struct VerificationCodeView: View {
                 Spacer()
             }
 
+            Spacer()
+
             Button {
                 if verifyCode.isEmpty {
                     HUD.showTipMessage("验证码不能为空")
@@ -44,36 +52,87 @@ struct VerificationCodeView: View {
                 }
                 verfy(of: verifyCode)
             } label: {
-                Text("登录")
+                Text("确定")
                     .foregroundColor(.white)
-                    .frame(width: 260)
+                    .frame(maxWidth: .infinity)
                     .frame(height: 50)
                     .background(Color.blue)
                     .cornerRadius(25)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-            .padding(.top, 40)
-
-            Spacer()
+            .padding(.bottom, 40)
         }
         .padding(.top, 30)
         .padding(.horizontal, 16)
     }
 
     private func verfy(of code: String) {
+        switch verificationCodeType {
+        case .login:
+            login(code)
+        case .replace:
+            checkValidCode(code)
+        }
+    }
+
+    private func login(_ code: String) {
         HUD.showLoading()
         APIProvider.shared.request(.login(credential: code, identifier: accountNum, type: accountType.rawValue), model: LoginModel.self) { result in
             HUD.hideNow()
             switch result {
             case let .success(model):
 
+                switch accountType {
+                case .mobile:
+                    model.mobile = accountNum
+                case .mailbox:
+                    model.mailbox = accountNum
+                case .account:
+                    break
+                }
+
                 LoginManager.shared.loginInfo = model
 
-                DBaseManager.share.insertToDb(objects: [model], intoTable: L.Table.loginInfo)
+                DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
 
                 HUD.showTipMessage("登录成功")
                 Util.topViewController().navigationController?.popToRootViewController(animated: true)
 
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+
+    private func checkValidCode(_ code: String) {
+        APIProvider.shared.request(.checkValidCode(credential: code, identifier: accountNum, type: accountType.rawValue)) { result in
+            HUD.hideNow()
+            switch result {
+            case .success:
+                updateEmailOrMobile(code)
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+
+    private func updateEmailOrMobile(_ code: String) {
+        HUD.showLoading()
+        APIProvider.shared.request(.updateEmailOrMobile(credential: code, identifier: accountNum, type: accountType.rawValue)) { result in
+            HUD.hideNow()
+            switch result {
+            case .success:
+
+                switch accountType {
+                case .mobile:
+                    LoginManager.shared.loginInfo?.mobile = accountNum
+                case .mailbox:
+                    LoginManager.shared.loginInfo?.mailbox = accountNum
+                case .account:
+                    break
+                }
+
+                Util.topViewController().navigationController?.popToViewController(SecurityViewController(), animated: true)
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }

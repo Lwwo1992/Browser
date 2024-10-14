@@ -9,7 +9,8 @@ import SwiftUI
 
 struct MineTopView: View {
     @ObservedObject var loginManager = LoginManager.shared
-    
+    @State private var historyNumber: String = ""
+
     var body: some View {
         VStack {
             HStack {
@@ -58,11 +59,14 @@ struct MineTopView: View {
                         .font(.system(size: 12))
                         .opacity(0.5)
                 }
+                .onTapGesture {
+                    Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 1), animated: true)
+                }
 
                 Spacer()
 
                 VStack(spacing: 5) {
-                    Text("999+")
+                    Text(historyNumber)
                         .font(.system(size: 18))
                     Text("历史")
                         .font(.system(size: 12))
@@ -85,6 +89,14 @@ struct MineTopView: View {
             .background(Color.white)
             .cornerRadius(10)
             .padding(.top, 20)
+        }
+        .onAppear {
+            let count = DBaseManager.share.qureyFromDb(fromTable: S.Table.browseHistory, cls: HistoryModel.self)?.count ?? 0
+            if count >= 999 {
+                historyNumber = "999+"
+            } else {
+                historyNumber = "\(count)"
+            }
         }
     }
 }

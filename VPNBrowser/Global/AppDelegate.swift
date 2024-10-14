@@ -5,10 +5,10 @@
 //  Created by xyxy on 2024/10/8.
 //
 
-@_exported import Then
-@_exported import WTool
 @_exported import HandyJSON
+@_exported import Then
 @_exported import WCDBSwift
+@_exported import WTool
 
 import UIKit
 
@@ -35,27 +35,39 @@ extension AppDelegate {
     }
 
     private func initTable() {
-        DBaseManager.share.createTable(table: L.Table.configInfo, of: ConfigModel.self)
-        DBaseManager.share.createTable(table: L.Table.loginInfo, of: LoginModel.self)
+        DBaseManager.share.createTable(table: S.Table.configInfo, of: ConfigModel.self)
+        DBaseManager.share.createTable(table: S.Table.loginInfo, of: LoginModel.self)
+        DBaseManager.share.createTable(table: S.Table.searchHistory, of: HistoryModel.self)
+        DBaseManager.share.createTable(table: S.Table.browseHistory, of: HistoryModel.self)
     }
 
     private func initConfig() {
-        APIProvider.shared.request(.rankingPage(data: 1), model: ConfigByTypeModel.self) { result in
+        APIProvider.shared.request(.getConfigByType(data: 1), model: ConfigByTypeModel.self) { result in
             switch result {
             case let .success(model):
                 if let data = model.data {
-                    DBaseManager.share.insertToDb(objects: [data], intoTable: L.Table.configInfo)
+                    DBaseManager.share.insertToDb(objects: [data], intoTable: S.Table.configInfo)
 
-                    L.config.maxAppNum = data.maxAppNum ?? 5
-                    L.config.defalutUrl = data.defalutUrl ?? ""
-                    L.config.loginType = data.loginType
+                    S.config.maxAppNum = data.maxAppNum ?? 5
+                    S.config.defalutUrl = data.defalutUrl ?? ""
+                    S.config.loginType = data.loginType
                 }
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }
         }
-        
-        if let model = DBaseManager.share.qureyFromDb(fromTable: L.Table.loginInfo, cls: LoginModel.self)?.first {
+
+        /// 查询上传配置
+        APIProvider.shared.request(.anonymousConfig, model: AnonymousConfigModel.self) { result in
+            switch result {
+            case let .success(model):
+                S.config.anonymous = model
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
+
+        if let model = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self)?.first {
             LoginManager.shared.loginInfo = model
         }
     }

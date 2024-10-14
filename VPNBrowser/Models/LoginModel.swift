@@ -11,6 +11,8 @@ class LoginModel: BaseModel, TableCodable {
     var token: String?
     var memberKey: String?
     var account: String?
+    var mobile = ""
+    var mailbox = ""
 
     enum CodingKeys: String, CodingTableKey {
         typealias Root = LoginModel
@@ -18,5 +20,7 @@ class LoginModel: BaseModel, TableCodable {
         case token
         case memberKey
         case account
+        case mobile
+        case mailbox
     }
 }

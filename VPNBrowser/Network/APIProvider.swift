@@ -17,7 +17,7 @@ class APIProvider {
 enum APITarget {
     /// 校验验证码
     /// 1-全局配置(数据在data) 2-隐私政策(数据在content) 3-服务条款(数据content)
-    case rankingPage(data: Int)
+    case getConfigByType(data: Int)
 
     /// 发送短信验证码
     /// mobile: 电话
@@ -44,11 +44,21 @@ enum APITarget {
 
     /// 获取搜索引擎分页列表
     case enginePage
+
+    case anonymousConfig
+
+    /// 修改邮箱-手机
+    /// credential: 密码/验证码
+    /// identifier: 账号/手机/邮箱
+    /// type: 登录类型：1-账号密码，2-电话，3-邮箱
+    case updateEmailOrMobile(credential: String, identifier: String, type: Int)
+
+    case rankingPage
 }
 
 extension APITarget: TargetType {
     var baseURL: URL {
-        return URL(string: "http://browser-dev-api.saas-xy.com:81")!
+        return URL(string: "https://browser-api.xiwshijieheping.com")!
 //        #if DEBUG
 //            return URL(string: "https://browser-api.xiwshijieheping.com")!
 //        #else
@@ -58,7 +68,7 @@ extension APITarget: TargetType {
 
     var path: String {
         switch self {
-        case .rankingPage:
+        case .getConfigByType:
             return "/browser/app/anonymous/getConfigByType"
         case .sendSmsCode:
             return "/browser/app/auth/sendSmsCode"
@@ -72,12 +82,18 @@ extension APITarget: TargetType {
             return "/browser/app/anonymous/enginePage"
         case .logout:
             return "/browser/app/auth/logout"
+        case .anonymousConfig:
+            return "/browser/app/anonymous/config"
+        case .updateEmailOrMobile:
+            return "/browser/app/browserAccount/updateEmailOrMobile"
+        case .rankingPage:
+            return "/browser/app/anonymous/rankingPage"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .rankingPage, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage:
             return .post
         }
     }
@@ -86,22 +102,23 @@ extension APITarget: TargetType {
         var parameters: [String: Any] = [:]
 
         switch self {
-        case let .rankingPage(data):
+        case let .getConfigByType(data):
             parameters = ["data": data]
         case let .sendSmsCode(mobile, nation):
             let data: [String: Any] = ["mobile": mobile, "nation": nation]
             parameters = ["data": data]
         case let .sendEmailCode(mailbox):
             parameters = ["data": mailbox]
-        case let .checkValidCode(credential, identifier, type):
-            let data: [String: Any] = ["credential": credential, "identifier": identifier, "type": type]
-            parameters = ["data": data]
         case .enginePage:
-            break
-        case let .login(credential, identifier, type):
+            parameters = ["data": ["state": 1], "fetchAll": true, "pageIndex": 1, "pageSize": 10]
+        case .rankingPage:
+            parameters = ["data": ["hotList": 1], "pageIndex": 1, "pageSize": 10]
+        case let .login(credential, identifier, type),
+             let .updateEmailOrMobile(credential, identifier, type),
+             let .checkValidCode(credential, identifier, type):
             let data: [String: Any] = ["credential": credential, "identifier": identifier, "type": type]
             parameters = ["data": data]
-        case .logout:
+        case .logout, .anonymousConfig:
             break
         }
 

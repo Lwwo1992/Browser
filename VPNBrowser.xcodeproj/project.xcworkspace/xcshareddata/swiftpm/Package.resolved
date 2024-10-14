@@ -1,5 +1,5 @@
 {
-  "originHash" : "eebbd5c71ccf7b02b17c16698426d194a0abb07a2239ae4b5547c8fb2643bb73",
+  "originHash" : "1f4e752553f8c5c9dbc6f575bd74eb2cd9ebea01b06511a2072330a9a7258842",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -29,12 +29,39 @@
       }
     },
     {
+      "identity" : "jfpopup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JerryFans/JFPopup.git",
+      "state" : {
+        "revision" : "8b0227215e754218280667cd656e22abc4d62821",
+        "version" : "1.5.7"
+      }
+    },
+    {
+      "identity" : "jrbasekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JerryFans/JRBaseKit.git",
+      "state" : {
+        "revision" : "ee62235f59eae67c70fdc0f039aed90d3d4a9b99",
+        "version" : "1.1.2"
+      }
+    },
+    {
       "identity" : "jxsegmentedview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pujiaxin33/JXSegmentedView.git",
       "state" : {
         "revision" : "fbbf965d7396bd99ac1ce88a80b6c950b85313f6",
         "version" : "1.4.1"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "state" : {
+        "revision" : "33696a71dd4d71f1b0f781ade11a48ba5549581a",
+        "version" : "8.0.3"
       }
     },
     {

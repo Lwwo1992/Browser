@@ -77,7 +77,7 @@ struct AccountLoginView: View {
 
                 LoginManager.shared.loginInfo = model
 
-                DBaseManager.share.insertToDb(objects: [model], intoTable: L.Table.loginInfo)
+                DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
 
                 HUD.showTipMessage("登录成功")
                 Util.topViewController().navigationController?.popToRootViewController(animated: true)

@@ -22,7 +22,7 @@ struct SecurityView: View {
             [
                 [.avatar, .nickname],
                 [.phoneNumber, .email, .account],
-                [.thirdPartyAccount],
+//                [.thirdPartyAccount],
                 [.logout],
             ]
         }
@@ -62,9 +62,9 @@ struct SecurityView: View {
         case .nickname:
             "用户昵称"
         case .phoneNumber:
-            nil
+            LoginManager.shared.loginInfo?.mobile.maskedAccount
         case .email:
-            nil
+            LoginManager.shared.loginInfo?.mailbox.maskedAccount
         case .account:
             LoginManager.shared.loginInfo?.account
         default:
@@ -76,8 +76,10 @@ struct SecurityView: View {
         switch item {
         case .nickname:
             Util.topViewController().navigationController?.pushViewController(ChangeNicknameViewController(), animated: true)
-        case .phoneNumber:
-            Util.topViewController().navigationController?.pushViewController(BindingViewController(), animated: true)
+        case .phoneNumber, .email:
+            let vc = BindingViewController()
+            vc.type = item == .phoneNumber ? .mobile : .mailbox
+            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         case .logout:
             logout()
         default:
@@ -92,7 +94,7 @@ struct SecurityView: View {
             switch result {
             case .success:
                 LoginManager.shared.loginInfo = nil
-                DBaseManager.share.deleteFromDb(fromTable: L.Table.loginInfo)
+                DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
                 Util.topViewController().navigationController?.popToRootViewController(animated: true)
             case let .failure(error):
                 print("Request failed with error: \(error)")

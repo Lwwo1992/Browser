@@ -15,7 +15,7 @@ struct BrowserView: View {
                 notificationBadge
             }
             .padding(.horizontal, 16)
-            WebView(urlString: L.config.defalutUrl)
+            WebView(urlString: S.config.defalutUrl)
                 .frame(maxHeight: .infinity)
         }
     }
