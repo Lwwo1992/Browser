@@ -76,6 +76,7 @@ enum APITarget {
 
 extension APITarget: TargetType {
     var baseURL: URL {
+ 
         switch self {
         case .guideLabelPage, .guideAppPage:
             // "http://guide-h5.saas-xy.com:89" //正式环境
@@ -85,6 +86,7 @@ extension APITarget: TargetType {
 //            return URL(string: "https://browser-api.xiwshijieheping.com")!
             return URL(string: "http://browser-dev-api.saas-xy.com:81")!
         }
+
     }
 
     var path: String {
@@ -117,8 +119,10 @@ extension APITarget: TargetType {
             return "/browser/app/visitorAccess/edit"
         case .uploadConfig:
             return "/browser/app/visitorAccess/config"
+ 
         case .generateVisitorToken:
             return "/browser/app/anonymous/generateVisitorToken"
+
         }
     }
 

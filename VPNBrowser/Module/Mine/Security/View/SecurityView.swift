@@ -116,17 +116,12 @@ struct SecurityView: View {
             case .success(let response):
                 
                 // 处理响应
-                let m = response as! UpdateHeadInfo
+                let m = response 
                 
-                
-                let urlLast = (urlStr as NSString).lastPathComponent
-//                let key = m.uploadAddrPrefix + urlLast
-                
-                let s3Client = S3ClientUtils()
-                let bucketName = m.bucket  // 替换为你的 S3 存储桶名称
-                let uploadAddrPrefix = m.uploadAddrPrefix
-                
-                s3Client.upload(filePath: urlLast, bucket: bucketName, uploadAddrPrefix: uploadAddrPrefix)
+ 
+                let s3Client = S3ClientUtils(accessKey: m.accessKey, secretKey: m.secretKey, token: m.token, endpoint: m.endpoint)
+              
+                s3Client.upload(filePath: urlStr, model:m)
                 
                 
             case .failure(let error):
