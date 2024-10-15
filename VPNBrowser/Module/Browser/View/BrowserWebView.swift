@@ -10,6 +10,7 @@ import SwiftUI
 
 struct BrowserWebView: View {
     @State private var isSheetPresented = false
+    @State private var isCollect = false
     @ObservedObject var viewModel: WebViewViewModel
 
     var body: some View {
@@ -21,6 +22,11 @@ struct BrowserWebView: View {
             }
 
             bottomView()
+        }
+        .onAppear {
+            if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.collect, cls: HistoryModel.self, where: HistoryModel.Properties.path == viewModel.urlString), !array.isEmpty {
+                isCollect = true
+            }
         }
     }
 
@@ -34,12 +40,26 @@ struct BrowserWebView: View {
                 .font(.system(size: 14))
                 .foregroundColor(.black)
                 .opacity(0.5)
+                .onTapGesture {
+                    Util.topViewController().navigationController?.popViewController(animated: true)
+                }
 
             Spacer()
 
-            Image(systemName: "star.fill")
+            Image(systemName: isCollect ? "star.fill" : "star")
                 .font(.system(size: 14))
-                .foregroundColor(.yellow)
+                .foregroundColor(isCollect ? .yellow : .gray)
+                .onTapGesture {
+                    isCollect.toggle()
+
+                    if isCollect {
+                        let model = HistoryModel()
+                        model.path = viewModel.urlString
+                        DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.collect)
+                    } else {
+                        DBaseManager.share.deleteFromDb(fromTable: S.Table.collect, where: HistoryModel.Properties.path == viewModel.urlString)
+                    }
+                }
         }
         .frame(height: 40)
         .padding(.horizontal, 10)
@@ -48,9 +68,6 @@ struct BrowserWebView: View {
             RoundedRectangle(cornerRadius: 20)
                 .stroke(Color.gray.opacity(0.5), lineWidth: 1)
         )
-        .onTapGesture {
-            Util.topViewController().navigationController?.popViewController(animated: true)
-        }
         .padding(.horizontal, 16)
     }
 
@@ -76,20 +93,17 @@ struct BrowserWebView: View {
 
             Spacer()
 
-            RoundedRectangle(cornerRadius: 2)
-                .stroke(Color.black, lineWidth: 1)
-                .frame(width: 15, height: 15)
-                .background(Color.white)
-
-            Spacer()
+//            RoundedRectangle(cornerRadius: 2)
+//                .stroke(Color.black, lineWidth: 1)
+//                .frame(width: 15, height: 15)
+//                .background(Color.white)
+//
+//            Spacer()
 
             Image(systemName: "ellipsis")
                 .foregroundColor(.black)
                 .onTapGesture {
-                    Util.topViewController().popup.bottomSheet {
-                        let v = BrowserWebBottomSheet(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 200))
-                        return v
-                    }
+                    viewModel.showBottomSheet.toggle()
                 }
         }
         .padding(.vertical, 5)

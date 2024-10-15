@@ -32,6 +32,8 @@ extension AppDelegate {
     private func confing() {
         initTable()
         initConfig()
+        
+        Util.createFolderIfNotExists(S.Files.imageURL)
     }
 
     private func initTable() {
@@ -39,6 +41,8 @@ extension AppDelegate {
         DBaseManager.share.createTable(table: S.Table.loginInfo, of: LoginModel.self)
         DBaseManager.share.createTable(table: S.Table.searchHistory, of: HistoryModel.self)
         DBaseManager.share.createTable(table: S.Table.browseHistory, of: HistoryModel.self)
+        DBaseManager.share.createTable(table: S.Table.collect, of: HistoryModel.self)
+        DBaseManager.share.createTable(table: S.Table.bookmark, of: HistoryModel.self)
     }
 
     private func initConfig() {
@@ -48,9 +52,9 @@ extension AppDelegate {
                 if let data = model.data {
                     DBaseManager.share.insertToDb(objects: [data], intoTable: S.Table.configInfo)
 
-                    S.config.maxAppNum = data.maxAppNum ?? 5
-                    S.config.defalutUrl = data.defalutUrl ?? ""
-                    S.config.loginType = data.loginType
+                    S.Config.maxAppNum = data.maxAppNum ?? 5
+                    S.Config.defalutUrl = data.defalutUrl ?? ""
+                    S.Config.loginType = data.loginType
                 }
             case let .failure(error):
                 print("Request failed with error: \(error)")
@@ -61,7 +65,7 @@ extension AppDelegate {
         APIProvider.shared.request(.anonymousConfig, model: AnonymousConfigModel.self) { result in
             switch result {
             case let .success(model):
-                S.config.anonymous = model
+                S.Config.anonymous = model
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }

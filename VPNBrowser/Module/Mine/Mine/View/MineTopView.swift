@@ -10,6 +10,7 @@ import SwiftUI
 struct MineTopView: View {
     @ObservedObject var loginManager = LoginManager.shared
     @State private var historyNumber: String = ""
+    @State private var collectNumber: String = ""
 
     var body: some View {
         VStack {
@@ -53,14 +54,14 @@ struct MineTopView: View {
 
             HStack {
                 VStack(spacing: 5) {
-                    Text("0")
+                    Text(collectNumber)
                         .font(.system(size: 18))
                     Text("收藏")
                         .font(.system(size: 12))
                         .opacity(0.5)
                 }
                 .onTapGesture {
-                    Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 1), animated: true)
+                    Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 0), animated: true)
                 }
 
                 Spacer()
@@ -71,6 +72,9 @@ struct MineTopView: View {
                     Text("历史")
                         .font(.system(size: 12))
                         .opacity(0.5)
+                }
+                .onTapGesture {
+                    Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 1), animated: true)
                 }
 
                 Spacer()
@@ -91,11 +95,18 @@ struct MineTopView: View {
             .padding(.top, 20)
         }
         .onAppear {
-            let count = DBaseManager.share.qureyFromDb(fromTable: S.Table.browseHistory, cls: HistoryModel.self)?.count ?? 0
-            if count >= 999 {
-                historyNumber = "999+"
+            let historyNumber = DBaseManager.share.qureyFromDb(fromTable: S.Table.browseHistory, cls: HistoryModel.self)?.count ?? 0
+            if historyNumber >= 999 {
+                self.historyNumber = "999+"
             } else {
-                historyNumber = "\(count)"
+                self.historyNumber = "\(historyNumber)"
+            }
+
+            let collectNumber = DBaseManager.share.qureyFromDb(fromTable: S.Table.collect, cls: HistoryModel.self)?.count ?? 0
+            if collectNumber >= 999 {
+                self.collectNumber = "999+"
+            } else {
+                self.collectNumber = "\(collectNumber)"
             }
         }
     }

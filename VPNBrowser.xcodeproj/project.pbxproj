@@ -21,6 +21,15 @@
 		440F93312CBCEF5600D94AD0 /* RankingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93302CBCEF5600D94AD0 /* RankingModel.swift */; };
 		440F93332CBD0E6B00D94AD0 /* HistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93322CBD0E6B00D94AD0 /* HistoryModel.swift */; };
 		440F93372CBD1DBB00D94AD0 /* BrowseHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93362CBD1DBB00D94AD0 /* BrowseHistory.swift */; };
+		443A81732CBD4B4A0093BC22 /* UIView+TFPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81712CBD4B4A0093BC22 /* UIView+TFPopup.m */; };
+		443A81742CBD4B4A0093BC22 /* UIScrollView+TFPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A816F2CBD4B4A0093BC22 /* UIScrollView+TFPopup.m */; };
+		443A81752CBD4B4A0093BC22 /* TFPopupParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A816B2CBD4B4A0093BC22 /* TFPopupParam.m */; };
+		443A81762CBD4B4A0093BC22 /* TFPopupExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81672CBD4B4A0093BC22 /* TFPopupExtension.m */; };
+		443A81772CBD4B4A0093BC22 /* TFPopupToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A816D2CBD4B4A0093BC22 /* TFPopupToast.m */; };
+		443A81782CBD4B4A0093BC22 /* TFPopupLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81692CBD4B4A0093BC22 /* TFPopupLoading.m */; };
+		443A81792CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81632CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m */; };
+		443A817C2CBD55140093BC22 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817B2CBD55140093BC22 /* TabViewController.swift */; };
+		443A817E2CBD553A0093BC22 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817D2CBD553A0093BC22 /* TabView.swift */; };
 		444C93602CB4D8F50092FECB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 444C93572CB4D8F50092FECB /* Assets.xcassets */; };
 		444C93622CB4D8F50092FECB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 444C935A2CB4D8F50092FECB /* LaunchScreen.storyboard */; };
 		444C93632CB4D8F50092FECB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 444C935C2CB4D8F50092FECB /* Main.storyboard */; };
@@ -62,6 +71,8 @@
 		44AA664F2CB62A0500E4253F /* FootprintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA664E2CB62A0500E4253F /* FootprintViewController.swift */; };
 		44AA66522CB6338000E4253F /* JXSegmentedView in Frameworks */ = {isa = PBXBuildFile; productRef = 44AA66512CB6338000E4253F /* JXSegmentedView */; };
 		44AA66542CB6587600E4253F /* FootprintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA66532CB6587600E4253F /* FootprintView.swift */; };
+		44CD45F82CBE181E003A415E /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 44CD45F72CBE181E003A415E /* SDWebImageSwiftUI */; };
+		44CD45FB2CBE2BAA003A415E /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CD45FA2CBE2BAA003A415E /* ViewModel.swift */; };
 		44CF209A2CB8C20B00772B9C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 44CF20992CB8C20B00772B9C /* Moya */; };
 		44CF209D2CB8C46000772B9C /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF209C2CB8C46000772B9C /* APIProvider.swift */; };
 		44CF20A02CB8CE5800772B9C /* ConfigByTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF209F2CB8CE5800772B9C /* ConfigByTypeModel.swift */; };
@@ -104,6 +115,25 @@
 		440F93302CBCEF5600D94AD0 /* RankingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingModel.swift; sourceTree = "<group>"; };
 		440F93322CBD0E6B00D94AD0 /* HistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryModel.swift; sourceTree = "<group>"; };
 		440F93362CBD1DBB00D94AD0 /* BrowseHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseHistory.swift; sourceTree = "<group>"; };
+		443A81622CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+TFPopupMethodExchange.h"; sourceTree = "<group>"; };
+		443A81632CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+TFPopupMethodExchange.m"; sourceTree = "<group>"; };
+		443A81642CBD4B4A0093BC22 /* TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopup.h; sourceTree = "<group>"; };
+		443A81652CBD4B4A0093BC22 /* TFPopupConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupConst.h; sourceTree = "<group>"; };
+		443A81662CBD4B4A0093BC22 /* TFPopupExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupExtension.h; sourceTree = "<group>"; };
+		443A81672CBD4B4A0093BC22 /* TFPopupExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupExtension.m; sourceTree = "<group>"; };
+		443A81682CBD4B4A0093BC22 /* TFPopupLoading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupLoading.h; sourceTree = "<group>"; };
+		443A81692CBD4B4A0093BC22 /* TFPopupLoading.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupLoading.m; sourceTree = "<group>"; };
+		443A816A2CBD4B4A0093BC22 /* TFPopupParam.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupParam.h; sourceTree = "<group>"; };
+		443A816B2CBD4B4A0093BC22 /* TFPopupParam.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupParam.m; sourceTree = "<group>"; };
+		443A816C2CBD4B4A0093BC22 /* TFPopupToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupToast.h; sourceTree = "<group>"; };
+		443A816D2CBD4B4A0093BC22 /* TFPopupToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupToast.m; sourceTree = "<group>"; };
+		443A816E2CBD4B4A0093BC22 /* UIScrollView+TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TFPopup.h"; sourceTree = "<group>"; };
+		443A816F2CBD4B4A0093BC22 /* UIScrollView+TFPopup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TFPopup.m"; sourceTree = "<group>"; };
+		443A81702CBD4B4A0093BC22 /* UIView+TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+TFPopup.h"; sourceTree = "<group>"; };
+		443A81712CBD4B4A0093BC22 /* UIView+TFPopup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+TFPopup.m"; sourceTree = "<group>"; };
+		443A817A2CBD4B700093BC22 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		443A817B2CBD55140093BC22 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		443A817D2CBD553A0093BC22 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		444C933C2CB4D89D0092FECB /* VPNBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPNBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		444C93562CB4D8F50092FECB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		444C93572CB4D8F50092FECB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -143,6 +173,7 @@
 		44AA50A52CB537E3005EBC36 /* SearchBrowseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBrowseView.swift; sourceTree = "<group>"; };
 		44AA664E2CB62A0500E4253F /* FootprintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootprintViewController.swift; sourceTree = "<group>"; };
 		44AA66532CB6587600E4253F /* FootprintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootprintView.swift; sourceTree = "<group>"; };
+		44CD45FA2CBE2BAA003A415E /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		44CF209C2CB8C46000772B9C /* APIProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProvider.swift; sourceTree = "<group>"; };
 		44CF209F2CB8CE5800772B9C /* ConfigByTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigByTypeModel.swift; sourceTree = "<group>"; };
 		44CF20B52CB9333000772B9C /* S.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = S.swift; sourceTree = "<group>"; };
@@ -171,7 +202,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
 				8CEB24572CBD3820006F8485 /* WTool in Frameworks */,
+				44CD45F82CBE181E003A415E /* SDWebImageSwiftUI in Frameworks */,
 				44CF20AB2CB91BAD00772B9C /* WCDBSwiftDynamic in Frameworks */,
 				44CF20B32CB9289600772B9C /* SwiftyJSON in Frameworks */,
 				44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */,
@@ -198,6 +231,7 @@
 				446009F12CBA9B5E0085DC74 /* DropdownCell.swift */,
 				440F93292CBCC5BB00D94AD0 /* BrowserWebView.swift */,
 				440F932E2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift */,
+				443A817D2CBD553A0093BC22 /* TabView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -223,6 +257,29 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		443A81722CBD4B4A0093BC22 /* TFPopup */ = {
+			isa = PBXGroup;
+			children = (
+				443A81622CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.h */,
+				443A81632CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m */,
+				443A81642CBD4B4A0093BC22 /* TFPopup.h */,
+				443A81652CBD4B4A0093BC22 /* TFPopupConst.h */,
+				443A81662CBD4B4A0093BC22 /* TFPopupExtension.h */,
+				443A81672CBD4B4A0093BC22 /* TFPopupExtension.m */,
+				443A81682CBD4B4A0093BC22 /* TFPopupLoading.h */,
+				443A81692CBD4B4A0093BC22 /* TFPopupLoading.m */,
+				443A816A2CBD4B4A0093BC22 /* TFPopupParam.h */,
+				443A816B2CBD4B4A0093BC22 /* TFPopupParam.m */,
+				443A816C2CBD4B4A0093BC22 /* TFPopupToast.h */,
+				443A816D2CBD4B4A0093BC22 /* TFPopupToast.m */,
+				443A816E2CBD4B4A0093BC22 /* UIScrollView+TFPopup.h */,
+				443A816F2CBD4B4A0093BC22 /* UIScrollView+TFPopup.m */,
+				443A81702CBD4B4A0093BC22 /* UIView+TFPopup.h */,
+				443A81712CBD4B4A0093BC22 /* UIView+TFPopup.m */,
+			);
+			path = TFPopup;
+			sourceTree = "<group>";
+		};
 		444C93332CB4D89D0092FECB = {
 			isa = PBXGroup;
 			children = (
@@ -245,8 +302,8 @@
 			isa = PBXGroup;
 			children = (
 				44CF20B42CB9330600772B9C /* Util */,
-				446009DB2CBA1CD90085DC74 /* Tools */,
 				444C93682CB4D9030092FECB /* Base */,
+				446009DB2CBA1CD90085DC74 /* Tools */,
 				444C93692CB4D9140092FECB /* Global */,
 				44CF209E2CB8CDE100772B9C /* Models */,
 				44CF209B2CB8C41B00772B9C /* Network */,
@@ -295,6 +352,7 @@
 			children = (
 				444C93572CB4D8F50092FECB /* Assets.xcassets */,
 				444C93582CB4D8F50092FECB /* Info.plist */,
+				443A817A2CBD4B700093BC22 /* Bridging-Header.h */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -305,6 +363,7 @@
 				446009DC2CBA1CE70085DC74 /* MHVerifyCodeView.swift */,
 				8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */,
 				8CEB245D2CBD530B006F8485 /* ImagePicker.swift */,
+				443A81722CBD4B4A0093BC22 /* TFPopup */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -321,7 +380,7 @@
 		44AA50882CB50160005EBC36 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				446009D92CBA1AF60085DC74 /* HomeView.swift */,
+				44CD45F92CBE292F003A415E /* View */,
 				44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */,
 			);
 			path = Home;
@@ -334,6 +393,7 @@
 				44AA50842CB4E007005EBC36 /* BrowserViewController.swift */,
 				4409D4292CB7AE9300C81871 /* SearchViewController.swift */,
 				440F93272CBCC09200D94AD0 /* BrowserWebViewController.swift */,
+				443A817B2CBD55140093BC22 /* TabViewController.swift */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -413,6 +473,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		44CD45F92CBE292F003A415E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				446009D92CBA1AF60085DC74 /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		44CF209B2CB8C41B00772B9C /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -424,6 +492,7 @@
 		44CF209E2CB8CDE100772B9C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				44CD45FA2CBE2BAA003A415E /* ViewModel.swift */,
 				446009DE2CBA251F0085DC74 /* BaseModel.swift */,
 				44CF209F2CB8CE5800772B9C /* ConfigByTypeModel.swift */,
 				446009E22CBA53E50085DC74 /* LoginModel.swift */,
@@ -569,9 +638,8 @@
 				44CF20B22CB9289600772B9C /* SwiftyJSON */,
 				446009EB2CBA89C40085DC74 /* Kingfisher */,
 				440F932C2CBCE68A00D94AD0 /* JFPopup */,
-				8CEB24532CBD3750006F8485 /* WTool */,
-				8CEB24562CBD3820006F8485 /* WTool */,
-				8CEB24592CBD3884006F8485 /* WTool */,
+				44CD45F72CBE181E003A415E /* SDWebImageSwiftUI */,
+
 			);
 			productName = VPNBrowser;
 			productReference = 444C933C2CB4D89D0092FECB /* VPNBrowser.app */;
@@ -611,7 +679,9 @@
 				44CF20B12CB9289600772B9C /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				446009EA2CBA89C40085DC74 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				440F932B2CBCE68A00D94AD0 /* XCRemoteSwiftPackageReference "JFPopup" */,
+
 				8CEB24582CBD3884006F8485 /* XCRemoteSwiftPackageReference "WTool" */,
+				44CD45F62CBE181E003A415E /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = 444C933D2CB4D89D0092FECB /* Products */;
 			projectDirPath = "";
@@ -691,7 +761,15 @@
 				440F932A2CBCC5BB00D94AD0 /* BrowserWebView.swift in Sources */,
 				44AA50982CB522BE005EBC36 /* ChangeNicknameViewController.swift in Sources */,
 				44DA8E362CB68565003B1C34 /* AboutView.swift in Sources */,
+				443A81732CBD4B4A0093BC22 /* UIView+TFPopup.m in Sources */,
+				443A81742CBD4B4A0093BC22 /* UIScrollView+TFPopup.m in Sources */,
+				443A81752CBD4B4A0093BC22 /* TFPopupParam.m in Sources */,
+				443A81762CBD4B4A0093BC22 /* TFPopupExtension.m in Sources */,
+				443A81772CBD4B4A0093BC22 /* TFPopupToast.m in Sources */,
+				443A81782CBD4B4A0093BC22 /* TFPopupLoading.m in Sources */,
+				443A81792CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m in Sources */,
 				440F93242CBCABFD00D94AD0 /* ReplaceBindingViewController.swift in Sources */,
+				44CD45FB2CBE2BAA003A415E /* ViewModel.swift in Sources */,
 				446009E12CBA4F8E0085DC74 /* WebView.swift in Sources */,
 				446009F92CBAAA530085DC74 /* BindingView.swift in Sources */,
 				44AA508F2CB5055F005EBC36 /* MineTopView.swift in Sources */,
@@ -708,7 +786,9 @@
 				440F93372CBD1DBB00D94AD0 /* BrowseHistory.swift in Sources */,
 				44AA50932CB50D37005EBC36 /* SecurityViewController.swift in Sources */,
 				4409D42F2CB7CEE200C81871 /* LoginViewController.swift in Sources */,
+				443A817C2CBD55140093BC22 /* TabViewController.swift in Sources */,
 				446009D42CBA0D5B0085DC74 /* VerificationCodeView.swift in Sources */,
+				443A817E2CBD553A0093BC22 /* TabView.swift in Sources */,
 				446009DA2CBA1AF60085DC74 /* HomeView.swift in Sources */,
 				446009E72CBA73060085DC74 /* CustomTextField.swift in Sources */,
 				44AA50872CB4E016005EBC36 /* MineViewController.swift in Sources */,
@@ -803,7 +883,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.wang.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "VPNBrowser/Resources/Bridging-Header.h";
+
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -840,7 +921,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.wang.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+                				SWIFT_OBJC_BRIDGING_HEADER = "VPNBrowser/Resources/Bridging-Header.h";
+
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1021,6 +1103,14 @@
 				minimumVersion = 1.4.1;
 			};
 		};
+		44CD45F62CBE181E003A415E /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.2;
+			};
+		};
 		44CF20982CB8C20B00772B9C /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
@@ -1087,6 +1177,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 44AA66502CB6338000E4253F /* XCRemoteSwiftPackageReference "JXSegmentedView" */;
 			productName = JXSegmentedView;
+		};
+		44CD45F72CBE181E003A415E /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 44CD45F62CBE181E003A415E /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 		44CF20992CB8C20B00772B9C /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;

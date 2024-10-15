@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FootprintView: View {
-    @ObservedObject var viewModel: FootprintViewModel
+    @State var viewModel = FootprintViewModel()
 
     @State private var content: String = ""
 
@@ -18,16 +18,9 @@ struct FootprintView: View {
 //                .textFieldStyle(RoundedBorderTextFieldStyle())
 //                .font(.system(size: 14))
 
-            if viewModel.selectedSegmentIndex == 0 {
-                BrowseHistory()
-            } else {
-                BrowseHistory()
-            }
+            BrowseHistory()
         }
         .padding(.top, 8)
+        .environmentObject(viewModel)
     }
-}
-
-#Preview {
-    FootprintView(viewModel: FootprintViewModel())
 }
