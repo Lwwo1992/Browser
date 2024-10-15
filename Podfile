@@ -29,6 +29,7 @@ target 'VPNBrowser' do
 
   pod 'AWSMobileClient', '~> 2.24.0'
   pod 'AWSS3', '~> 2.24.0'
+  pod 'SwiftJWT'
 
 end
 

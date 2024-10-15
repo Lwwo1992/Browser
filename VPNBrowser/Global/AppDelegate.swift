@@ -32,7 +32,7 @@ extension AppDelegate {
     private func confing() {
         initTable()
         initConfig()
-        
+
         Util.createFolderIfNotExists(S.Files.imageURL)
     }
 
@@ -46,6 +46,42 @@ extension AppDelegate {
     }
 
     private func initConfig() {
+        APIProvider.shared.request(.generateVisitorToken, progress: { _ in
+
+        }) { result in
+            switch result {
+            case let .success(response):
+                if let responseString = String(data: response.data, encoding: .utf8) {
+                    print("Response: \(responseString)") // 打印响应内容，方便调试
+                }
+
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
+                       let data = json["data"] as? [String: Any],
+                       let token = data["token"] as? String {
+                        LoginManager.shared.loginInfo?.token = token
+
+                        // 继续执行其他接口请求
+                        self.fetchConfigByType()
+                        self.fetchAnonymousConfig()
+                    } else {
+                        print("无法提取 token")
+                    }
+                } catch {
+                    print("JSON 解析失败: \(error)")
+                }
+
+            case let .failure(error):
+                print("请求失败: \(error)")
+            }
+        }
+
+        if let model = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self)?.first {
+            LoginManager.shared.loginInfo = model
+        }
+    }
+
+    private func fetchConfigByType() {
         APIProvider.shared.request(.getConfigByType(data: 1), model: ConfigByTypeModel.self) { result in
             switch result {
             case let .success(model):
@@ -60,8 +96,9 @@ extension AppDelegate {
                 print("Request failed with error: \(error)")
             }
         }
+    }
 
-        /// 查询上传配置
+    private func fetchAnonymousConfig() {
         APIProvider.shared.request(.anonymousConfig, model: AnonymousConfigModel.self) { result in
             switch result {
             case let .success(model):
@@ -69,10 +106,6 @@ extension AppDelegate {
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }
-        }
-
-        if let model = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self)?.first {
-            LoginManager.shared.loginInfo = model
         }
     }
 }

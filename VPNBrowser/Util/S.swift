@@ -39,7 +39,7 @@ struct S {
         static var openNoTrace: Bool = false
 
         /// 导航模式
-        static var mode: WebMode = .web
+        static var mode: WebMode = .guide
     }
 }
 
