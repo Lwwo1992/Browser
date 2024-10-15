@@ -11,10 +11,15 @@ import UIKit
 
 class RecordStore: ObservableObject {
     @Published var records: [RecordModel] = []
+
+    @Published var content: String = ""
 }
 
 class SearchViewController: ViewController {
     private var recordStore = RecordStore()
+
+    private var cancellables = Set<AnyCancellable>()
+
     private var selectedRecord: RecordModel? {
         didSet {
             guard let record = selectedRecord else {
@@ -118,6 +123,14 @@ class SearchViewController: ViewController {
         super.viewDidLoad()
 
         fetchRecords()
+
+        recordStore.$content
+            .dropFirst()
+            .sink { [weak self] content in
+                guard let self else { return }
+                self.textField.text = content
+            }
+            .store(in: &cancellables)
     }
 }
 

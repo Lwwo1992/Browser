@@ -9,7 +9,7 @@ import UIKit
 
 class BrowserWebBottomSheet: UIView {
     let items = [
-        ("书签", "bookmark.fill"),
+//        ("书签", "bookmark.fill"),
         ("历史", "clock.fill"),
         ("下载", "arrow.down.circle.fill"),
         ("收藏", "star.fill"),
@@ -66,10 +66,14 @@ extension BrowserWebBottomSheet: UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        tf_hide()
+
         let item = items[indexPath.item]
         switch item.0 {
         case "历史":
             Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 1), animated: true)
+        case "收藏":
+            Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 0), animated: true)
         default:
             break
         }

@@ -7,25 +7,25 @@
 
 import SwiftUI
 
-struct RecommendedModeView: View {
-    enum RecommendedModeOption: String, CaseIterable {
-        case webMode = "导航(web)"
-        case guideMode = "应用(guide)"
-    }
+enum WebMode: String, CaseIterable {
+    case web = "导航"
+    case guide = "应用"
+}
 
-    @State private var selectedOption: RecommendedModeOption? = .webMode
+struct RecommendedModeView: View {
+    @ObservedObject var viewModel: ViewModel
 
     var body: some View {
         VStack {
             VStack(spacing: 0) {
-                ForEach(RecommendedModeOption.allCases, id: \.self) { option in
+                ForEach(WebMode.allCases, id: \.self) { option in
                     HStack {
                         Text(option.rawValue)
                             .font(.system(size: 16))
                             .foregroundColor(.black)
                         Spacer()
 
-                        if option == selectedOption {
+                        if option == viewModel.selectedModel {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.blue)
                         }
@@ -34,10 +34,11 @@ struct RecommendedModeView: View {
                     .padding(.horizontal, 16)
                     .background(Color.white)
                     .onTapGesture {
-                        selectedOption = option
+                        S.Config.mode = option
+                        viewModel.selectedModel = option
                     }
 
-                    if option != RecommendedModeOption.allCases.last {
+                    if option != WebMode.allCases.last {
                         Divider()
                             .padding(.leading, 16)
                     }
@@ -52,8 +53,4 @@ struct RecommendedModeView: View {
         .padding(.top, 8)
         .background(Color(hex: 0xF8F5F5))
     }
-}
-
-#Preview {
-    RecommendedModeView()
 }

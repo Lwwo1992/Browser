@@ -36,7 +36,7 @@ struct LoginView: View {
         VStack(spacing: 20) {
             if mailbox.isEmpty {
                 // 显示手机号码输入框
-                if let phoneType = S.config.loginType?.first(where: { $0.key == "mobile" }), phoneType.value == true {
+                if let phoneType = S.Config.loginType?.first(where: { $0.key == "mobile" }), phoneType.value == true {
                     HStack {
                         Text("+86")
                             .font(.system(size: 14))
@@ -56,7 +56,7 @@ struct LoginView: View {
 
             if mobile.isEmpty {
                 // 显示邮箱输入框
-                if let emailType = S.config.loginType?.first(where: { $0.key == "mailbox" }), emailType.value == true {
+                if let emailType = S.Config.loginType?.first(where: { $0.key == "mailbox" }), emailType.value == true {
                     HStack {
                         CustomTextField(text: $mailbox, placeholder: "邮箱")
                     }
@@ -72,8 +72,8 @@ struct LoginView: View {
             }
 
             // 判断是否展示 "或"
-            if let accountType = S.config.loginType?.first(where: { $0.key == "account" }), accountType.value == true,
-               (S.config.loginType?.contains(where: { $0.value == true })) ?? false {
+            if let accountType = S.Config.loginType?.first(where: { $0.key == "account" }), accountType.value == true,
+               (S.Config.loginType?.contains(where: { $0.value == true })) ?? false {
                 Button {
                     nextButtonAction()
                 } label: {
@@ -91,7 +91,7 @@ struct LoginView: View {
                     .foregroundColor(.gray)
             }
 
-            if let accountType = S.config.loginType?.first(where: { $0.key == "account" }), accountType.value == true {
+            if let accountType = S.Config.loginType?.first(where: { $0.key == "account" }), accountType.value == true {
                 Button {
                     if isAgree == false {
                         HUD.showTipMessage("未阅读《服务协议》、《隐私政策》")

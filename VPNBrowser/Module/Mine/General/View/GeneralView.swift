@@ -27,13 +27,15 @@ struct GeneralView: View {
 
     @State private var isOn: Bool = false
 
+    @ObservedObject var viewModel = ViewModel()
+
     var body: some View {
         OptionListView(
             sections: GeneralOption.sections,
             additionalTextProvider: { option in
                 switch option {
                 case .recommendedMode:
-                    return "导航"
+                    return viewModel.selectedModel.rawValue
                 case .clearCache:
                     return "146.2MB"
                 default:
@@ -43,47 +45,6 @@ struct GeneralView: View {
             onTap: handleTap(for:)
         )
         .padding(.horizontal, 16)
-//        ScrollView {
-//            VStack(alignment: .leading, spacing: 0) {
-//                ForEach(0 ..< GeneralOption.sections.count, id: \.self) { sectionIndex in
-//                    VStack(alignment: .leading, spacing: 0) {
-//                        ForEach(GeneralOption.sections[sectionIndex], id: \.self) { item in
-//                            VStack(alignment: .leading, spacing: 0) {
-//                                HStack(alignment: .center) {
-//                                    Text(item.rawValue)
-//                                    Spacer()
-//                                    if item == .recommendedMode {
-//                                        Text("导航")
-//                                            .opacity(0.5)
-//                                    } else if item == .clearCache {
-//                                        Text("146.2MB")
-//                                            .opacity(0.5)
-//                                    }
-//                                    Image(systemName: "chevron.right")
-//                                }
-//                                .font(.system(size: 14))
-//                                .frame(height: 55)
-//                                .padding(.horizontal, 16)
-//                                .background(Color.white)
-//                                .onTapGesture {
-//                                    handleTap(for: item)
-//                                }
-//
-//                                if item != GeneralOption.sections[sectionIndex].last {
-//                                    Divider()
-//                                        .padding(.leading, 16)
-//                                }
-//                            }
-//                        }
-//                    }
-//                    .background(Color.white)
-//                    .cornerRadius(10)
-//                    .padding(.vertical)
-//                }
-//            }
-//        }
-//        .padding(.horizontal, 16)
-//        .background(Color(hex: 0xF8F5F5))
     }
 
     private func handleTap(for item: GeneralOption) {
@@ -91,6 +52,7 @@ struct GeneralView: View {
         switch item {
         case .recommendedMode:
             vc = RecommendedModeViewController()
+            (vc as! RecommendedModeViewController).viewModel = viewModel
         default:
             break
         }

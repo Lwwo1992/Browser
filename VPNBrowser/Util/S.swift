@@ -17,13 +17,29 @@ struct S {
         static let searchHistory = "searchHistoryTable"
         /// 浏览历史
         static let browseHistory = "browseHistoryTable"
+        /// 收藏
+        static let collect = "collectTable"
+        /// 书签
+        static let bookmark = "bookmarkTable"
     }
 
-    struct config {
+    struct Files {
+        static var imageURL: URL {
+            let libraryURL = URL(fileURLWithPath: Util.documentsPath)
+            return libraryURL.appendingPathComponent("imageURL", isDirectory: true)
+        }
+    }
+
+    struct Config {
         static var maxAppNum = 5
         static var defalutUrl = ""
         static var loginType: [LoginType]?
         static var anonymous: AnonymousConfigModel?
+        /// 开启无痕浏览
+        static var openNoTrace: Bool = false
+
+        /// 导航模式
+        static var mode: WebMode = .web
     }
 }
 
@@ -40,7 +56,7 @@ extension Util {
             return nil
         }
 
-        if let guideBucketInfo = S.config.anonymous?.bucketMap?[String(firstComponent)],
+        if let guideBucketInfo = S.Config.anonymous?.bucketMap?[String(firstComponent)],
            let imageUrl = guideBucketInfo.imageUrl {
             let modifiedUrl = imageUrl.replacingOccurrences(of: "/\(firstComponent)", with: "")
             let urlString = modifiedUrl + path
@@ -51,7 +67,7 @@ extension Util {
             return nil
         }
     }
-    
+
     static func formattedTime(from timestamp: TimeInterval) -> String {
         let date = Date(timeIntervalSince1970: timestamp)
         let dateFormatter = DateFormatter()
@@ -59,4 +75,18 @@ extension Util {
         return dateFormatter.string(from: date)
     }
 
+    /// 创建文件夹
+    static func createFolderIfNotExists(_ url: URL) {
+        if FileManager.default.fileExists(atPath: url.path) == false {
+            do {
+                try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
+            } catch let error {
+                debugPrint(error.localizedDescription)
+            }
+        }
+    }
+
+    static var documentsPath: String {
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    }
 }

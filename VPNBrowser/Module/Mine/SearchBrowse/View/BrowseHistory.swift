@@ -9,6 +9,7 @@ import Kingfisher
 import SwiftUI
 
 struct BrowseHistory: View {
+    @EnvironmentObject var viewModel: FootprintViewModel
     @State private var historise: [HistoryModel]? = nil
 
     var body: some View {
@@ -31,16 +32,23 @@ struct BrowseHistory: View {
                         ForEach(groupedHistory[date]!, id: \.self) { model in
                             VStack {
                                 HStack(spacing: 10) {
-                                    if let path = model.pageLogo, let url = URL(string: path) {
-                                        KFImage(url)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 20, height: 20)
-                                    }
+                                    if viewModel.selectedSegmentIndex == 1 {
+                                        if let path = model.pageLogo, let url = URL(string: path) {
+                                            KFImage(url)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 20, height: 20)
+                                        }
 
-                                    VStack(alignment: .leading, spacing: 5) {
-                                        Text(model.title ?? "")
-                                            .font(.system(size: 16))
+                                        VStack(alignment: .leading, spacing: 5) {
+                                            Text(model.title ?? "")
+                                                .font(.system(size: 16))
+                                            Text(model.path ?? "")
+                                                .font(.system(size: 12))
+                                                .opacity(0.5)
+                                        }
+
+                                    } else {
                                         Text(model.path ?? "")
                                             .font(.system(size: 12))
                                             .opacity(0.5)
@@ -54,7 +62,7 @@ struct BrowseHistory: View {
                                 }
                                 .font(.system(size: 14, weight: .medium))
                                 .opacity(0.6)
-                                .padding(.vertical, 5)
+                                .frame(height: viewModel.selectedSegmentIndex == 1 ? 50 : 30)
 
                                 Divider()
                             }
@@ -64,9 +72,23 @@ struct BrowseHistory: View {
                 }
             }
             .onAppear {
-                historise = DBaseManager.share.qureyFromDb(fromTable: S.Table.browseHistory, cls: HistoryModel.self)?.reversed()
+                loadHistory()
+            }
+            .onChange(of: viewModel.selectedSegmentIndex) { _ in
+                loadHistory()
             }
         }
+    }
+
+    private func loadHistory() {
+        if var historise, !historise.isEmpty {
+            historise.removeAll()
+        }
+
+        historise = DBaseManager.share.qureyFromDb(
+            fromTable: viewModel.selectedSegmentIndex == 0 ? S.Table.collect : S.Table.browseHistory,
+            cls: HistoryModel.self
+        )?.reversed()
     }
 }
 

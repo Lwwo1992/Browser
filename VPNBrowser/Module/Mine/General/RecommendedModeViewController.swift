@@ -8,8 +8,10 @@
 import UIKit
 
 class RecommendedModeViewController: ViewController {
+    var viewModel = ViewModel()
+    
     override var rootView: AnyView? {
-        return AnyView(RecommendedModeView())
+        return AnyView(RecommendedModeView(viewModel: viewModel))
     }
 
     override func viewDidLoad() {

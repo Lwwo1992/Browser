@@ -12,10 +12,10 @@ class FootprintViewModel: ObservableObject {
 }
 
 class FootprintViewController: ViewController {
-    private var viewModel = FootprintViewModel()
+    private var footprintViewModel = FootprintViewModel()
 
     override var rootView: AnyView? {
-        return AnyView(FootprintView(viewModel: viewModel))
+        return AnyView(FootprintView(viewModel: footprintViewModel))
     }
 
     private lazy var segmentedControl = UISegmentedControl(items: ["收藏", "历史"]).then {
@@ -28,7 +28,7 @@ class FootprintViewController: ViewController {
 
     convenience init(selectedSegmentIndex: Int) {
         self.init(nibName: nil, bundle: nil)
-        viewModel.selectedSegmentIndex = selectedSegmentIndex
+        footprintViewModel.selectedSegmentIndex = selectedSegmentIndex
         segmentedControl.selectedSegmentIndex = selectedSegmentIndex
     }
 }
@@ -41,6 +41,6 @@ extension FootprintViewController {
     }
 
     @objc func segmentChanged(_ sender: UISegmentedControl) {
-        viewModel.selectedSegmentIndex = sender.selectedSegmentIndex
+        footprintViewModel.selectedSegmentIndex = sender.selectedSegmentIndex
     }
 }

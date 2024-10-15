@@ -12,7 +12,15 @@ class HistoryModel: TableCodable, Hashable {
     var path: String?
     var title: String?
     var pageLogo: String?
+    var imagePath: String?
     var timestamp: TimeInterval = Date().timeIntervalSince1970
+
+    var url: URL {
+        guard let imagePath = imagePath else {
+            return S.Files.imageURL
+        }
+        return S.Files.imageURL.appendingPathComponent(imagePath)
+    }
 
     static func == (lhs: HistoryModel, rhs: HistoryModel) -> Bool {
         return lhs.id == rhs.id
@@ -29,6 +37,7 @@ class HistoryModel: TableCodable, Hashable {
         case path
         case title
         case pageLogo
+        case imagePath
         case timestamp
     }
 }

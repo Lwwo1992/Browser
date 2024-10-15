@@ -100,7 +100,7 @@ struct SearchView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .cornerRadius(5)
                                     .onTapGesture {
-                                        Util.topViewController().navigationController
+                                        recordStore.content = item.title ?? ""
                                     }
                             }
                         }

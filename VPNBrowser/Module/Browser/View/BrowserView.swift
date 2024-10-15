@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct BrowserView: View {
+    @StateObject private var webViewModel = WebViewViewModel()
+    @State private var bookmarkModel = HistoryModel()
+    @State private var bookmarNum = "0"
+
     var body: some View {
         VStack {
             HStack {
@@ -15,8 +19,10 @@ struct BrowserView: View {
                 notificationBadge
             }
             .padding(.horizontal, 16)
-            WebView(urlString: S.config.defalutUrl)
-                .frame(maxHeight: .infinity)
+            WebView(urlString: S.Config.defalutUrl, viewModel: webViewModel, onSaveInfo: { model in
+                self.bookmarkModel = model
+            })
+            .frame(maxHeight: .infinity)
         }
     }
 
@@ -51,7 +57,7 @@ struct BrowserView: View {
             .frame(width: 25, height: 25)
             .cornerRadius(2)
             .overlay(
-                Text("3")
+                Text(bookmarNum)
                     .font(.system(size: 12))
                     .foregroundColor(.black)
             )
@@ -59,6 +65,16 @@ struct BrowserView: View {
                 RoundedRectangle(cornerRadius: 2)
                     .stroke(Color.gray, lineWidth: 1)
             )
+            .onTapGesture {
+                let vc = TabViewController()
+                vc.model = bookmarkModel
+                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+            }
+            .onAppear {
+                if let bookmarkes = DBaseManager.share.qureyFromDb(fromTable: S.Table.bookmark, cls: HistoryModel.self) {
+                    self.bookmarNum = "\(bookmarkes.count)"
+                }
+            }
     }
 }
 
