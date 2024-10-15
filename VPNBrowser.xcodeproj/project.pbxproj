@@ -53,6 +53,8 @@
 		446009F72CBAA39B0085DC74 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F62CBAA39B0085DC74 /* FlowLayout.swift */; };
 		446009F92CBAAA530085DC74 /* BindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F82CBAAA530085DC74 /* BindingView.swift */; };
 		446009FB2CBAB5730085DC74 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009FA2CBAB5730085DC74 /* StringExtension.swift */; };
+		4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FA2CBE567F0024381A /* TokenGenerator.swift */; };
+		4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FF2CBE66EF0024381A /* GuideModel.swift */; };
 		44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 44AA507E2CB4DDB4005EBC36 /* WTool */; };
 		44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50802CB4DF83005EBC36 /* TabBarController.swift */; };
 		44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */; };
@@ -158,6 +160,8 @@
 		446009F62CBAA39B0085DC74 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		446009F82CBAAA530085DC74 /* BindingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingView.swift; sourceTree = "<group>"; };
 		446009FA2CBAB5730085DC74 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		4486C8FA2CBE567F0024381A /* TokenGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenGenerator.swift; sourceTree = "<group>"; };
+		4486C8FF2CBE66EF0024381A /* GuideModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideModel.swift; sourceTree = "<group>"; };
 		44AA50802CB4DF83005EBC36 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		44AA50842CB4E007005EBC36 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
@@ -202,7 +206,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
 				8CEB24572CBD3820006F8485 /* WTool in Frameworks */,
 				44CD45F82CBE181E003A415E /* SDWebImageSwiftUI in Frameworks */,
 				44CF20AB2CB91BAD00772B9C /* WCDBSwiftDynamic in Frameworks */,
@@ -485,6 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				44CF209C2CB8C46000772B9C /* APIProvider.swift */,
+				4486C8FA2CBE567F0024381A /* TokenGenerator.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -500,6 +504,7 @@
 				446009ED2CBA8E5C0085DC74 /* AnonymousConfigModel.swift */,
 				440F93302CBCEF5600D94AD0 /* RankingModel.swift */,
 				440F93322CBD0E6B00D94AD0 /* HistoryModel.swift */,
+				4486C8FF2CBE66EF0024381A /* GuideModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -639,7 +644,6 @@
 				446009EB2CBA89C40085DC74 /* Kingfisher */,
 				440F932C2CBCE68A00D94AD0 /* JFPopup */,
 				44CD45F72CBE181E003A415E /* SDWebImageSwiftUI */,
-
 			);
 			productName = VPNBrowser;
 			productReference = 444C933C2CB4D89D0092FECB /* VPNBrowser.app */;
@@ -679,7 +683,6 @@
 				44CF20B12CB9289600772B9C /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				446009EA2CBA89C40085DC74 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				440F932B2CBCE68A00D94AD0 /* XCRemoteSwiftPackageReference "JFPopup" */,
-
 				8CEB24582CBD3884006F8485 /* XCRemoteSwiftPackageReference "WTool" */,
 				44CD45F62CBE181E003A415E /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
@@ -797,8 +800,10 @@
 				44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */,
 				440F932F2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift in Sources */,
 				44CF20B62CB9333000772B9C /* S.swift in Sources */,
+				4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */,
 				44AA50912CB5056F005EBC36 /* MineBottomView.swift in Sources */,
 				44AA50962CB510C5005EBC36 /* SecurityView.swift in Sources */,
+				4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */,
 				446009F22CBA9B5E0085DC74 /* DropdownCell.swift in Sources */,
 				44DA8E2A2CB67814003B1C34 /* GeneralViewController.swift in Sources */,
 				44DA8E382CB68750003B1C34 /* OptionListView.swift in Sources */,
@@ -884,7 +889,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "VPNBrowser/Resources/Bridging-Header.h";
-
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -921,8 +925,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.wang.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-                				SWIFT_OBJC_BRIDGING_HEADER = "VPNBrowser/Resources/Bridging-Header.h";
-
+				SWIFT_OBJC_BRIDGING_HEADER = "VPNBrowser/Resources/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -30,5 +30,14 @@ class BrowserViewController: ViewController {
 extension BrowserViewController {
     override func initUI() {
         super.initUI()
+
+        APIProvider.shared.request(.guideLabelPage) { result in
+            switch result {
+            case let .success:
+                break
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
     }
 }

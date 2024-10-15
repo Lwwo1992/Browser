@@ -5,8 +5,11 @@
 //  Created by xyxy on 2024/10/11.
 //
 
+import AdSupport
 import HandyJSON
 import Moya
+
+private let channelCode = "tomato"
 
 class APIProvider {
     static let shared = MoyaProvider<APITarget>()
@@ -52,59 +55,80 @@ enum APITarget {
     /// identifier: 账号/手机/邮箱
     /// type: 登录类型：1-账号密码，2-电话，3-邮箱
     case updateEmailOrMobile(credential: String, identifier: String, type: Int)
-    
-    ///编辑用户资料
-    case editUserInfo(headPortrait:String,name:String)
-    
-    ///上传
-    case uploadConfig(image:UIImage)
+
+    /// 编辑用户资料
+    case editUserInfo(headPortrait: String, name: String)
+
+    /// 上传
+    case uploadConfig(image: UIImage)
 
     case rankingPage
+
+    /// 获取分类
+    case guideLabelPage
+
+    /// 获取导航应用
+    case guideAppPage(labelID: String)
+
+    /// 生成游客令牌
+    case generateVisitorToken
 }
 
 extension APITarget: TargetType {
     var baseURL: URL {
-//        return URL(string: "https://browser-api.xiwshijieheping.com")!
-//        #if DEBUG
-            return URL(string: "https://browser-api.xiwshijieheping.com")!
-//        #else
-//            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
-//        #endif
+ 
+        switch self {
+        case .guideLabelPage, .guideAppPage:
+            // "http://guide-h5.saas-xy.com:89" //正式环境
+            // "http://guide-api.saas-xy.com:86" //测试环境
+            return URL(string: "http://guide-api.saas-xy.com:86")!
+        default:
+//            return URL(string: "https://browser-api.xiwshijieheping.com")!
+            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
+        }
+
     }
 
     var path: String {
         switch self {
+        case .guideLabelPage:
+            return "/guide/h5/label/page"
+        case .guideAppPage:
+            return "/guide/h5/app/page"
         case .getConfigByType:
-            return "/browser/app/anonymous/getConfigByType"
+            return "/browser/app/visitorAccess/getConfigByType"
         case .sendSmsCode:
-            return "/browser/app/auth/sendSmsCode"
+            return "/browser/app/visitorAccess/sendSmsCode"
         case .sendEmailCode:
-            return "/browser/app/auth/sendEmailCode"
+            return "/browser/app/visitorAccess/sendEmailCode"
         case .login:
-            return "/browser/app/auth/login"
+            return "/browser/app/visitorAccess/login"
         case .checkValidCode:
-            return "/browser/app/browserAccount/checkValidCode"
+            return "/browser/app/visitorAccess/checkValidCode"
         case .enginePage:
-            return "/browser/app/anonymous/enginePage"
+            return "/browser/app/visitorAccess/enginePage"
         case .logout:
-            return "/browser/app/auth/logout"
+            return "/browser/app/visitorAccess/logout"
         case .anonymousConfig:
-            return "/browser/app/anonymous/config"
+            return "/browser/app/visitorAccess/config"
         case .updateEmailOrMobile:
-            return "/browser/app/browserAccount/updateEmailOrMobile"
+            return "/browser/app/visitorAccess/updateEmailOrMobile"
         case .rankingPage:
-            return "/browser/app/anonymous/rankingPage"
+            return "/browser/app/visitorAccess/rankingPage"
         case .editUserInfo:
-            return "/browser/app/browserAccount/edit"
+            return "/browser/app/visitorAccess/edit"
         case .uploadConfig:
             return "/browser/app/visitorAccess/config"
-        
+ 
+        case .generateVisitorToken:
+            return "/browser/app/anonymous/generateVisitorToken"
+
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage,.editUserInfo,.uploadConfig:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken:
             return .post
         }
     }
@@ -129,7 +153,7 @@ extension APITarget: TargetType {
              let .checkValidCode(credential, identifier, type):
             let data: [String: Any] = ["credential": credential, "identifier": identifier, "type": type]
             parameters = ["data": data]
-            
+
         case let .editUserInfo(headPortrait, name):
             var data: [String: Any] = [:]
 
@@ -140,30 +164,49 @@ extension APITarget: TargetType {
             if !name.isEmpty {
                 data["name"] = name
             }
-            
+
             parameters = ["data": data]
-            
+
         case .logout, .anonymousConfig:
             break
-        case .uploadConfig(let image):
+        case let .uploadConfig(image):
             let imageData = image.jpegData(compressionQuality: 0.5) // 你可以选择 PNG 或 JPEG 格式
-                      return .uploadMultipart([
-                          MultipartFormData(provider: .data(imageData!), name: "file", fileName: "image.jpg", mimeType: "image/jpeg")
-                      ])
-            
-    
-            
+            return .uploadMultipart([
+                MultipartFormData(provider: .data(imageData!), name: "file", fileName: "image.jpg", mimeType: "image/jpeg"),
+            ])
+
+        case .guideLabelPage:
+            let data: [String: Any] = [
+                "channelCode": channelCode,
+                "state": 1,
+            ]
+            parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": -1]
+        case let .guideAppPage(labelID):
+            let data: [String: Any] = [
+                "channelCode": channelCode,
+                "labelId": labelID,
+                "state": 1,
+            ]
+            parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": -1]
+        case .generateVisitorToken:
+            let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+            parameters = ["data": ["deviceId": idfa]]
         }
 
         return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
     }
 
     var headers: [String: String]? {
-        switch self{
+        switch self {
         case .uploadConfig:
             return [
                 "Content-Type": "multipart/form-data",
                 "AuthorizationApp": LoginManager.shared.loginInfo?.token ?? "",
+            ]
+        case .guideAppPage, .guideLabelPage:
+            return [
+                "Content-Type": "application/json",
+                "ClientAuthorization": TokenGenerator.generateTokenGuide(),
             ]
         default:
             return [
@@ -171,7 +214,6 @@ extension APITarget: TargetType {
                 "AuthorizationApp": LoginManager.shared.loginInfo?.token ?? "",
             ]
         }
-      
     }
 }
 
