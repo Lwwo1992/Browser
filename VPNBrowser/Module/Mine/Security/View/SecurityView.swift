@@ -4,9 +4,10 @@
 //
 //  Created by xyxy on 2024/10/8.
 //
-
 import SwiftUI
 import WTool
+import AWSMobileClient
+import AWSS3
 
 struct SecurityView: View {
     enum SecurityOption: String, CaseIterable {
@@ -22,11 +23,14 @@ struct SecurityView: View {
             [
                 [.avatar, .nickname],
                 [.phoneNumber, .email, .account],
-//                [.thirdPartyAccount],
                 [.logout],
             ]
         }
     }
+
+    @State private var selectedImage: UIImage? = nil
+    @State private var isShowingActionSheet = false
+    private let imagePickerManager = ImagePicker()
 
     var body: some View {
         OptionListView(
@@ -36,13 +40,7 @@ struct SecurityView: View {
             },
             rightViewProvider: { option in
                 if option == .avatar {
-                    return AnyView(
-                        Image(systemName: "person.crop.circle.fill")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 40, height: 40)
-                            .clipShape(Circle())
-                    )
+                    return AnyView(avatarView)
                 }
                 return nil
             },
@@ -55,50 +53,102 @@ struct SecurityView: View {
             onTap: handleTap(for:)
         )
         .padding(.horizontal, 16)
+        .actionSheet(isPresented: $isShowingActionSheet) {
+            ActionSheet(title: Text("选择头像"), message: nil, buttons: [
+                .default(Text("相机")) {
+                    presentImagePicker(sourceType: .camera)
+                },
+                .default(Text("相册")) {
+                    presentImagePicker(sourceType: .photoLibrary)
+                },
+                .cancel()
+            ])
+        }
     }
 
-    private func rightTitle(for item: SecurityOption) -> String? {
-        switch item {
-        case .nickname:
-            "用户昵称"
-        case .phoneNumber:
-            LoginManager.shared.loginInfo?.mobile.maskedAccount
-        case .email:
-            LoginManager.shared.loginInfo?.mailbox.maskedAccount
-        case .account:
-            LoginManager.shared.loginInfo?.account
-        default:
-            nil
+    private var avatarView: some View {
+        Group {
+            if let selectedImage = selectedImage {
+                Image(uiImage: selectedImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
+            } else {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
+                    .foregroundColor(.gray)
+            }
         }
     }
 
     private func handleTap(for item: SecurityOption) {
         switch item {
-        case .nickname:
-            Util.topViewController().navigationController?.pushViewController(ChangeNicknameViewController(), animated: true)
-        case .phoneNumber, .email:
-            let vc = BindingViewController()
-            vc.type = item == .phoneNumber ? .mobile : .mailbox
-            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
-        case .logout:
-            logout()
+        case .avatar:
+            isShowingActionSheet = true
         default:
             break
         }
     }
 
-    private func logout() {
-        HUD.showLoading()
-        APIProvider.shared.request(.logout) { result in
-            HUD.hideNow()
-            switch result {
-            case .success:
-                LoginManager.shared.loginInfo = nil
-                DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
-                Util.topViewController().navigationController?.popToRootViewController(animated: true)
-            case let .failure(error):
-                print("Request failed with error: \(error)")
+    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+
+        
+        imagePickerManager.pickImage(sourceType: sourceType, from: Util.topViewController()) { image,urlstring in
+            if let image = image {
+                selectedImage = image
+                // 这里可以添加额外的处理，例如上传头像
+                
+                UpdateImageInfo(urlStr: urlstring ?? "")
             }
+        }
+    }
+    
+    private func UpdateImageInfo(urlStr:String){
+        
+        
+        
+        APIProvider.shared.request(.uploadConfig(image: selectedImage ?? UIImage()), model: UpdateHeadInfo.self) { result in
+            switch result {
+            case .success(let response):
+                
+                // 处理响应
+                let m = response as! UpdateHeadInfo
+                
+                
+                let urlLast = (urlStr as NSString).lastPathComponent
+//                let key = m.uploadAddrPrefix + urlLast
+                
+                let s3Client = S3ClientUtils()
+                let bucketName = m.bucket  // 替换为你的 S3 存储桶名称
+                let uploadAddrPrefix = m.uploadAddrPrefix
+                
+                s3Client.upload(filePath: urlLast, bucket: bucketName, uploadAddrPrefix: uploadAddrPrefix)
+                
+                
+            case .failure(let error):
+                print("请求失败，错误：\(error)")
+            }
+        }
+    
+    }
+    
+    
+    private func rightTitle(for item: SecurityOption) -> String? {
+        switch item {
+        case .nickname:
+            return LoginManager.shared.loginInfo?.account
+        case .phoneNumber:
+            return LoginManager.shared.loginInfo?.mobile.maskedAccount
+        case .email:
+            return LoginManager.shared.loginInfo?.mailbox.maskedAccount
+        case .account:
+            return LoginManager.shared.loginInfo?.account
+        default:
+            return nil
         }
     }
 }

@@ -30,7 +30,9 @@ struct BindingView: View {
             Spacer()
 
             Button {
-                Util.topViewController().navigationController?.pushViewController(ReplaceBindingViewController(), animated: true)
+                let v = ReplaceBindingViewController()
+                v.acctype = type
+                Util.topViewController().navigationController?.pushViewController(v, animated: true)
             } label: {
                 Text("更换")
                     .foregroundColor(.white)

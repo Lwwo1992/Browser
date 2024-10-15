@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -82,6 +82,12 @@
 		44DA8E332CB6853C003B1C34 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E322CB6853C003B1C34 /* AboutViewController.swift */; };
 		44DA8E362CB68565003B1C34 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E352CB68565003B1C34 /* AboutView.swift */; };
 		44DA8E382CB68750003B1C34 /* OptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E372CB68750003B1C34 /* OptionListView.swift */; };
+		8CEB24542CBD3750006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24532CBD3750006F8485 /* WTool */; };
+		8CEB24572CBD3820006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24562CBD3820006F8485 /* WTool */; };
+		8CEB245A2CBD3884006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24592CBD3884006F8485 /* WTool */; };
+		8CEB245C2CBD3B35006F8485 /* BroAESCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */; };
+		8CEB245E2CBD530B006F8485 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB245D2CBD530B006F8485 /* ImagePicker.swift */; };
+		DE8B2B128D60F18FC7D311F0 /* Pods_VPNBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF06C905EEE0A78EDEA5A9AB /* Pods_VPNBrowser.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -153,6 +159,11 @@
 		44DA8E322CB6853C003B1C34 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		44DA8E352CB68565003B1C34 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		44DA8E372CB68750003B1C34 /* OptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionListView.swift; sourceTree = "<group>"; };
+		724979C7A2BC482E06F3B646 /* Pods-VPNBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNBrowser.release.xcconfig"; path = "Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroAESCipher.swift; sourceTree = "<group>"; };
+		8CEB245D2CBD530B006F8485 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		BAC52216964DC1709C01EEF9 /* Pods-VPNBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNBrowser.debug.xcconfig"; path = "Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		BF06C905EEE0A78EDEA5A9AB /* Pods_VPNBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,15 +171,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CEB24572CBD3820006F8485 /* WTool in Frameworks */,
 				44CF20AB2CB91BAD00772B9C /* WCDBSwiftDynamic in Frameworks */,
 				44CF20B32CB9289600772B9C /* SwiftyJSON in Frameworks */,
 				44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */,
 				44AA509B2CB52650005EBC36 /* Then in Frameworks */,
+				8CEB24542CBD3750006F8485 /* WTool in Frameworks */,
+				8CEB245A2CBD3884006F8485 /* WTool in Frameworks */,
 				446009EC2CBA89C40085DC74 /* Kingfisher in Frameworks */,
 				44CF209A2CB8C20B00772B9C /* Moya in Frameworks */,
 				440F932D2CBCE68A00D94AD0 /* JFPopup in Frameworks */,
 				44CF20AE2CB91CFD00772B9C /* HandyJSON in Frameworks */,
 				44AA66522CB6338000E4253F /* JXSegmentedView in Frameworks */,
+				DE8B2B128D60F18FC7D311F0 /* Pods_VPNBrowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +228,8 @@
 			children = (
 				444C935F2CB4D8F50092FECB /* VPNBrowser */,
 				444C933D2CB4D89D0092FECB /* Products */,
+				E626EC7C714C32571269CFB3 /* Pods */,
+				9BA29F10BDF22C6BA94D55BB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -286,6 +303,8 @@
 			isa = PBXGroup;
 			children = (
 				446009DC2CBA1CE70085DC74 /* MHVerifyCodeView.swift */,
+				8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */,
+				8CEB245D2CBD530B006F8485 /* ImagePicker.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -505,6 +524,23 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		9BA29F10BDF22C6BA94D55BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF06C905EEE0A78EDEA5A9AB /* Pods_VPNBrowser.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E626EC7C714C32571269CFB3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BAC52216964DC1709C01EEF9 /* Pods-VPNBrowser.debug.xcconfig */,
+				724979C7A2BC482E06F3B646 /* Pods-VPNBrowser.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -512,9 +548,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 444C934F2CB4D8A00092FECB /* Build configuration list for PBXNativeTarget "VPNBrowser" */;
 			buildPhases = (
+				2257EBD4750304A94AD43DD1 /* [CP] Check Pods Manifest.lock */,
 				444C93382CB4D89D0092FECB /* Sources */,
 				444C93392CB4D89D0092FECB /* Frameworks */,
 				444C933A2CB4D89D0092FECB /* Resources */,
+				A4B3EC224937E9E6605C2E71 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -531,6 +569,9 @@
 				44CF20B22CB9289600772B9C /* SwiftyJSON */,
 				446009EB2CBA89C40085DC74 /* Kingfisher */,
 				440F932C2CBCE68A00D94AD0 /* JFPopup */,
+				8CEB24532CBD3750006F8485 /* WTool */,
+				8CEB24562CBD3820006F8485 /* WTool */,
+				8CEB24592CBD3884006F8485 /* WTool */,
 			);
 			productName = VPNBrowser;
 			productReference = 444C933C2CB4D89D0092FECB /* VPNBrowser.app */;
@@ -552,6 +593,7 @@
 				};
 			};
 			buildConfigurationList = 444C93372CB4D89D0092FECB /* Build configuration list for PBXProject "VPNBrowser" */;
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -561,7 +603,6 @@
 			mainGroup = 444C93332CB4D89D0092FECB;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				44AA507D2CB4DDB4005EBC36 /* XCLocalSwiftPackageReference "../../GitHub/WTool" */,
 				44AA50992CB52650005EBC36 /* XCRemoteSwiftPackageReference "Then" */,
 				44AA66502CB6338000E4253F /* XCRemoteSwiftPackageReference "JXSegmentedView" */,
 				44CF20982CB8C20B00772B9C /* XCRemoteSwiftPackageReference "Moya" */,
@@ -570,8 +611,8 @@
 				44CF20B12CB9289600772B9C /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				446009EA2CBA89C40085DC74 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				440F932B2CBCE68A00D94AD0 /* XCRemoteSwiftPackageReference "JFPopup" */,
+				8CEB24582CBD3884006F8485 /* XCRemoteSwiftPackageReference "WTool" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 444C933D2CB4D89D0092FECB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -594,6 +635,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2257EBD4750304A94AD43DD1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VPNBrowser-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A4B3EC224937E9E6605C2E71 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		444C93382CB4D89D0092FECB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -603,6 +686,7 @@
 				44DA8E262CB6645F003B1C34 /* CloudSyncView.swift in Sources */,
 				446009DF2CBA251F0085DC74 /* BaseModel.swift in Sources */,
 				446009E52CBA6D790085DC74 /* LoginManager.swift in Sources */,
+				8CEB245C2CBD3B35006F8485 /* BroAESCipher.swift in Sources */,
 				444C93642CB4D8F50092FECB /* AppDelegate.swift in Sources */,
 				440F932A2CBCC5BB00D94AD0 /* BrowserWebView.swift in Sources */,
 				44AA50982CB522BE005EBC36 /* ChangeNicknameViewController.swift in Sources */,
@@ -650,6 +734,7 @@
 				44CF20BD2CB942D800772B9C /* AccountLoginView.swift in Sources */,
 				446009FB2CBAB5730085DC74 /* StringExtension.swift in Sources */,
 				44CF20BF2CB9489000772B9C /* TextDisplayViewController.swift in Sources */,
+				8CEB245E2CBD530B006F8485 /* ImagePicker.swift in Sources */,
 				4409D4282CB7A7E100C81871 /* BrowserView.swift in Sources */,
 				44CF20A02CB8CE5800772B9C /* ConfigByTypeModel.swift in Sources */,
 				44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */,
@@ -689,12 +774,14 @@
 /* Begin XCBuildConfiguration section */
 		444C93502CB4D8A00092FECB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BAC52216964DC1709C01EEF9 /* Pods-VPNBrowser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6Y22Y687X2;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -707,10 +794,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/VPNBrowser/Tools/aws-sdk-ios-main/AWSLex/Bluefront",
+					"$(PROJECT_DIR)/VPNBrowser/Tools/aws-sdk-ios-main/AWSCoreTests/OCMock",
+				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wang.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -718,12 +811,14 @@
 		};
 		444C93512CB4D8A00092FECB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 724979C7A2BC482E06F3B646 /* Pods-VPNBrowser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6Y22Y687X2;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -736,10 +831,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/VPNBrowser/Tools/aws-sdk-ios-main/AWSLex/Bluefront",
+					"$(PROJECT_DIR)/VPNBrowser/Tools/aws-sdk-ios-main/AWSCoreTests/OCMock",
+				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wang.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -782,7 +883,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -845,7 +946,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -886,13 +987,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		44AA507D2CB4DDB4005EBC36 /* XCLocalSwiftPackageReference "../../GitHub/WTool" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../GitHub/WTool;
-		};
-/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		440F932B2CBCE68A00D94AD0 /* XCRemoteSwiftPackageReference "JFPopup" */ = {
@@ -959,6 +1053,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		8CEB24582CBD3884006F8485 /* XCRemoteSwiftPackageReference "WTool" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lwwo1992/WTool.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.5;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1005,6 +1107,19 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 44CF20B12CB9289600772B9C /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		8CEB24532CBD3750006F8485 /* WTool */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WTool;
+		};
+		8CEB24562CBD3820006F8485 /* WTool */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WTool;
+		};
+		8CEB24592CBD3884006F8485 /* WTool */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8CEB24582CBD3884006F8485 /* XCRemoteSwiftPackageReference "WTool" */;
+			productName = WTool;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

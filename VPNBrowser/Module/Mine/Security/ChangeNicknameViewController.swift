@@ -11,10 +11,22 @@ class ChangeNicknameViewController: ViewController {
     private lazy var doneButton = Button().then {
         $0.title("完成")
             .titleFont(.systemFont(ofSize: 14))
+            .tapAction = { [weak self] in
+                guard let self else { return }
+                guard let text = textField.text, text.count > 0 else {
+                    HUD.showTipMessage("请输入昵称")
+                    return
+                }
+
+                ///修改昵称
+                updateUserInfo()
+            }
+        
     }
     
     private lazy var textField = TextField().then {
         $0.placeholder = "用户昵称"
+        $0.text = LoginManager.shared.loginInfo?.account
         $0.backgroundColor = UIColor.white
         $0.font = UIFont.systemFont(ofSize: 14)
         $0.layer.cornerRadius = 8
@@ -50,4 +62,24 @@ extension ChangeNicknameViewController {
             make.trailing.equalToSuperview().inset(16)
         }
     }
+}
+
+
+extension ChangeNicknameViewController{
+    
+        private func updateUserInfo() {
+            HUD.showLoading()
+            APIProvider.shared.request(.editUserInfo(headPortrait: "", name: textField.text ?? "")) {[weak self]
+                result in
+                   HUD.hideNow()
+                   switch result {
+                   case .success:
+                       HUD.showTipMessage("修改成功")
+                       self?.navigationController?.popToRootViewController(animated: true)
+                   case let .failure(error):
+                       print("Request failed with error: \(error)")
+                   }
+            }
+            
+        }
 }

@@ -24,3 +24,18 @@ class LoginModel: BaseModel, TableCodable {
         case mailbox
     }
 }
+
+
+class UpdateHeadInfo:BaseModel{
+    var bucket = ""
+    var uploadAddrPrefix = ""
+    var endpoint = ""
+    var bucketMap = ""
+    var guide = guideModel()
+}
+
+class guideModel:BaseModel{
+    var bucket = ""
+    var videoUrl = ""
+    var imageUrl = ""
+}

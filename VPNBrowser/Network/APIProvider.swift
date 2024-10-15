@@ -52,17 +52,23 @@ enum APITarget {
     /// identifier: 账号/手机/邮箱
     /// type: 登录类型：1-账号密码，2-电话，3-邮箱
     case updateEmailOrMobile(credential: String, identifier: String, type: Int)
+    
+    ///编辑用户资料
+    case editUserInfo(headPortrait:String,name:String)
+    
+    ///上传
+    case uploadConfig(image:UIImage)
 
     case rankingPage
 }
 
 extension APITarget: TargetType {
     var baseURL: URL {
-        return URL(string: "https://browser-api.xiwshijieheping.com")!
+//        return URL(string: "https://browser-api.xiwshijieheping.com")!
 //        #if DEBUG
 //            return URL(string: "https://browser-api.xiwshijieheping.com")!
 //        #else
-//            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
+            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
 //        #endif
     }
 
@@ -88,12 +94,17 @@ extension APITarget: TargetType {
             return "/browser/app/browserAccount/updateEmailOrMobile"
         case .rankingPage:
             return "/browser/app/anonymous/rankingPage"
+        case .editUserInfo:
+            return "/browser/app/browserAccount/edit"
+        case .uploadConfig:
+            return "/browser/app/upload/config"
+        
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage,.editUserInfo,.uploadConfig:
             return .post
         }
     }
@@ -118,18 +129,49 @@ extension APITarget: TargetType {
              let .checkValidCode(credential, identifier, type):
             let data: [String: Any] = ["credential": credential, "identifier": identifier, "type": type]
             parameters = ["data": data]
+            
+        case let .editUserInfo(headPortrait, name):
+            var data: [String: Any] = [:]
+
+            // 直接判断字符串是否为空
+            if !headPortrait.isEmpty {
+                data["headPortrait"] = headPortrait
+            }
+            if !name.isEmpty {
+                data["name"] = name
+            }
+            
+            parameters = ["data": data]
+            
         case .logout, .anonymousConfig:
             break
+        case .uploadConfig(let image):
+            let imageData = image.jpegData(compressionQuality: 0.5) // 你可以选择 PNG 或 JPEG 格式
+                      return .uploadMultipart([
+                          MultipartFormData(provider: .data(imageData!), name: "file", fileName: "image.jpg", mimeType: "image/jpeg")
+                      ])
+            
+    
+            
         }
 
         return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
     }
 
     var headers: [String: String]? {
-        return [
-            "Content-Type": "application/json",
-            "AuthorizationApp": LoginManager.shared.loginInfo?.account ?? "",
-        ]
+        switch self{
+        case .uploadConfig:
+            return [
+                "Content-Type": "multipart/form-data",
+                "AuthorizationApp": LoginManager.shared.loginInfo?.token ?? "",
+            ]
+        default:
+            return [
+                "Content-Type": "application/json",
+                "AuthorizationApp": LoginManager.shared.loginInfo?.token ?? "",
+            ]
+        }
+      
     }
 }
 

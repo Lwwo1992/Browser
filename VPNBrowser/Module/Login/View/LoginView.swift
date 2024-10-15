@@ -195,7 +195,7 @@ extension LoginView {
             switch result {
             case .success:
                 let vc = VerificationCodeViewController()
-                vc.accountNum = "+86" + mobile
+                vc.accountNum = "" + mobile
                 vc.accountType = .mobile
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             case let .failure(error):

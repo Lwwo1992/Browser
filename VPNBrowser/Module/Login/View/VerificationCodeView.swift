@@ -67,15 +67,17 @@ struct VerificationCodeView: View {
     }
 
     private func verfy(of code: String) {
+        let AecCode = BroAESCipher.encrypt(code) ?? ""
         switch verificationCodeType {
         case .login:
-            login(code)
+            login(AecCode)
         case .replace:
-            checkValidCode(code)
+            checkValidCode(AecCode)
         }
     }
 
     private func login(_ code: String) {
+        
         HUD.showLoading()
         APIProvider.shared.request(.login(credential: code, identifier: accountNum, type: accountType.rawValue), model: LoginModel.self) { result in
             HUD.hideNow()
@@ -105,6 +107,7 @@ struct VerificationCodeView: View {
     }
 
     private func checkValidCode(_ code: String) {
+        
         APIProvider.shared.request(.checkValidCode(credential: code, identifier: accountNum, type: accountType.rawValue)) { result in
             HUD.hideNow()
             switch result {
@@ -117,6 +120,7 @@ struct VerificationCodeView: View {
     }
 
     private func updateEmailOrMobile(_ code: String) {
+        
         HUD.showLoading()
         APIProvider.shared.request(.updateEmailOrMobile(credential: code, identifier: accountNum, type: accountType.rawValue)) { result in
             HUD.hideNow()
@@ -131,8 +135,8 @@ struct VerificationCodeView: View {
                 case .account:
                     break
                 }
+                Util.topViewController().navigationController?.popToRootViewController(animated: true)
 
-                Util.topViewController().navigationController?.popToViewController(SecurityViewController(), animated: true)
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }
