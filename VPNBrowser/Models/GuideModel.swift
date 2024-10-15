@@ -21,6 +21,7 @@ class GuideItem: BaseModel {
 class GuideResponse: BaseModel {
     var msg: String?
     var code: String?
+    var name: String?
     var data: [GuideItem]?
 
     override required init() {}

@@ -54,11 +54,14 @@ extension AppDelegate {
                 if let responseString = String(data: response.data, encoding: .utf8) {
                     print("Response: \(responseString)") // 打印响应内容，方便调试
                 }
-
+                
                 do {
                     if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
                        let data = json["data"] as? [String: Any],
                        let token = data["token"] as? String {
+                        if LoginManager.shared.loginInfo == nil {
+                            LoginManager.shared.loginInfo = LoginModel()
+                        }
                         LoginManager.shared.loginInfo?.token = token
 
                         // 继续执行其他接口请求

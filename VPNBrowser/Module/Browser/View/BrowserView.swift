@@ -12,7 +12,7 @@ struct BrowserView: View {
     @State private var bookmarkModel = HistoryModel()
     @State private var bookmarNum = "0"
 
-    @State private var guideItems: [GuideItem] = []
+    @State private var guideSections: [GuideResponse] = []
     @State private var isLoading = true
     @State private var errorMessage: String? = nil
 
@@ -53,59 +53,32 @@ struct BrowserView: View {
             } else if let errorMessage = errorMessage {
                 Text("Error: \(errorMessage)")
             } else {
-                List {
-                    ForEach(guideItems, id: \.id) { item in
-                        Section(header: Text(item.name ?? "Unknown")) {
-                            // Placeholder for apps or additional content for each guide item
-                            Text("Apps for \(item.name ?? "Unknown")") // 这里可以放置应用的列表
-                        }
-                    }
-                }
+//                ScrollView {
+//                    VStack(alignment: .leading, spacing: 20) {
+//                        ForEach(guideSections, id: \.id) { guideItem in
+//                            VStack(alignment: .leading) {
+//                                
+//                                Text(guideItem.groupTitle)
+//                                    .font(.headline)
+//                                    .padding(.leading, 16)
+//
+//                                // 应用的水平滚动视图
+//                                ScrollView(.horizontal, showsIndicators: false) {
+//                                    HStack(spacing: 10) {
+//                                        ForEach(guideItem.apps ?? [], id: \.id) { app in
+//                                            AppView(appName: app.name)
+//                                        }
+//                                    }
+//                                    .padding(.horizontal, 16)
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
         .onAppear {
             loadGuideLabels()
-//            APIProvider.shared.request(.guideLabelPage, progress: { _ in
-//
-//            }) { result in
-//                switch result {
-//                case let .success(response):
-//                    if let responseString = String(data: response.data, encoding: .utf8) {
-//                        print("Response: \(responseString)") // 打印响应内容，方便调试
-//                    }
-//                    if let responseLabels = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
-//                        if let list = responseLabels.data {
-//                            list.forEach { item in
-//                                if let id = item.id {
-//                                    APIProvider.shared.request(.guideAppPage(labelID: id), progress: { _ in
-//
-//                                    }) { result in
-//                                        switch result {
-//                                        case let .success(response):
-//                                            if let responseString = String(data: response.data, encoding: .utf8) {
-//                                                print("Response: \(responseString)")
-//                                            }
-//                                            if let responseApps = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
-//                                                let apps = responseApps.data
-//                                            } else {
-//                                                print("Error decoding JSON with HandyJSON.")
-//                                            }
-//
-//                                        case let .failure(error):
-//                                            print("Error: \(error)")
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    } else {
-//                        print("Error decoding JSON with HandyJSON.")
-//                    }
-//
-//                case let .failure(error):
-//                    print("Error: \(error)")
-//                }
-//            }
         }
     }
 
@@ -187,6 +160,7 @@ extension BrowserView {
 
     private func fetchApps(for labels: [GuideItem]) {
         let group = DispatchGroup()
+        var sections: [GuideResponse] = []
 
         for label in labels {
             guard let id = label.id else { continue }
@@ -196,8 +170,13 @@ extension BrowserView {
                 switch result {
                 case let .success(response):
                     if let responseApps = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
-                        // Append apps to guideItems or do additional processing if necessary
-                        guideItems.append(contentsOf: responseApps.data ?? [])
+                        let apps = responseApps.data ?? []
+
+                        let section = GuideResponse()
+                        section.name = label.name
+                        section.data = apps
+                        sections.append(section)
+
                     } else {
                         print("Error decoding apps.")
                     }
@@ -210,7 +189,8 @@ extension BrowserView {
         }
 
         group.notify(queue: .main) {
-            isLoading = false // Set loading to false when all requests are done
+            self.guideSections = sections
+            isLoading = false
         }
     }
 }
