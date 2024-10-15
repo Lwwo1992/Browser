@@ -63,38 +63,99 @@ class ImagePicker: NSObject, UIImagePickerControllerDelegate, UINavigationContro
 }
 
 
-
+ 
 
 class S3ClientUtils {
-    static let shared = S3ClientUtils()
     
-    private var transferUtility: AWSS3TransferUtility?
+        static let shared = S3ClientUtils(accessKey: "YOUR_ACCESS_KEY",
+                                           secretKey: "YOUR_SECRET_KEY",
+                                           token: "YOUR_SESSION_TOKEN",
+                                           endpoint: "https://your-custom-endpoint.amazonaws.com")
 
+        private var transferUtility: AWSS3TransferUtility?
+ 
+    
+        init(accessKey: String, secretKey: String, token: String, endpoint: String) {
+            
+            // 创建凭证提供者
+            let credentialsProvider = AWSBasicSessionCredentialsProvider(accessKey: accessKey,
+                                                                        secretKey: secretKey,
+                                                                        sessionToken: token)
+            
+            // 创建服务配置
+            let configuration = AWSServiceConfiguration(region: .USEast1, endpoint: AWSEndpoint(urlString: endpoint), credentialsProvider: credentialsProvider)
 
-    init() {
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: .USEast1,
-            identityPoolId: "YOUR_IDENTITY_POOL_ID") // 替换为您的身份池ID
-        let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
-        AWSServiceManager.default().defaultServiceConfiguration = configuration
-        
-        self.transferUtility = AWSS3TransferUtility.default()
-    }
+             
 
-   
-    func upload(filePath: String, bucket: String, uploadAddrPrefix: String) {
+            // 设置默认的服务配置
+            AWSServiceManager.default().defaultServiceConfiguration = configuration
+            
+            // 初始化 TransferUtility
+            self.transferUtility = AWSS3TransferUtility.default()
+ 
+            
+        }
+     
+    func upload(filePath: String, model: UpdateHeadInfo) {
         let fileURL = URL(fileURLWithPath: filePath)
+        print("Full file URL: \(fileURL.path)")
+
+        // 检查 TransferUtility 是否初始化
+        guard let transferUtility = transferUtility else {
+            print("Transfer utility is not initialized.")
+            return
+        }
+
         let expression = AWSS3TransferUtilityUploadExpression()
-        
-        transferUtility?.uploadFile(fileURL,
-                                     bucket: bucket,
-                                     key: uploadAddrPrefix + fileURL.lastPathComponent,
-                                     contentType: "image/jpeg",
-                                     expression: expression) { (task, error) in
-            if let error = error {
-                print("Upload failed with error: \(error)")
-            } else {
-                print("Upload successful")
+        let fileLast = fileURL.lastPathComponent
+        let key = "\(model.uploadAddrPrefix)\(fileLast)"
+
+        // 打印桶名和键，便于调试
+        print("Bucket: \(model.bucket)")
+        print("Key: \(key)")
+
+        // 检查文件是否存在
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            print("File does not exist at path: \(fileURL.path)")
+            return
+        }
+
+        let mimeType = getMIMEType(for: key)
+
+        // 设置进度回调
+        expression.progressBlock = { (task, progress) in
+            DispatchQueue.main.async {
+                print("Upload progress: \(progress.fractionCompleted)")
+            }
+        }
+
+        transferUtility.uploadFile(fileURL,
+                                    bucket: model.bucket,
+                                    key: key,
+                                    contentType: mimeType,
+                                    expression: expression) { (task, error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Upload failed with error: \(error.localizedDescription)")
+                } else {
+                    print("Upload successful")
+                }
             }
         }
     }
+
+    
+    func getMIMEType(for filename: String) -> String {
+        if filename.hasSuffix("jpg") || filename.hasSuffix("jpeg") {
+            return "image/jpeg"
+        } else if filename.hasSuffix("png") {
+            return "image/png"
+        } else if filename.hasSuffix("mp4") || filename.hasSuffix("MP4") {
+            return "video/mp4"
+        } else {
+            return "application/octet-stream" // 默认类型
+        }
+    }
+
+
 }

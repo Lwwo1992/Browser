@@ -66,9 +66,9 @@ extension APITarget: TargetType {
     var baseURL: URL {
 //        return URL(string: "https://browser-api.xiwshijieheping.com")!
 //        #if DEBUG
-//            return URL(string: "https://browser-api.xiwshijieheping.com")!
+            return URL(string: "https://browser-api.xiwshijieheping.com")!
 //        #else
-            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
+//            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
 //        #endif
     }
 
@@ -97,7 +97,7 @@ extension APITarget: TargetType {
         case .editUserInfo:
             return "/browser/app/browserAccount/edit"
         case .uploadConfig:
-            return "/browser/app/upload/config"
+            return "/browser/app/visitorAccess/config"
         
         }
     }

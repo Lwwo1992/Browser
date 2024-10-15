@@ -31,6 +31,9 @@ class UpdateHeadInfo:BaseModel{
     var uploadAddrPrefix = ""
     var endpoint = ""
     var bucketMap = ""
+    var secretKey = ""
+    var accessKey = ""
+    var token = ""
     var guide = guideModel()
 }
 

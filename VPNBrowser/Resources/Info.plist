@@ -16,5 +16,7 @@
 	<string>app需要您的允许才能上传头像或动态</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>app需要您的允许才能上传头像或动态</string>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>
