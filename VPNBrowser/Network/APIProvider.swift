@@ -96,27 +96,27 @@ extension APITarget: TargetType {
         case .getConfigByType:
             return "/browser/app/visitorAccess/getConfigByType"
         case .sendSmsCode:
-            return "/browser/app/auth/sendSmsCode"
+            return "/browser/app/visitorAccess/sendSmsCode"
         case .sendEmailCode:
-            return "/browser/app/auth/sendEmailCode"
+            return "/browser/app/visitorAccess/sendEmailCode"
         case .login:
-            return "/browser/app/auth/login"
+            return "/browser/app/visitorAccess/login"
         case .checkValidCode:
-            return "/browser/app/browserAccount/checkValidCode"
+            return "/browser/app/visitorAccess/checkValidCode"
         case .enginePage:
-            return "/browser/app/anonymous/enginePage"
+            return "/browser/app/visitorAccess/enginePage"
         case .logout:
-            return "/browser/app/auth/logout"
+            return "/browser/app/visitorAccess/logout"
         case .anonymousConfig:
             return "/browser/app/visitorAccess/config"
         case .updateEmailOrMobile:
-            return "/browser/app/browserAccount/updateEmailOrMobile"
+            return "/browser/app/visitorAccess/updateEmailOrMobile"
         case .rankingPage:
-            return "/browser/app/anonymous/rankingPage"
+            return "/browser/app/visitorAccess/rankingPage"
         case .editUserInfo:
-            return "/browser/app/browserAccount/edit"
+            return "/browser/app/visitorAccess/edit"
         case .uploadConfig:
-            return "/browser/app/upload/config"
+            return "/browser/app/visitorAccess/config"
         case .generateVisitorToken:
             return "/browser/app/anonymous/generateVisitorToken"
         }
