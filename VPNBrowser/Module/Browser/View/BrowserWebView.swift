@@ -18,7 +18,9 @@ struct BrowserWebView: View {
             searchBar()
 
             WebView(viewModel: viewModel) { model in
-                DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.browseHistory)
+                if !S.Config.openNoTrace {
+                    DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.browseHistory)
+                }
             }
 
             bottomView()

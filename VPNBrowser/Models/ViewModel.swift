@@ -8,5 +8,25 @@
 import UIKit
 
 class ViewModel: ObservableObject {
-    @Published var selectedModel = S.Config.mode
+    static let shared = ViewModel()
+
+    @Published var selectedModel = S.Config.mode {
+        willSet {
+            S.Config.mode = newValue
+        }
+    }
+
+    @Published var openNoTrace: Bool = S.Config.openNoTrace {
+        willSet {
+            S.Config.openNoTrace = newValue
+        }
+    }
+
+    @Published var isLogin: Bool = false {
+        willSet {
+            S.Config.openNoTrace = newValue
+        }
+    }
+
+    private init() {}
 }

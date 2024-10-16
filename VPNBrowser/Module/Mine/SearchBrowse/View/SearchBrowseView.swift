@@ -23,7 +23,7 @@ struct SearchBrowseView: View {
         }
     }
 
-    @State private var isOn: Bool = false
+    @ObservedObject var viewModel = ViewModel.shared
 
     var body: some View {
         OptionListView(
@@ -32,8 +32,11 @@ struct SearchBrowseView: View {
                 switch option {
                 case .incognito:
                     return AnyView(
-                        Toggle("", isOn: $isOn)
+                        Toggle("", isOn: $viewModel.openNoTrace)
                             .labelsHidden()
+                            .onChange(of: viewModel.openNoTrace) { newValue in
+                                viewModel.openNoTrace = newValue
+                            }
                     )
                 default:
                     return nil
@@ -50,6 +53,8 @@ struct SearchBrowseView: View {
             Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 0), animated: true)
         case .history:
             Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 1), animated: true)
+        case .tabs:
+            Util.topViewController().navigationController?.pushViewController(TabsViewController(), animated: true)
         default:
             break
         }

@@ -62,11 +62,12 @@ extension Util {
             vc.path = model.downloadUrl ?? ""
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         case "app":
-            Util.topViewController().popup.bottomSheet {
-                let view = DownloadView(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 260))
-                view.model = model
-                return view
-            }
+//            Util.topViewController().popup.bottomSheet {
+//                let view = DownloadView(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 260))
+//                view.model = model
+//                return view
+//            }
+            break
         case "applet":
             break
         default:

@@ -28,8 +28,8 @@
 		443A81772CBD4B4A0093BC22 /* TFPopupToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A816D2CBD4B4A0093BC22 /* TFPopupToast.m */; };
 		443A81782CBD4B4A0093BC22 /* TFPopupLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81692CBD4B4A0093BC22 /* TFPopupLoading.m */; };
 		443A81792CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81632CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m */; };
-		443A817C2CBD55140093BC22 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817B2CBD55140093BC22 /* TabViewController.swift */; };
-		443A817E2CBD553A0093BC22 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817D2CBD553A0093BC22 /* TabView.swift */; };
+		443A817C2CBD55140093BC22 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817B2CBD55140093BC22 /* TabsViewController.swift */; };
+		443A817E2CBD553A0093BC22 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817D2CBD553A0093BC22 /* TabsView.swift */; };
 		444C93602CB4D8F50092FECB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 444C93572CB4D8F50092FECB /* Assets.xcassets */; };
 		444C93622CB4D8F50092FECB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 444C935A2CB4D8F50092FECB /* LaunchScreen.storyboard */; };
 		444C93632CB4D8F50092FECB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 444C935C2CB4D8F50092FECB /* Main.storyboard */; };
@@ -60,6 +60,10 @@
 		4486C9062CBE99320024381A /* MoreGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9052CBE99320024381A /* MoreGuideView.swift */; };
 		4486C9082CBE9BB20024381A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9072CBE9BB20024381A /* Util.swift */; };
 		4486C90A2CBEA3150024381A /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9092CBEA3150024381A /* DownloadView.swift */; };
+		44984E482CBF575100158380 /* DownloadManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E472CBF575000158380 /* DownloadManagerViewController.swift */; };
+		44984E4A2CBF64D100158380 /* UserGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E492CBF64D100158380 /* UserGuideViewController.swift */; };
+		44984E4D2CBF651800158380 /* UserGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E4C2CBF651800158380 /* UserGuideView.swift */; };
+		44984E4F2CBF687F00158380 /* UserGuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E4E2CBF687F00158380 /* UserGuideModel.swift */; };
 		44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 44AA507E2CB4DDB4005EBC36 /* WTool */; };
 		44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50802CB4DF83005EBC36 /* TabBarController.swift */; };
 		44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */; };
@@ -139,8 +143,8 @@
 		443A81702CBD4B4A0093BC22 /* UIView+TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+TFPopup.h"; sourceTree = "<group>"; };
 		443A81712CBD4B4A0093BC22 /* UIView+TFPopup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+TFPopup.m"; sourceTree = "<group>"; };
 		443A817A2CBD4B700093BC22 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
-		443A817B2CBD55140093BC22 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
-		443A817D2CBD553A0093BC22 /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		443A817B2CBD55140093BC22 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
+		443A817D2CBD553A0093BC22 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		444C933C2CB4D89D0092FECB /* VPNBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPNBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		444C93562CB4D8F50092FECB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		444C93572CB4D8F50092FECB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -172,6 +176,10 @@
 		4486C9052CBE99320024381A /* MoreGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreGuideView.swift; sourceTree = "<group>"; };
 		4486C9072CBE9BB20024381A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		4486C9092CBEA3150024381A /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
+		44984E472CBF575000158380 /* DownloadManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerViewController.swift; sourceTree = "<group>"; };
+		44984E492CBF64D100158380 /* UserGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGuideViewController.swift; sourceTree = "<group>"; };
+		44984E4C2CBF651800158380 /* UserGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGuideView.swift; sourceTree = "<group>"; };
+		44984E4E2CBF687F00158380 /* UserGuideModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGuideModel.swift; sourceTree = "<group>"; };
 		44AA50802CB4DF83005EBC36 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		44AA50842CB4E007005EBC36 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
@@ -245,7 +253,7 @@
 				446009F12CBA9B5E0085DC74 /* DropdownCell.swift */,
 				440F93292CBCC5BB00D94AD0 /* BrowserWebView.swift */,
 				440F932E2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift */,
-				443A817D2CBD553A0093BC22 /* TabView.swift */,
+				443A817D2CBD553A0093BC22 /* TabsView.swift */,
 				4486C9052CBE99320024381A /* MoreGuideView.swift */,
 				4486C9092CBEA3150024381A /* DownloadView.swift */,
 			);
@@ -393,6 +401,14 @@
 			path = Extenon;
 			sourceTree = "<group>";
 		};
+		44984E4B2CBF650C00158380 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44984E4C2CBF651800158380 /* UserGuideView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		44AA50882CB50160005EBC36 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -409,7 +425,7 @@
 				44AA50842CB4E007005EBC36 /* BrowserViewController.swift */,
 				4409D4292CB7AE9300C81871 /* SearchViewController.swift */,
 				440F93272CBCC09200D94AD0 /* BrowserWebViewController.swift */,
-				443A817B2CBD55140093BC22 /* TabViewController.swift */,
+				443A817B2CBD55140093BC22 /* TabsViewController.swift */,
 				4486C9032CBE98840024381A /* MoreGuideViewController.swift */,
 			);
 			path = Browser;
@@ -445,6 +461,7 @@
 				44AA50A42CB537CA005EBC36 /* View */,
 				44AA50A02CB5372A005EBC36 /* SearchBrowseViewController.swift */,
 				44AA664E2CB62A0500E4253F /* FootprintViewController.swift */,
+				44984E472CBF575000158380 /* DownloadManagerViewController.swift */,
 			);
 			path = SearchBrowse;
 			sourceTree = "<group>";
@@ -519,6 +536,7 @@
 				440F93302CBCEF5600D94AD0 /* RankingModel.swift */,
 				440F93322CBD0E6B00D94AD0 /* HistoryModel.swift */,
 				4486C8FF2CBE66EF0024381A /* GuideModel.swift */,
+				44984E4E2CBF687F00158380 /* UserGuideModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -575,6 +593,8 @@
 		44DA8E202CB663EF003B1C34 /* UserGuide */ = {
 			isa = PBXGroup;
 			children = (
+				44984E4B2CBF650C00158380 /* View */,
+				44984E492CBF64D100158380 /* UserGuideViewController.swift */,
 			);
 			path = UserGuide;
 			sourceTree = "<group>";
@@ -787,8 +807,10 @@
 				4486C9042CBE98840024381A /* MoreGuideViewController.swift in Sources */,
 				443A81782CBD4B4A0093BC22 /* TFPopupLoading.m in Sources */,
 				443A81792CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m in Sources */,
+				44984E482CBF575100158380 /* DownloadManagerViewController.swift in Sources */,
 				440F93242CBCABFD00D94AD0 /* ReplaceBindingViewController.swift in Sources */,
 				44CD45FB2CBE2BAA003A415E /* ViewModel.swift in Sources */,
+				44984E4A2CBF64D100158380 /* UserGuideViewController.swift in Sources */,
 				446009E12CBA4F8E0085DC74 /* WebView.swift in Sources */,
 				446009F92CBAAA530085DC74 /* BindingView.swift in Sources */,
 				44AA508F2CB5055F005EBC36 /* MineTopView.swift in Sources */,
@@ -806,10 +828,12 @@
 				440F93372CBD1DBB00D94AD0 /* BrowseHistory.swift in Sources */,
 				44AA50932CB50D37005EBC36 /* SecurityViewController.swift in Sources */,
 				4409D42F2CB7CEE200C81871 /* LoginViewController.swift in Sources */,
-				443A817C2CBD55140093BC22 /* TabViewController.swift in Sources */,
+				44984E4D2CBF651800158380 /* UserGuideView.swift in Sources */,
+				44984E4F2CBF687F00158380 /* UserGuideModel.swift in Sources */,
+				443A817C2CBD55140093BC22 /* TabsViewController.swift in Sources */,
 				446009D42CBA0D5B0085DC74 /* VerificationCodeView.swift in Sources */,
 				4486C9082CBE9BB20024381A /* Util.swift in Sources */,
-				443A817E2CBD553A0093BC22 /* TabView.swift in Sources */,
+				443A817E2CBD553A0093BC22 /* TabsView.swift in Sources */,
 				446009DA2CBA1AF60085DC74 /* HomeView.swift in Sources */,
 				446009E72CBA73060085DC74 /* CustomTextField.swift in Sources */,
 				44AA50872CB4E016005EBC36 /* MineViewController.swift in Sources */,

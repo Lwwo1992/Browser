@@ -7,11 +7,11 @@
 
 import UIKit
 
-class TabViewController: ViewController {
+class TabsViewController: ViewController {
     var model = HistoryModel()
 
     override var rootView: AnyView? {
-        return AnyView(TabView(bookmarkModel: model))
+        return AnyView(TabsView(bookmarkModel: model))
     }
 
     override func viewDidLoad() {
@@ -19,7 +19,7 @@ class TabViewController: ViewController {
     }
 }
 
-extension TabViewController {
+extension TabsViewController {
     override func initUI() {
         super.initUI()
     }

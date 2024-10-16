@@ -10,6 +10,7 @@ import SwiftUI
 
 struct BrowserView: View {
     @StateObject private var webViewModel = WebViewViewModel()
+    @StateObject private var viewModel = ViewModel.shared
     @State private var bookmarkModel = HistoryModel()
     @State private var bookmarNum = "0"
 
@@ -21,7 +22,7 @@ struct BrowserView: View {
             }
             .padding(.horizontal, 16)
 
-            if S.Config.mode == .web {
+            if viewModel.selectedModel == .web {
                 webView()
             } else {
                 GuideView()
@@ -78,7 +79,7 @@ struct BrowserView: View {
                     .stroke(Color.gray, lineWidth: 1)
             )
             .onTapGesture {
-                let vc = TabViewController()
+                let vc = TabsViewController()
                 vc.model = bookmarkModel
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }

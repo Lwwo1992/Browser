@@ -11,8 +11,17 @@ import SwiftUI
 struct BrowseHistory: View {
     @EnvironmentObject var viewModel: FootprintViewModel
     @State private var historise: [HistoryModel]? = nil
+    @State private var showingDeleteAlert = false
 
     var body: some View {
+        VStack {
+            contentView()
+            bottomView()
+        }
+    }
+
+    @ViewBuilder
+    private func contentView() -> some View {
         ScrollView {
             VStack {
                 if let historise = historise, !historise.isEmpty {
@@ -89,6 +98,45 @@ struct BrowseHistory: View {
             fromTable: viewModel.selectedSegmentIndex == 0 ? S.Table.collect : S.Table.browseHistory,
             cls: HistoryModel.self
         )?.reversed()
+    }
+
+    @ViewBuilder
+    private func bottomView() -> some View {
+        HStack {
+//            Spacer()
+            Button {
+                showingDeleteAlert.toggle()
+            } label: {
+                Text("清理记录")
+            }
+
+//            Spacer()
+//            Button {
+//            } label: {
+//                Text("编辑")
+//            }
+//
+//            Spacer()
+        }
+        .font(.system(size: 16))
+        .foregroundColor(.black)
+        .padding(.vertical, 10)
+        .background(Color.gray.opacity(0.5))
+        .alert(isPresented: $showingDeleteAlert) {
+            Alert(
+                title: Text("删除记录"),
+                message: Text("您确定要删除所有记录吗？"),
+                primaryButton: .destructive(Text("删除")) {
+                    deleteRecords()
+                },
+                secondaryButton: .cancel()
+            )
+        }
+    }
+
+    private func deleteRecords() {
+        historise?.removeAll()
+        DBaseManager.share.deleteFromDb(fromTable: viewModel.selectedSegmentIndex == 0 ? S.Table.collect : S.Table.browseHistory)
     }
 }
 

@@ -47,7 +47,7 @@ struct AboutView: View {
     private func handleTap(for item: AboutOption) {
         switch item {
         case .checkForUpdates:
-            HUD.showLoading("尚未实现 要得到 YOUR_APP_ID 才能实现")
+            HUD.showTipMessage("尚未实现 要得到 YOUR_APP_ID 才能实现")
 //            checkAppStoreVersion()
         case .privacyPolicy:
             fetchAgreementContent(requestData: 2, titleText: "隐私协议")

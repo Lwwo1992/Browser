@@ -13,7 +13,7 @@ enum WebMode: String, CaseIterable {
 }
 
 struct RecommendedModeView: View {
-    @ObservedObject var viewModel: ViewModel
+    @ObservedObject var viewModel = ViewModel.shared
 
     var body: some View {
         VStack {
@@ -34,7 +34,6 @@ struct RecommendedModeView: View {
                     .padding(.horizontal, 16)
                     .background(Color.white)
                     .onTapGesture {
-                        S.Config.mode = option
                         viewModel.selectedModel = option
                     }
 

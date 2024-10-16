@@ -35,12 +35,41 @@ struct S {
         static var defalutUrl = ""
         static var loginType: [LoginType]?
         static var anonymous: AnonymousConfigModel?
-        /// 开启无痕浏览
-        static var openNoTrace: Bool = false
 
-        /// 导航模式
-        static var mode: WebMode = .guide
+        private enum Keys {
+            static let openNoTrace = "openNoTrace"
+            static let mode = "webMode"
+        }
+
+        /// 是否登录
+        static var isLogin: Bool {
+            get {
+                return UserDefaults.standard.bool(forKey: "login")
+            }
+            set {
+                UserDefaults.standard.set(newValue, forKey: "login")
+            }
+        }
+
+        /// 开启无痕浏览
+        static var openNoTrace: Bool {
+            get {
+                return UserDefaults.standard.bool(forKey: Keys.openNoTrace)
+            }
+            set {
+                UserDefaults.standard.set(newValue, forKey: Keys.openNoTrace)
+            }
+        }
+
+        /// 导航模式，使用 UserDefaults 持久化
+        static var mode: WebMode {
+            get {
+                let modeString = UserDefaults.standard.string(forKey: Keys.mode) ?? WebMode.guide.rawValue
+                return WebMode(rawValue: modeString) ?? .web
+            }
+            set {
+                UserDefaults.standard.set(newValue.rawValue, forKey: Keys.mode)
+            }
+        }
     }
 }
-
-

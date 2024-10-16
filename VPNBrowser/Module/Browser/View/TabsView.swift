@@ -10,7 +10,7 @@ import SDWebImageSwiftUI
 import SwiftUI
 import WebKit
 
-struct TabView: View {
+struct TabsView: View {
     var bookmarkModel = HistoryModel()
 
     @State private var bookmarkes: [HistoryModel] = []
@@ -133,5 +133,5 @@ struct TabView: View {
 }
 
 #Preview {
-    TabView()
+    TabsView()
 }

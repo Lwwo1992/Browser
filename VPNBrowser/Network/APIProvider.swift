@@ -73,6 +73,9 @@ enum APITarget {
     /// 生成游客令牌
     case generateVisitorToken
 
+    /// 获取分页列表(使用指南)
+    case userGuidePage
+
     case downloadFile(url: String)
     case fileSize(url: String)
 }
@@ -120,7 +123,8 @@ extension APITarget: TargetType {
             return "/browser/app/visitorAccess/edit"
         case .uploadConfig:
             return "/browser/app/visitorAccess/config"
-
+        case .userGuidePage:
+            return "/browser/app/visitorAccess/userGuidePage"
         case .generateVisitorToken:
             return "/browser/app/anonymous/generateVisitorToken"
         case let .downloadFile(url), let .fileSize(url):
@@ -130,7 +134,7 @@ extension APITarget: TargetType {
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage:
             return .post
 
         case .fileSize:
@@ -193,6 +197,9 @@ extension APITarget: TargetType {
                 "state": 1,
             ]
             parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": -1]
+        case .userGuidePage:
+            let data: [String: Any] = [:]
+            parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": 10]
         case .generateVisitorToken:
             let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
             parameters = ["data": ["deviceId": idfa]]

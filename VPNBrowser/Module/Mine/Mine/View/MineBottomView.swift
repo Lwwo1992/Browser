@@ -22,12 +22,12 @@ struct MineBottomView: View {
             [
                 [.accountSecurity, .searchBrowse, .incognito],
                 [.cloudSync],
-                [.general, .userGuide, .customerService, .about],
+                [.general, .userGuide, /* .customerService, */ .about],
             ]
         }
     }
 
-    @State private var isOn: Bool = false
+    @ObservedObject var viewModel = ViewModel.shared
 
     var body: some View {
         OptionListView(
@@ -35,49 +35,17 @@ struct MineBottomView: View {
             rightViewProvider: { option in
                 if option == .incognito {
                     return AnyView(
-                        Toggle("", isOn: $isOn)
+                        Toggle("", isOn: $viewModel.openNoTrace)
                             .labelsHidden()
+                            .onChange(of: viewModel.openNoTrace) { newValue in
+                                viewModel.openNoTrace = newValue
+                            }
                     )
                 }
                 return nil
             },
             onTap: handleTap(for:)
         )
-//        VStack(alignment: .leading, spacing: 0) {
-//            ForEach(0 ..< MineBottomOption.sections.count, id: \.self) { sectionIndex in
-//                VStack(alignment: .leading) {
-//                    ForEach(MineBottomOption.sections[sectionIndex], id: \.self) { item in
-//                        VStack(alignment: .leading, spacing: 0) {
-//                            HStack(alignment: .center) {
-//                                if item == .incognito {
-//                                    Toggle(item.rawValue, isOn: $isOn)
-//                                        .frame(height: 20)
-//                                } else {
-//                                    Text(item.rawValue)
-//                                    Spacer()
-//                                    Image(systemName: "chevron.right")
-//                                }
-//                            }
-//                            .font(.system(size: 14))
-//                            .frame(height: 55)
-//                            .padding(.horizontal, 16)
-//                            .background(Color.white)
-//                            .onTapGesture {
-//                                handleTap(for: item)
-//                            }
-//
-//                            if item != MineBottomOption.sections[sectionIndex].last {
-//                                Divider()
-//                                    .padding(.leading, 16)
-//                            }
-//                        }
-//                    }
-//                }
-//                .background(Color.white)
-//                .cornerRadius(10)
-//                .padding(.vertical)
-//            }
-//        }
     }
 
     private func handleTap(for item: MineBottomOption) {
@@ -93,6 +61,8 @@ struct MineBottomView: View {
             vc = GeneralViewController()
         case .about:
             vc = AboutViewController()
+        case .userGuide:
+            vc = UserGuideViewController()
         default:
             break
         }

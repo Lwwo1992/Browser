@@ -27,7 +27,7 @@ struct GeneralView: View {
 
     @State private var isOn: Bool = false
 
-    @ObservedObject var viewModel = ViewModel()
+    @ObservedObject var viewModel = ViewModel.shared
 
     var body: some View {
         OptionListView(
@@ -37,7 +37,7 @@ struct GeneralView: View {
                 case .recommendedMode:
                     return viewModel.selectedModel.rawValue
                 case .clearCache:
-                    return "146.2MB"
+                    return ""
                 default:
                     return nil
                 }
@@ -52,7 +52,6 @@ struct GeneralView: View {
         switch item {
         case .recommendedMode:
             vc = RecommendedModeViewController()
-            (vc as! RecommendedModeViewController).viewModel = viewModel
         default:
             break
         }
