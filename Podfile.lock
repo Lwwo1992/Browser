@@ -14,6 +14,7 @@ PODS:
   - BlueCryptor (1.0.32)
   - BlueECC (1.2.5)
   - BlueRSA (1.0.200)
+  - IQKeyboardManagerSwift (7.1.1)
   - KituraContracts (1.2.1):
     - LoggerAPI (~> 1.7)
   - LoggerAPI (1.9.200):
@@ -25,11 +26,16 @@ PODS:
     - BlueRSA (~> 1.0)
     - KituraContracts (~> 1.2)
     - LoggerAPI (~> 1.7)
+  - WCDB.swift (2.1.8):
+    - WCDBOptimizedSQLCipher (= 1.4.6)
+  - WCDBOptimizedSQLCipher (1.4.6)
 
 DEPENDENCIES:
   - AWSMobileClient (~> 2.15.1)
   - AWSS3 (~> 2.15.1)
+  - IQKeyboardManagerSwift
   - SwiftJWT
+  - WCDB.swift
 
 SPEC REPOS:
   trunk:
@@ -42,10 +48,13 @@ SPEC REPOS:
     - BlueCryptor
     - BlueECC
     - BlueRSA
+    - IQKeyboardManagerSwift
     - KituraContracts
     - LoggerAPI
     - Logging
     - SwiftJWT
+    - WCDB.swift
+    - WCDBOptimizedSQLCipher
 
 SPEC CHECKSUMS:
   AWSAuthCore: 598e8eb56e12799877414d10b04598de12a15992
@@ -57,11 +66,14 @@ SPEC CHECKSUMS:
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
+  IQKeyboardManagerSwift: d7f3d3a562c237a0e7335e657cd598c452f57f1b
   KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
+  WCDB.swift: 603b32d432a58ec2e6eef8965d8bd6bb3cc7c39a
+  WCDBOptimizedSQLCipher: c6451e1dead7ec53e1344a2545aaed2c4c139fc0
 
-PODFILE CHECKSUM: 12695c4217f7fd56ed0d436d74cd599fefb50295
+PODFILE CHECKSUM: 9ed67c0392f436fc1056e70549026f85f938b068
 
 COCOAPODS: 1.15.2

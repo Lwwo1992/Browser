@@ -9,7 +9,7 @@ import Kingfisher
 import SwiftUI
 
 struct UserGuideView: View {
-    @State private var userGuideData: [UserGuideResponse] = []
+    @ObservedObject var viewModel: UserGuideViewModel
 
     let itemSpacing: CGFloat = 16
     let columnsCount = 3
@@ -17,7 +17,7 @@ struct UserGuideView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                ForEach(userGuideData, id: \.id) { section in
+                ForEach(viewModel.userGuideData, id: \.id) { section in
                     if let records = section.record, !records.isEmpty {
                         VStack(alignment: .leading) {
                             HStack {
@@ -61,25 +61,9 @@ struct UserGuideView: View {
             }
             .padding(.horizontal, 16)
         }
-        .onAppear {
-            APIProvider.shared.request(.userGuidePage, model: UserGuideResponse.self) { result in
-                switch result {
-                case let .success(model):
-                    if let record = model.record {
-                        let groupedData = Dictionary(grouping: record) { $0.classifyName ?? "Unknown" }
-                        let classifiedData = groupedData.map { key, value in
-                            UserGuideResponse(title: key, record: value)
-                        }
-                        userGuideData = classifiedData
-                    }
-                case let .failure(error):
-                    print("Request failed with error: \(error)")
-                }
-            }
-        }
     }
 }
 
-#Preview {
-    UserGuideView()
-}
+//#Preview {
+//    UserGuideView()
+//}

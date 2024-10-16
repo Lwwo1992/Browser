@@ -8,8 +8,10 @@
 import UIKit
 
 class UserGuideViewController: ViewController {
+    private var viewModel = UserGuideViewModel()
+
     override var rootView: AnyView? {
-        return AnyView(UserGuideView())
+        return AnyView(UserGuideView(viewModel: viewModel))
     }
 
     override func viewDidLoad() {

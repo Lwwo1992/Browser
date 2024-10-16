@@ -9,31 +9,32 @@ import Kingfisher
 import SwiftUI
 
 struct GuideView: View {
-    @State private var guideSections: [GuideResponse] = []
+    @ObservedObject var viewModel = GuideViewModel()
 
-    let columns = Array(repeating: GridItem(.flexible()), count: S.Config.maxAppNum)
+    let itemSpacing: CGFloat = 16
+    let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: S.Config.maxAppNum)
     let maxVisibleRows = 2 // 最多展示两排
 
     var body: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    ForEach(guideSections, id: \.id) { senction in
+                    ForEach(viewModel.guideSections, id: \.id) { senction in
                         if let rows = senction.data, !rows.isEmpty {
                             VStack(alignment: .leading) {
                                 HStack {
-//                                    KFImage(Util.getCompleteImageUrl(from: senction.appIcon))
-//                                        .resizable()
-//                                        .scaledToFill()
-//                                        .frame(width: 20, height: 20)
-//                                        .cornerRadius(5)
+                                    KFImage(Util.getCompleteImageUrl(from: senction.icon))
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 20, height: 20)
+                                        .cornerRadius(5)
                                     Text(senction.name ?? "")
                                         .font(.headline)
                                         .padding(.leading, 16)
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                                LazyVGrid(columns: columns, spacing: 20) {
+                                LazyVGrid(columns: columns, spacing: itemSpacing) {
                                     let displayedRows = min(rows.count, maxVisibleRows * columns.count)
 
                                     ForEach(0 ..< displayedRows, id: \.self) { index in
@@ -48,10 +49,8 @@ struct GuideView: View {
                         }
                     }
                 }
+                .padding(.horizontal, 16)
             }
-        }
-        .onAppear {
-            loadGuideLabels()
         }
     }
 
@@ -104,61 +103,6 @@ struct GuideView: View {
     }
 }
 
-extension GuideView {
-    private func loadGuideLabels() {
-        HUD.showLoading()
-        APIProvider.shared.request(.guideLabelPage, progress: { _ in }) { result in
-            switch result {
-            case let .success(response):
-                if let responseLabels = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
-                    if let labels = responseLabels.data {
-                        fetchApps(for: labels)
-                    }
-                }
-
-            case let .failure(error):
-                print("Error: \(error)")
-            }
-        }
-    }
-
-    private func fetchApps(for labels: [GuideItem]) {
-        let group = DispatchGroup()
-        var sections: [GuideResponse] = []
-
-        for label in labels {
-            guard let id = label.id else { continue }
-            group.enter()
-
-            APIProvider.shared.request(.guideAppPage(labelID: id), progress: { _ in }) { result in
-                switch result {
-                case let .success(response):
-                    if let responseApps = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
-                        let apps = responseApps.data ?? []
-
-                        let section = GuideResponse()
-                        section.name = label.name
-                        section.data = apps
-                        sections.append(section)
-
-                    } else {
-                        print("Error decoding apps.")
-                    }
-
-                case let .failure(error):
-                    print("Error: \(error)")
-                }
-                group.leave()
-            }
-        }
-
-        group.notify(queue: .main) {
-            self.guideSections = sections
-            HUD.hideNow()
-        }
-    }
-}
-
-#Preview {
-    GuideView()
-}
+// #Preview {
+//    GuideView()
+// }

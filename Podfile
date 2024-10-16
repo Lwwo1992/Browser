@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '15.0'
+platform :ios, '15.0'
 
 post_install do |installer|
  installer.pods_project.targets.each do |target|
@@ -30,6 +30,8 @@ target 'VPNBrowser' do
   pod 'AWSMobileClient', '~> 2.15.1'
   pod 'AWSS3', '~> 2.15.1'
   pod 'SwiftJWT'
+  pod 'WCDB.swift'
+  pod 'IQKeyboardManagerSwift'
 
 end
 

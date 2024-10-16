@@ -87,7 +87,6 @@
 		44CF209A2CB8C20B00772B9C /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 44CF20992CB8C20B00772B9C /* Moya */; };
 		44CF209D2CB8C46000772B9C /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF209C2CB8C46000772B9C /* APIProvider.swift */; };
 		44CF20A02CB8CE5800772B9C /* ConfigByTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF209F2CB8CE5800772B9C /* ConfigByTypeModel.swift */; };
-		44CF20AB2CB91BAD00772B9C /* WCDBSwiftDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 44CF20AA2CB91BAD00772B9C /* WCDBSwiftDynamic */; };
 		44CF20AE2CB91CFD00772B9C /* HandyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 44CF20AD2CB91CFD00772B9C /* HandyJSON */; };
 		44CF20B32CB9289600772B9C /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 44CF20B22CB9289600772B9C /* SwiftyJSON */; };
 		44CF20B62CB9333000772B9C /* S.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF20B52CB9333000772B9C /* S.swift */; };
@@ -226,7 +225,6 @@
 			files = (
 				8CEB24572CBD3820006F8485 /* WTool in Frameworks */,
 				44CD45F82CBE181E003A415E /* SDWebImageSwiftUI in Frameworks */,
-				44CF20AB2CB91BAD00772B9C /* WCDBSwiftDynamic in Frameworks */,
 				44CF20B32CB9289600772B9C /* SwiftyJSON in Frameworks */,
 				44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */,
 				44AA509B2CB52650005EBC36 /* Then in Frameworks */,
@@ -673,7 +671,6 @@
 				44AA509A2CB52650005EBC36 /* Then */,
 				44AA66512CB6338000E4253F /* JXSegmentedView */,
 				44CF20992CB8C20B00772B9C /* Moya */,
-				44CF20AA2CB91BAD00772B9C /* WCDBSwiftDynamic */,
 				44CF20AD2CB91CFD00772B9C /* HandyJSON */,
 				44CF20B22CB9289600772B9C /* SwiftyJSON */,
 				446009EB2CBA89C40085DC74 /* Kingfisher */,
@@ -713,7 +710,6 @@
 				44AA50992CB52650005EBC36 /* XCRemoteSwiftPackageReference "Then" */,
 				44AA66502CB6338000E4253F /* XCRemoteSwiftPackageReference "JXSegmentedView" */,
 				44CF20982CB8C20B00772B9C /* XCRemoteSwiftPackageReference "Moya" */,
-				44CF20A92CB91BAD00772B9C /* XCRemoteSwiftPackageReference "wcdb" */,
 				44CF20AC2CB91CFD00772B9C /* XCRemoteSwiftPackageReference "HandyJSON" */,
 				44CF20B12CB9289600772B9C /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				446009EA2CBA89C40085DC74 /* XCRemoteSwiftPackageReference "Kingfisher" */,
@@ -909,15 +905,18 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6Y22Y687X2;
+				DEVELOPMENT_TEAM = 7PMYNKHAJW;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "app需要您的允许才能上传头像或动态";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "app需要您的允许才能上传头像或动态";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -929,7 +928,7 @@
 					"$(PROJECT_DIR)/VPNBrowser/Tools/aws-sdk-ios-main/AWSCoreTests/OCMock",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wang.browser;
+				PRODUCT_BUNDLE_IDENTIFIER = com.motley.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "VPNBrowser/Resources/Bridging-Header.h";
@@ -946,15 +945,18 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6Y22Y687X2;
+				DEVELOPMENT_TEAM = 7PMYNKHAJW;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "app需要您的允许才能上传头像或动态";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "app需要您的允许才能上传头像或动态";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -966,7 +968,7 @@
 					"$(PROJECT_DIR)/VPNBrowser/Tools/aws-sdk-ios-main/AWSCoreTests/OCMock",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wang.browser;
+				PRODUCT_BUNDLE_IDENTIFIER = com.motley.browser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "VPNBrowser/Resources/Bridging-Header.h";
@@ -1166,14 +1168,6 @@
 				minimumVersion = 15.0.3;
 			};
 		};
-		44CF20A92CB91BAD00772B9C /* XCRemoteSwiftPackageReference "wcdb" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Tencent/wcdb.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		44CF20AC2CB91CFD00772B9C /* XCRemoteSwiftPackageReference "HandyJSON" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/alibaba/HandyJSON.git";
@@ -1234,11 +1228,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 44CF20982CB8C20B00772B9C /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
-		};
-		44CF20AA2CB91BAD00772B9C /* WCDBSwiftDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 44CF20A92CB91BAD00772B9C /* XCRemoteSwiftPackageReference "wcdb" */;
-			productName = WCDBSwiftDynamic;
 		};
 		44CF20AD2CB91CFD00772B9C /* HandyJSON */ = {
 			isa = XCSwiftPackageProductDependency;

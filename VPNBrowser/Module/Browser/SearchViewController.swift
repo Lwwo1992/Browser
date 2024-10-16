@@ -38,7 +38,7 @@ class SearchViewController: ViewController {
         return AnyView(SearchView(recordStore: recordStore))
     }
 
-    private lazy var textField = UITextField().then {
+    private lazy var textField = TextField().then {
         $0.placeholder = "搜索"
         $0.font = .systemFont(ofSize: 14)
     }
@@ -132,6 +132,11 @@ class SearchViewController: ViewController {
             }
             .store(in: &cancellables)
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        textField.becomeFirstResponder()
+    }
 }
 
 extension SearchViewController {
@@ -147,7 +152,7 @@ extension SearchViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: goToButton)
 
         view.addSubview(dropdownTableView)
-        dropdownTableView.frame = CGRect(x: 16, y: 100, width: 150, height: 200)
+        dropdownTableView.frame = CGRect(x: 16, y: view.safeTop + 60, width: 150, height: 200)
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutsideDropdown(_:)))
         tapGesture.cancelsTouchesInView = false // 让视图其他元素正常响应点击事件
@@ -187,6 +192,8 @@ extension SearchViewController {
         if !dropdownTableView.frame.contains(location) && isDropdownVisible {
             toggleDropdown()
         }
+
+        textField.resignFirstResponder()
     }
 
     private func saveInfo(_ title: String) {

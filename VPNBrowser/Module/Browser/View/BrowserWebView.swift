@@ -108,7 +108,7 @@ struct BrowserWebView: View {
                     viewModel.showBottomSheet.toggle()
                 }
         }
-        .padding(.vertical, 5)
+        .padding(.vertical, 15)
         .padding(.horizontal, 30)
         .background(Color(hex: 0xF8F5F5))
     }
