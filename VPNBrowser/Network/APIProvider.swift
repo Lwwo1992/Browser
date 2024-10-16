@@ -72,11 +72,13 @@ enum APITarget {
 
     /// 生成游客令牌
     case generateVisitorToken
+
+    case downloadFile(url: String)
+    case fileSize(url: String)
 }
 
 extension APITarget: TargetType {
     var baseURL: URL {
- 
         switch self {
         case .guideLabelPage, .guideAppPage:
             // "http://guide-h5.saas-xy.com:89" //正式环境
@@ -86,7 +88,6 @@ extension APITarget: TargetType {
 //            return URL(string: "https://browser-api.xiwshijieheping.com")!
             return URL(string: "http://browser-dev-api.saas-xy.com:81")!
         }
-
     }
 
     var path: String {
@@ -119,10 +120,11 @@ extension APITarget: TargetType {
             return "/browser/app/visitorAccess/edit"
         case .uploadConfig:
             return "/browser/app/visitorAccess/config"
- 
+
         case .generateVisitorToken:
             return "/browser/app/anonymous/generateVisitorToken"
-
+        case let .downloadFile(url), let .fileSize(url):
+            return url
         }
     }
 
@@ -130,6 +132,11 @@ extension APITarget: TargetType {
         switch self {
         case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken:
             return .post
+
+        case .fileSize:
+            return .head
+        case .downloadFile:
+            return .get
         }
     }
 
@@ -167,8 +174,6 @@ extension APITarget: TargetType {
 
             parameters = ["data": data]
 
-        case .logout, .anonymousConfig:
-            break
         case let .uploadConfig(image):
             let imageData = image.jpegData(compressionQuality: 0.5) // 你可以选择 PNG 或 JPEG 格式
             return .uploadMultipart([
@@ -191,6 +196,8 @@ extension APITarget: TargetType {
         case .generateVisitorToken:
             let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
             parameters = ["data": ["deviceId": idfa]]
+        case .logout, .anonymousConfig, .fileSize, .downloadFile:
+            break
         }
 
         return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)

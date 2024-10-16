@@ -5,16 +5,13 @@
 //  Created by xyxy on 2024/10/10.
 //
 
+import Kingfisher
 import SwiftUI
 
 struct BrowserView: View {
     @StateObject private var webViewModel = WebViewViewModel()
     @State private var bookmarkModel = HistoryModel()
     @State private var bookmarNum = "0"
-
-    @State private var guideSections: [GuideResponse] = []
-    @State private var isLoading = true
-    @State private var errorMessage: String? = nil
 
     var body: some View {
         VStack {
@@ -24,17 +21,13 @@ struct BrowserView: View {
             }
             .padding(.horizontal, 16)
 
-            contentView()
+            if S.Config.mode == .web {
+                webView()
+            } else {
+                GuideView()
+            }
         }
-    }
-
-    @ViewBuilder
-    private func contentView() -> some View {
-        if S.Config.mode == .web {
-            webView()
-        } else {
-            GuideView()
-        }
+        .frame(maxHeight: .infinity, alignment: .top)
     }
 
     @ViewBuilder
@@ -43,43 +36,6 @@ struct BrowserView: View {
             self.bookmarkModel = model
         })
         .frame(maxHeight: .infinity)
-    }
-
-    @ViewBuilder
-    private func GuideView() -> some View {
-        VStack {
-            if isLoading {
-                ProgressView("Loading...")
-            } else if let errorMessage = errorMessage {
-                Text("Error: \(errorMessage)")
-            } else {
-//                ScrollView {
-//                    VStack(alignment: .leading, spacing: 20) {
-//                        ForEach(guideSections, id: \.id) { guideItem in
-//                            VStack(alignment: .leading) {
-//                                
-//                                Text(guideItem.groupTitle)
-//                                    .font(.headline)
-//                                    .padding(.leading, 16)
-//
-//                                // 应用的水平滚动视图
-//                                ScrollView(.horizontal, showsIndicators: false) {
-//                                    HStack(spacing: 10) {
-//                                        ForEach(guideItem.apps ?? [], id: \.id) { app in
-//                                            AppView(appName: app.name)
-//                                        }
-//                                    }
-//                                    .padding(.horizontal, 16)
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-            }
-        }
-        .onAppear {
-            loadGuideLabels()
-        }
     }
 
     private var searchBar: some View {
@@ -131,67 +87,6 @@ struct BrowserView: View {
                     self.bookmarNum = "\(bookmarkes.count)"
                 }
             }
-    }
-}
-
-extension BrowserView {
-    private func loadGuideLabels() {
-        APIProvider.shared.request(.guideLabelPage, progress: { _ in }) { result in
-            switch result {
-            case let .success(response):
-                if let responseLabels = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
-                    if let labels = responseLabels.data {
-                        fetchApps(for: labels)
-                    } else {
-                        errorMessage = "No labels found."
-                        isLoading = false
-                    }
-                } else {
-                    errorMessage = "Error decoding labels."
-                    isLoading = false
-                }
-
-            case let .failure(error):
-                errorMessage = error.localizedDescription
-                isLoading = false
-            }
-        }
-    }
-
-    private func fetchApps(for labels: [GuideItem]) {
-        let group = DispatchGroup()
-        var sections: [GuideResponse] = []
-
-        for label in labels {
-            guard let id = label.id else { continue }
-            group.enter()
-
-            APIProvider.shared.request(.guideAppPage(labelID: id), progress: { _ in }) { result in
-                switch result {
-                case let .success(response):
-                    if let responseApps = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
-                        let apps = responseApps.data ?? []
-
-                        let section = GuideResponse()
-                        section.name = label.name
-                        section.data = apps
-                        sections.append(section)
-
-                    } else {
-                        print("Error decoding apps.")
-                    }
-
-                case let .failure(error):
-                    print("Error: \(error)")
-                }
-                group.leave()
-            }
-        }
-
-        group.notify(queue: .main) {
-            self.guideSections = sections
-            isLoading = false
-        }
     }
 }
 
