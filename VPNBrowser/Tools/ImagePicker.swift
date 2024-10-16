@@ -78,9 +78,12 @@ class S3ClientUtils {
         init(accessKey: String, secretKey: String, token: String, endpoint: String) {
             
             // 创建凭证提供者
-            let credentialsProvider = AWSBasicSessionCredentialsProvider(accessKey: accessKey,
-                                                                        secretKey: secretKey,
-                                                                        sessionToken: token)
+//            let credentialsProvider = AWSBasicSessionCredentialsProvider(accessKey: accessKey,
+//                                                                        secretKey: secretKey,
+//                                                                        sessionToken: "")
+            
+            let credentialsProvider = AWSStaticCredentialsProvider(accessKey: accessKey, secretKey: secretKey)
+
             
             // 创建服务配置
             let configuration = AWSServiceConfiguration(region: .USEast1, endpoint: AWSEndpoint(urlString: endpoint), credentialsProvider: credentialsProvider)
@@ -92,58 +95,12 @@ class S3ClientUtils {
             
             // 初始化 TransferUtility
             self.transferUtility = AWSS3TransferUtility.default()
- 
+            AWSDDLog.sharedInstance.logLevel = .verbose
+            AWSDDLog.add(AWSDDTTYLogger.sharedInstance)  // 将日志输出到控制台
+
             
         }
      
-    func upload(filePath: String, model: UpdateHeadInfo) {
-        let fileURL = URL(fileURLWithPath: filePath)
-        print("Full file URL: \(fileURL.path)")
-
-        // 检查 TransferUtility 是否初始化
-        guard let transferUtility = transferUtility else {
-            print("Transfer utility is not initialized.")
-            return
-        }
-
-        let expression = AWSS3TransferUtilityUploadExpression()
-        let fileLast = fileURL.lastPathComponent
-        let key = "\(model.uploadAddrPrefix)\(fileLast)"
-
-        // 打印桶名和键，便于调试
-        print("Bucket: \(model.bucket)")
-        print("Key: \(key)")
-
-        // 检查文件是否存在
-        if !FileManager.default.fileExists(atPath: fileURL.path) {
-            print("File does not exist at path: \(fileURL.path)")
-            return
-        }
-
-        let mimeType = getMIMEType(for: key)
-
-        // 设置进度回调
-        expression.progressBlock = { (task, progress) in
-            DispatchQueue.main.async {
-                print("Upload progress: \(progress.fractionCompleted)")
-            }
-        }
-
-        transferUtility.uploadFile(fileURL,
-                                    bucket: model.bucket,
-                                    key: key,
-                                    contentType: mimeType,
-                                    expression: expression) { (task, error) in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("Upload failed with error: \(error.localizedDescription)")
-                } else {
-                    print("Upload successful")
-                }
-            }
-        }
-    }
-
     
     func getMIMEType(for filename: String) -> String {
         if filename.hasSuffix("jpg") || filename.hasSuffix("jpeg") {
@@ -156,6 +113,51 @@ class S3ClientUtils {
             return "application/octet-stream" // 默认类型
         }
     }
+    
+     
+
+    func uploadImageToS3(filePath: String, model: UpdateHeadInfo, completion: @escaping (String?, Error?) -> Void) {
+        
+        let fileURL = URL(fileURLWithPath: filePath)
+        // 创建默认的 AWSS3TransferManager 实例
+        let transferManager = AWSS3TransferManager.default()
+
+        let fileLast = fileURL.lastPathComponent
+        let key = "\(model.uploadAddrPrefix)\(fileLast)"
+        
+        // 创建上传请求
+        let uploadRequest = AWSS3TransferManagerUploadRequest()
+        uploadRequest?.bucket = model.bucket // 替换为你的 S3 桶名
+        uploadRequest?.key = key // 替换为上传的文件名
+        uploadRequest?.body = fileURL // 替换为你要上传的文件路径
+
+        // 检查 uploadRequest 是否为非 nil
+        guard let uploadRequest = uploadRequest else {
+            print("Failed to create upload request")
+            completion(nil, NSError(domain: "UploadError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create upload request"]))
+            return
+        }
+
+        // 构建图片的 URL
+        let imgUrl = "\(model.endpoint)/\(model.bucket)/\(key)"
+          
+        // 上传文件
+        transferManager.upload(uploadRequest).continueWith { (task) -> AnyObject? in
+            if let error = task.error {
+                print("上传失败：\(error)")
+                DispatchQueue.main.async {
+                    completion(nil, error) // 上传失败时回调错误
+                }
+            } else {
+                print("上传成功！图片的访问地址为: \(imgUrl)")
+                DispatchQueue.main.async {
+                    completion(imgUrl, nil) // 上传成功时回调图片 URL
+                }
+            }
+            return nil
+        }
+    }
+
 
 
 }

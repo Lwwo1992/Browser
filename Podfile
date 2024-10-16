@@ -27,8 +27,8 @@ target 'VPNBrowser' do
   # Pods for VPNBrowser 
  
 
-  pod 'AWSMobileClient', '~> 2.24.0'
-  pod 'AWSS3', '~> 2.24.0'
+  pod 'AWSMobileClient', '~> 2.15.1'
+  pod 'AWSS3', '~> 2.15.1'
   pod 'SwiftJWT'
 
 end
