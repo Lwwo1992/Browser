@@ -55,6 +55,11 @@
 		446009FB2CBAB5730085DC74 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009FA2CBAB5730085DC74 /* StringExtension.swift */; };
 		4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FA2CBE567F0024381A /* TokenGenerator.swift */; };
 		4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FF2CBE66EF0024381A /* GuideModel.swift */; };
+		4486C9022CBE96520024381A /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9012CBE96520024381A /* GuideView.swift */; };
+		4486C9042CBE98840024381A /* MoreGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9032CBE98840024381A /* MoreGuideViewController.swift */; };
+		4486C9062CBE99320024381A /* MoreGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9052CBE99320024381A /* MoreGuideView.swift */; };
+		4486C9082CBE9BB20024381A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9072CBE9BB20024381A /* Util.swift */; };
+		4486C90A2CBEA3150024381A /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9092CBEA3150024381A /* DownloadView.swift */; };
 		44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 44AA507E2CB4DDB4005EBC36 /* WTool */; };
 		44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50802CB4DF83005EBC36 /* TabBarController.swift */; };
 		44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */; };
@@ -162,6 +167,11 @@
 		446009FA2CBAB5730085DC74 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		4486C8FA2CBE567F0024381A /* TokenGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenGenerator.swift; sourceTree = "<group>"; };
 		4486C8FF2CBE66EF0024381A /* GuideModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideModel.swift; sourceTree = "<group>"; };
+		4486C9012CBE96520024381A /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
+		4486C9032CBE98840024381A /* MoreGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreGuideViewController.swift; sourceTree = "<group>"; };
+		4486C9052CBE99320024381A /* MoreGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreGuideView.swift; sourceTree = "<group>"; };
+		4486C9072CBE9BB20024381A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		4486C9092CBEA3150024381A /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
 		44AA50802CB4DF83005EBC36 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		44AA50842CB4E007005EBC36 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
@@ -230,11 +240,14 @@
 			isa = PBXGroup;
 			children = (
 				4409D4272CB7A7E100C81871 /* BrowserView.swift */,
+				4486C9012CBE96520024381A /* GuideView.swift */,
 				4409D42B2CB7AEB400C81871 /* SearchView.swift */,
 				446009F12CBA9B5E0085DC74 /* DropdownCell.swift */,
 				440F93292CBCC5BB00D94AD0 /* BrowserWebView.swift */,
 				440F932E2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift */,
 				443A817D2CBD553A0093BC22 /* TabView.swift */,
+				4486C9052CBE99320024381A /* MoreGuideView.swift */,
+				4486C9092CBEA3150024381A /* DownloadView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -397,6 +410,7 @@
 				4409D4292CB7AE9300C81871 /* SearchViewController.swift */,
 				440F93272CBCC09200D94AD0 /* BrowserWebViewController.swift */,
 				443A817B2CBD55140093BC22 /* TabViewController.swift */,
+				4486C9032CBE98840024381A /* MoreGuideViewController.swift */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -513,6 +527,7 @@
 			isa = PBXGroup;
 			children = (
 				44CF20B52CB9333000772B9C /* S.swift */,
+				4486C9072CBE9BB20024381A /* Util.swift */,
 				44CF20B92CB933AC00772B9C /* Manager */,
 			);
 			path = Util;
@@ -769,6 +784,7 @@
 				443A81752CBD4B4A0093BC22 /* TFPopupParam.m in Sources */,
 				443A81762CBD4B4A0093BC22 /* TFPopupExtension.m in Sources */,
 				443A81772CBD4B4A0093BC22 /* TFPopupToast.m in Sources */,
+				4486C9042CBE98840024381A /* MoreGuideViewController.swift in Sources */,
 				443A81782CBD4B4A0093BC22 /* TFPopupLoading.m in Sources */,
 				443A81792CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m in Sources */,
 				440F93242CBCABFD00D94AD0 /* ReplaceBindingViewController.swift in Sources */,
@@ -778,6 +794,7 @@
 				44AA508F2CB5055F005EBC36 /* MineTopView.swift in Sources */,
 				44AA50852CB4E007005EBC36 /* BrowserViewController.swift in Sources */,
 				44AA50A62CB537E3005EBC36 /* SearchBrowseView.swift in Sources */,
+				4486C90A2CBEA3150024381A /* DownloadView.swift in Sources */,
 				440F93262CBCAC6C00D94AD0 /* ReplaceBindingView.swift in Sources */,
 				44AA509D2CB53649005EBC36 /* BindingViewController.swift in Sources */,
 				444C936C2CB4D9930092FECB /* NavigationController.swift in Sources */,
@@ -791,6 +808,7 @@
 				4409D42F2CB7CEE200C81871 /* LoginViewController.swift in Sources */,
 				443A817C2CBD55140093BC22 /* TabViewController.swift in Sources */,
 				446009D42CBA0D5B0085DC74 /* VerificationCodeView.swift in Sources */,
+				4486C9082CBE9BB20024381A /* Util.swift in Sources */,
 				443A817E2CBD553A0093BC22 /* TabView.swift in Sources */,
 				446009DA2CBA1AF60085DC74 /* HomeView.swift in Sources */,
 				446009E72CBA73060085DC74 /* CustomTextField.swift in Sources */,
@@ -812,6 +830,8 @@
 				44DA8E2D2CB6784E003B1C34 /* GeneralView.swift in Sources */,
 				44DA8E332CB6853C003B1C34 /* AboutViewController.swift in Sources */,
 				44AA50A12CB5372A005EBC36 /* SearchBrowseViewController.swift in Sources */,
+				4486C9062CBE99320024381A /* MoreGuideView.swift in Sources */,
+				4486C9022CBE96520024381A /* GuideView.swift in Sources */,
 				44CF20BB2CB942C300772B9C /* AccountLoginViewController.swift in Sources */,
 				444C93662CB4D8F50092FECB /* ViewController.swift in Sources */,
 				446009E92CBA82E70085DC74 /* EngineModel.swift in Sources */,
