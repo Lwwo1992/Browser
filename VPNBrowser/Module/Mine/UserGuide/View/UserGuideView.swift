@@ -46,7 +46,7 @@ struct UserGuideView: View {
                                     .frame(width: itemWidth, height: itemWidth)
                                     .background(Color.white)
                                     .cornerRadius(10)
-                                    .shadow(radius: 5)
+                                    .shadow(color: .gray.opacity(0.5), radius: 5)
                                     .onTapGesture {
                                         let vc = TextDisplayViewController()
                                         vc.title = model.title

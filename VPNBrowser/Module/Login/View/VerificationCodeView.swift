@@ -93,6 +93,8 @@ struct VerificationCodeView: View {
                     break
                 }
 
+                S.Config.isLogin = true
+                
                 LoginManager.shared.loginInfo = model
 
                 DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)

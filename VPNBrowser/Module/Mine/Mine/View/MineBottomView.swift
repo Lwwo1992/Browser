@@ -52,7 +52,11 @@ struct MineBottomView: View {
         var vc = ViewController()
         switch item {
         case .accountSecurity:
-            vc = SecurityViewController()
+            if S.Config.isLogin {
+                vc = SecurityViewController()
+            } else {
+                vc = LoginViewController()
+            }
         case .searchBrowse:
             vc = SearchBrowseViewController()
         case .cloudSync:

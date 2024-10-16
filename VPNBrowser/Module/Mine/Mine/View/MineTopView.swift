@@ -5,8 +5,8 @@
 //  Created by xyxy on 2024/10/8.
 //
 
-import SwiftUI
 import Kingfisher
+import SwiftUI
 
 struct MineTopView: View {
     @ObservedObject var loginManager = LoginManager.shared
@@ -30,7 +30,7 @@ struct MineTopView: View {
 //                                .clipShape(Circle())
 //                        }
                 }
-                 
+
                 VStack(alignment: .leading, spacing: 5) {
                     Text(loginManager.loginInfo?.account ?? "游客登录")
                         .font(.system(size: 18))
@@ -40,7 +40,7 @@ struct MineTopView: View {
                         .foregroundColor(.gray)
                 }
                 .onTapGesture {
-                    if LoginManager.shared.loginInfo == nil {
+                    if S.Config.isLogin {
                         Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
                     }
                 }
