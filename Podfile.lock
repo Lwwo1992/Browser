@@ -1,18 +1,16 @@
 PODS:
-  - AWSAuthCore (2.24.5):
-    - AWSCore (= 2.24.5)
-  - AWSCognitoIdentityProvider (2.24.5):
-    - AWSCognitoIdentityProviderASF (= 2.24.5)
-    - AWSCore (= 2.24.5)
-  - AWSCognitoIdentityProviderASF (2.24.5)
-  - AWSCore (2.24.5)
-  - AWSMobileClient (2.24.5):
-    - AWSAuthCore (= 2.24.5)
-    - AWSCognitoIdentityProvider (= 2.24.5)
-    - AWSCognitoIdentityProviderASF (= 2.24.5)
-    - AWSCore (= 2.24.5)
-  - AWSS3 (2.24.5):
-    - AWSCore (= 2.24.5)
+  - AWSAuthCore (2.15.3):
+    - AWSCore (= 2.15.3)
+  - AWSCognitoIdentityProvider (2.15.3):
+    - AWSCognitoIdentityProviderASF (= 1.0.2)
+    - AWSCore (= 2.15.3)
+  - AWSCognitoIdentityProviderASF (1.0.2)
+  - AWSCore (2.15.3)
+  - AWSMobileClient (2.15.3):
+    - AWSAuthCore (= 2.15.3)
+    - AWSCognitoIdentityProvider (= 2.15.3)
+  - AWSS3 (2.15.3):
+    - AWSCore (= 2.15.3)
   - BlueCryptor (1.0.32)
   - BlueECC (1.2.5)
   - BlueRSA (1.0.200)
@@ -29,8 +27,8 @@ PODS:
     - LoggerAPI (~> 1.7)
 
 DEPENDENCIES:
-  - AWSMobileClient (~> 2.24.0)
-  - AWSS3 (~> 2.24.0)
+  - AWSMobileClient (~> 2.15.1)
+  - AWSS3 (~> 2.15.1)
   - SwiftJWT
 
 SPEC REPOS:
@@ -50,12 +48,12 @@ SPEC REPOS:
     - SwiftJWT
 
 SPEC CHECKSUMS:
-  AWSAuthCore: 73f2e518d32f094b656fea905651bc3288ef05c0
-  AWSCognitoIdentityProvider: d32ff306a4d3aafcdc42ce40bd36e44d3f274201
-  AWSCognitoIdentityProviderASF: 1ccfe4092b617de54f203c1b728e7be6f49716c1
-  AWSCore: 2d4b06b24e2f882deec23567438195818b16a3f2
-  AWSMobileClient: 72e55c9c7162516feab354aa67f4d38dcecdcfc7
-  AWSS3: 44a55115c5767e945049395584b747144e82d423
+  AWSAuthCore: 598e8eb56e12799877414d10b04598de12a15992
+  AWSCognitoIdentityProvider: 4a721292eda37a8c3ef451e8fec28abe14aff18e
+  AWSCognitoIdentityProviderASF: 0fb6ea671c05a63276e320726f680cd880522442
+  AWSCore: 5a8f9d7461dbe5ea6a5473c41cf113b687e19136
+  AWSMobileClient: 5c29678413764ee3bcd528421331deb0a35b72fb
+  AWSS3: 04a7e689791b382d2d1e29cda6852048e0555635
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
@@ -64,6 +62,6 @@ SPEC CHECKSUMS:
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
 
-PODFILE CHECKSUM: 728cd144a4dc4e60c8506fd068929b157be06c66
+PODFILE CHECKSUM: 12695c4217f7fd56ed0d436d74cd599fefb50295
 
 COCOAPODS: 1.15.2

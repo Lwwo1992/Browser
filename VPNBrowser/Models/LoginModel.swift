@@ -13,6 +13,7 @@ class LoginModel: BaseModel, TableCodable {
     var account: String?
     var mobile = ""
     var mailbox = ""
+    var userHead = ""
 
     enum CodingKeys: String, CodingTableKey {
         typealias Root = LoginModel

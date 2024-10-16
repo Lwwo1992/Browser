@@ -89,11 +89,35 @@ struct SecurityView: View {
         switch item {
         case .avatar:
             isShowingActionSheet = true
+            
+        case .nickname:
+            Util.topViewController().navigationController?.pushViewController(ChangeNicknameViewController(), animated: true)
+        case .phoneNumber, .email:
+            let vc = BindingViewController()
+            vc.type = item == .phoneNumber ? .mobile : .mailbox
+            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+        case .logout:
+            logout()
         default:
             break
         }
     }
 
+    private func logout() {
+            HUD.showLoading()
+            APIProvider.shared.request(.logout) { result in
+                HUD.hideNow()
+                switch result {
+                case .success:
+                    LoginManager.shared.loginInfo = nil
+                    DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+                    Util.topViewController().navigationController?.popToRootViewController(animated: true)
+                case let .failure(error):
+                    print("Request failed with error: \(error)")
+                }
+            }
+        }
+    
     private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
 
         
@@ -109,25 +133,31 @@ struct SecurityView: View {
     
     private func UpdateImageInfo(urlStr:String){
         
-        
-        
-        APIProvider.shared.request(.uploadConfig(image: selectedImage ?? UIImage()), model: UpdateHeadInfo.self) { result in
+        APIProvider.shared.request(.uploadConfig,model: UpdateHeadInfo.self) { result in
             switch result {
             case .success(let response):
                 
                 // 处理响应
-                let m = response 
+                let m = response
                 
- 
                 let s3Client = S3ClientUtils(accessKey: m.accessKey, secretKey: m.secretKey, token: m.token, endpoint: m.endpoint)
               
-                s3Client.upload(filePath: urlStr, model:m)
+                
+                s3Client.uploadImageToS3(filePath: urlStr, model: m) { imgUrl, error in
+                    LoginManager.shared.loginInfo?.userHead = imgUrl ?? ""
+                    
+                    updateUserInfo(imgUrl: imgUrl ?? "")
+                    
+                    
+                }
                 
                 
             case .failure(let error):
                 print("请求失败，错误：\(error)")
             }
         }
+        
+         
     
     }
     
@@ -146,6 +176,24 @@ struct SecurityView: View {
             return nil
         }
     }
+    
+    
+    private func updateUserInfo(imgUrl:String) {
+        HUD.showLoading()
+        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "")) {
+            result in
+               HUD.hideNow()
+               switch result {
+               case .success:
+                   HUD.showTipMessage("修改成功")
+                   Util.topViewController().navigationController?.popToRootViewController(animated: true)
+               case let .failure(error):
+                   print("Request failed with error: \(error)")
+               }
+        }
+        
+    }
+
 }
 
 #Preview {

@@ -59,8 +59,13 @@ extension AppDelegate {
                     if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
                        let data = json["data"] as? [String: Any],
                        let token = data["token"] as? String {
+                        if LoginManager.shared.loginInfo == nil {
+                            LoginManager.shared.loginInfo = LoginModel()
+                        }
+                        
                         LoginManager.shared.loginInfo?.token = token
-
+                        
+                        print("LoginManager.shared.loginInfo?.token--%@",LoginManager.shared.loginInfo?.token as Any)
                         // 继续执行其他接口请求
                         self.fetchConfigByType()
                         self.fetchAnonymousConfig()
@@ -82,6 +87,7 @@ extension AppDelegate {
     }
 
     private func fetchConfigByType() {
+        print("LoginManager.shared.loginInfo?.token--%@",LoginManager.shared.loginInfo?.token as Any)
         APIProvider.shared.request(.getConfigByType(data: 1), model: ConfigByTypeModel.self) { result in
             switch result {
             case let .success(model):

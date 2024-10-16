@@ -60,7 +60,8 @@ enum APITarget {
     case editUserInfo(headPortrait: String, name: String)
 
     /// 上传
-    case uploadConfig(image: UIImage)
+//    case uploadConfig(image: UIImage)
+    case uploadConfig
 
     case rankingPage
 
@@ -116,7 +117,7 @@ extension APITarget: TargetType {
         case .rankingPage:
             return "/browser/app/visitorAccess/rankingPage"
         case .editUserInfo:
-            return "/browser/app/visitorAccess/edit"
+            return "/browser/app/browserAccount/edit"
         case .uploadConfig:
             return "/browser/app/visitorAccess/config"
  
@@ -167,13 +168,13 @@ extension APITarget: TargetType {
 
             parameters = ["data": data]
 
-        case .logout, .anonymousConfig:
+        case .logout, .anonymousConfig,.uploadConfig:
             break
-        case let .uploadConfig(image):
-            let imageData = image.jpegData(compressionQuality: 0.5) // 你可以选择 PNG 或 JPEG 格式
-            return .uploadMultipart([
-                MultipartFormData(provider: .data(imageData!), name: "file", fileName: "image.jpg", mimeType: "image/jpeg"),
-            ])
+//        case let .uploadConfig(image):
+//            let imageData = image.jpegData(compressionQuality: 0.5) // 你可以选择 PNG 或 JPEG 格式
+//            return .uploadMultipart([
+//                MultipartFormData(provider: .data(imageData!), name: "file", fileName: "image.jpg", mimeType: "image/jpeg"),
+//            ])
 
         case .guideLabelPage:
             let data: [String: Any] = [
@@ -198,11 +199,11 @@ extension APITarget: TargetType {
 
     var headers: [String: String]? {
         switch self {
-        case .uploadConfig:
-            return [
-                "Content-Type": "multipart/form-data",
-                "AuthorizationApp": LoginManager.shared.loginInfo?.token ?? "",
-            ]
+//        case .uploadConfig:
+//            return [
+//                "Content-Type": "multipart/form-data",
+//                "AuthorizationApp": LoginManager.shared.loginInfo?.token ?? "",
+//            ]
         case .guideAppPage, .guideLabelPage:
             return [
                 "Content-Type": "application/json",

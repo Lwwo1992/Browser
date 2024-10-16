@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MineTopView: View {
     @ObservedObject var loginManager = LoginManager.shared
@@ -15,11 +16,21 @@ struct MineTopView: View {
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
+                if let userHead = loginManager.loginInfo?.userHead {
+                    KFImage(URL(string: userHead))
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+//                        .placeholder {
+//                            Image("default_image") // 替换为你项目中的默认图片名
+//                                .resizable()
+//                                .scaledToFill()
+//                                .frame(width: 40, height: 40)
+//                                .clipShape(Circle())
+//                        }
+                }
+                 
                 VStack(alignment: .leading, spacing: 5) {
                     Text(loginManager.loginInfo?.account ?? "游客登录")
                         .font(.system(size: 18))
