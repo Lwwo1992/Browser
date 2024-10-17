@@ -16,16 +16,38 @@ class DownloadViewController: ViewController {
         return AnyView(DownloadView(viewModel: viewModel))
     }
 
+    private lazy var editButton = Button().then {
+        $0.title("编辑")
+            .titleFont(.systemFont(ofSize: 14))
+            .tapAction = { [weak self] in
+                guard let self else { return }
+                self.editAction()
+            }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewModel.$selectedFileUrl
             .dropFirst()
-            .sink { [weak self] fileUrl in
+            .sink { fileUrl in
+                guard var components = URLComponents(url: fileUrl, resolvingAgainstBaseURL: false) else { return }
+
+                components.scheme = "shareddocuments"
+
+                guard let newURL = components.url else { return }
+
+                if UIApplication.shared.canOpenURL(newURL) {
+                    UIApplication.shared.open(newURL)
+                }
+            }
+            .store(in: &cancellables)
+
+        viewModel.$isEdit
+            .dropFirst()
+            .sink { [weak self] value in
                 guard let self else { return }
-                let documentInteractionController = UIDocumentInteractionController(url: fileUrl)
-                documentInteractionController.delegate = self
-                documentInteractionController.presentPreview(animated: true)
+                editButton.title(!value ? "编辑" : "删除")
             }
             .store(in: &cancellables)
     }
@@ -35,11 +57,33 @@ extension DownloadViewController {
     override func initUI() {
         super.initUI()
         title = "下载管理"
-    }
-}
 
-extension DownloadViewController: UIDocumentInteractionControllerDelegate {
-    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
-        return self
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: editButton)
+    }
+
+    private func editAction() {
+        viewModel.isEdit.toggle()
+        if viewModel.isEdit == false && !viewModel.selectedArray.isEmpty {
+            showDeleteConfirmation()
+        }
+    }
+
+    private func showDeleteConfirmation() {
+        let alert = UIAlertController(
+            title: "确认删除",
+            message: "您确定要删除选中的项目吗？",
+            preferredStyle: .alert
+        )
+
+        let deleteAction = UIAlertAction(title: "删除", style: .destructive) { _ in
+            self.viewModel.deleteSelectedItems()
+        }
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true, completion: nil)
     }
 }
