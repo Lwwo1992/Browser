@@ -148,9 +148,12 @@ struct SecurityView: View {
                 let s3Client = S3ClientUtils(accessKey: m.accessKey, secretKey: m.secretKey, token: m.token, endpoint: m.endpoint)
 
                 s3Client.uploadImageToS3(filePath: urlStr, model: m) { imgUrl, _ in
-                    LoginManager.shared.info.userHead = imgUrl ?? ""
 
-                    updateUserInfo(imgUrl: imgUrl ?? "")
+                    if let imgUrl, !imgUrl.isEmpty {
+                        LoginManager.shared.info.headPortrait = imgUrl
+
+                        updateUserInfo(imgUrl: imgUrl)
+                    }
                 }
 
             case let .failure(error):
