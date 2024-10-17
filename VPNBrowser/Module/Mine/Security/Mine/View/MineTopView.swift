@@ -7,33 +7,32 @@
 
 import Kingfisher
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MineTopView: View {
     @ObservedObject var loginManager = LoginManager.shared
+ 
+    @State var model:LoginModel = LoginModel()
+    
+    
+
     @State private var historyNumber: String = "0"
     @State private var collectNumber: String = "0"
     @State private var downloadNumber: String = "0"
 
+
     var body: some View {
         VStack {
             HStack {
-                if let userHead = loginManager.loginInfo?.userHead {
-                    KFImage(URL(string: userHead))
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-//                        .placeholder {
-//                            Image("default_image") // 替换为你项目中的默认图片名
-//                                .resizable()
-//                                .scaledToFill()
-//                                .frame(width: 40, height: 40)
-//                                .clipShape(Circle())
-//                        }
-                }
-
+                
+                
+                WebImage(url: URL(string: model.headPortrait))
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(loginManager.loginInfo?.account ?? "游客登录")
+                    Text(loginManager.loginInfo.account ?? "游客登录")
                         .font(.system(size: 18))
                         .font(.system(size: 18))
                     Text("已经陪伴你8天")

@@ -56,7 +56,7 @@ enum APITarget {
     case updateEmailOrMobile(credential: String, identifier: String, type: Int)
 
     /// 编辑用户资料
-    case editUserInfo(headPortrait: String, name: String)
+    case editUserInfo(headPortrait: String, name: String,id :String)
 
     /// 上传
 //    case uploadConfig(image: UIImage)
@@ -78,6 +78,9 @@ enum APITarget {
 
     case downloadFile(url: String)
     case fileSize(url: String)
+    ///查询用户信息
+    case browserAccount(userId:String)
+    
 }
 
 extension APITarget: TargetType {
@@ -129,6 +132,8 @@ extension APITarget: TargetType {
             return "/browser/app/anonymous/generateVisitorToken"
         case let .downloadFile(url), let .fileSize(url):
             return url
+        case .browserAccount(let id):
+            return "/browser/app/browserAccount/\(id)"
         }
     }
 
@@ -139,7 +144,7 @@ extension APITarget: TargetType {
 
         case .fileSize:
             return .head
-        case .downloadFile:
+        case .downloadFile,.browserAccount:
             return .get
         }
     }
@@ -162,10 +167,11 @@ extension APITarget: TargetType {
         case let .login(credential, identifier, type),
              let .updateEmailOrMobile(credential, identifier, type),
              let .checkValidCode(credential, identifier, type):
-            let data: [String: Any] = ["credential": credential, "identifier": identifier, "type": type]
+            let uuid = UIDevice.current.identifierForVendor?.uuidString ?? ""
+            let data: [String: Any] = ["credential": credential, "identifier": identifier, "type": type , "deviceId":uuid]
             parameters = ["data": data]
 
-        case let .editUserInfo(headPortrait, name):
+        case let .editUserInfo(headPortrait, name , id):
             var data: [String: Any] = [:]
 
             // 直接判断字符串是否为空
@@ -176,10 +182,13 @@ extension APITarget: TargetType {
                 data["name"] = name
             }
 
+            data["id"] = id
             parameters = ["data": data]
 
         case .logout, .anonymousConfig, .uploadConfig:
             break
+        case .browserAccount:
+            return .requestPlain
 
         case .guideLabelPage:
             let data: [String: Any] = [
@@ -198,6 +207,7 @@ extension APITarget: TargetType {
             let data: [String: Any] = [:]
             parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": 10]
         case .generateVisitorToken:
+ 
             if let uuid = UIDevice.current.identifierForVendor?.uuidString {
                 parameters = ["data": ["deviceId": uuid]]
             }
@@ -221,9 +231,16 @@ extension APITarget: TargetType {
                 "ClientAuthorization": TokenGenerator.generateTokenGuide(),
             ]
         default:
+            let model = LoginManager.shared.fetchUserModel()
+                var token = ""
+                if model.logintype == "0"{
+                    token  = LoginManager.shared.loginInfo.vistoken ?? ""
+                }else{
+                    token = model.token ?? ""
+                }
             return [
                 "Content-Type": "application/json",
-                "AuthorizationApp": LoginManager.shared.loginInfo?.token ?? "",
+                "AuthorizationApp":  token
             ]
         }
     }

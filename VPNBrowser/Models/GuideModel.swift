@@ -70,6 +70,7 @@ class GuideViewModel: ObservableObject {
 }
 
 class GuideItem: BaseModel {
+    var id: String?
     var name: String?
     var icon: String?
     var downloadUrl: String?

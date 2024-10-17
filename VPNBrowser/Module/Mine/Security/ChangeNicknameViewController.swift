@@ -26,7 +26,7 @@ class ChangeNicknameViewController: ViewController {
     
     private lazy var textField = TextField().then {
         $0.placeholder = "用户昵称"
-        $0.text = LoginManager.shared.loginInfo?.account
+        $0.text = LoginManager.shared.fetchUserModel().name
         $0.backgroundColor = UIColor.white
         $0.font = UIFont.systemFont(ofSize: 14)
         $0.layer.cornerRadius = 8
@@ -69,12 +69,21 @@ extension ChangeNicknameViewController{
     
         private func updateUserInfo() {
             HUD.showLoading()
-            APIProvider.shared.request(.editUserInfo(headPortrait: "", name: textField.text ?? "")) {[weak self]
+            APIProvider.shared.request(.editUserInfo(headPortrait: "", name: textField.text ?? "",id: LoginManager.shared.fetchUserModel().id)) {[weak self]
                 result in
                    HUD.hideNow()
                    switch result {
                    case .success:
                        HUD.showTipMessage("修改成功")
+                       
+                       let model = LoginManager.shared.fetchUserModel()
+                       model.name = self?.textField.text ?? ""
+                       
+                       DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.name], with: model)
+                       
+                     let query =  LoginManager.shared.fetchUserModel()
+                       print("query--%@",query.name)
+                       
                        self?.navigationController?.popToRootViewController(animated: true)
                    case let .failure(error):
                        print("Request failed with error: \(error)")
