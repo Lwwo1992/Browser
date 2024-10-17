@@ -102,12 +102,32 @@ struct SecurityView: View {
 
         case .nickname:
             Util.topViewController().navigationController?.pushViewController(ChangeNicknameViewController(), animated: true)
-        case .phoneNumber, .email:
-            let vc = BindingViewController()
-            vc.type = item == .phoneNumber ? .mobile : .mailbox
-            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+        case .phoneNumber:
+            if LoginManager.shared.info.mobile.isEmpty {
+                let vc = ReplaceBindingViewController()
+                vc.acctype = .mobile
+                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = BindingViewController()
+                vc.type = .mobile
+                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+            }
+        case .email:
+            if LoginManager.shared.info.mailbox.isEmpty {
+                let vc = ReplaceBindingViewController()
+                vc.acctype = .mailbox
+                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let vc = BindingViewController()
+                vc.type = .mailbox
+                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+            }
         case .logout:
             logout()
+        case .account:
+            let vc = AccountViewController()
+            vc.title = item.rawValue
+            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         default:
             break
         }
@@ -119,8 +139,17 @@ struct SecurityView: View {
             HUD.hideNow()
             switch result {
             case .success:
-                LoginManager.shared.info = LoginModel()
-                DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+                let model = LoginModel()
+                model.logintype = "0"
+                model.token = "0"
+                LoginManager.shared.info = model
+                DBaseManager.share.updateToDb(table: S.Table.loginInfo,
+                                              on: [LoginModel.Properties.logintype,
+                                                   LoginModel.Properties.token,
+                                              ],
+                                              with: model)
+
+                Util.topViewController().navigationController?.popToRootViewController(animated: true)
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }

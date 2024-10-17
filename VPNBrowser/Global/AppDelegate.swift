@@ -52,11 +52,10 @@ extension AppDelegate {
         DBaseManager.share.createTable(table: S.Table.download, of: DownloadModel.self)
     }
 
-    func initConfig(completion: ((Bool) -> Void)? = nil) {
+    func initConfig() {
         if LoginManager.shared.info.logintype == "1" {
             fetchConfigByType()
             fetchAnonymousConfig()
-            completion?(true)
         } else {
             HUD.showLoading()
             APIProvider.shared.request(.generateVisitorToken, progress: { _ in
@@ -77,8 +76,8 @@ extension AppDelegate {
                            let userId = data["id"] as? String {
                             let model = LoginModel()
                             model.id = userId
-                            model.token = token
                             model.logintype = "0"
+                            model.vistoken = token
 
                             LoginManager.shared.info = model
 
@@ -86,7 +85,7 @@ extension AppDelegate {
                                 DBaseManager.share.updateToDb(table: S.Table.loginInfo,
                                                               on: [
                                                                   LoginModel.Properties.id,
-                                                                  LoginModel.Properties.token,
+                                                                  LoginModel.Properties.vistoken,
                                                                   LoginModel.Properties.logintype,
                                                               ],
                                                               with: model)
@@ -97,21 +96,17 @@ extension AppDelegate {
                             // 配置获取成功
                             self.fetchConfigByType()
                             self.fetchAnonymousConfig()
-                            completion?(true)
 
                         } else {
                             print("无法提取 token")
-                            completion?(false) // 提取 token 失败
                         }
                     } catch {
                         HUD.showTipMessage(error.localizedDescription)
                         print("JSON 解析失败: \(error)")
-                        completion?(false) // JSON 解析失败
                     }
 
                 case let .failure(error):
                     print("请求失败: \(error)")
-                    completion?(false) // 请求失败
                 }
             }
         }

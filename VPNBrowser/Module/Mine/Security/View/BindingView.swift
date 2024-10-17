@@ -47,10 +47,10 @@ struct BindingView: View {
     }
 
     private func getBindingText(for type: AccountType) -> String {
-        let accountInfo = type == .mobile ? LoginManager.shared.fetchUserModel().mobile : LoginManager.shared.fetchUserModel().mailbox
+        let accountInfo = type == .mobile ? LoginManager.shared.info.mobile : LoginManager.shared.info.mailbox
         let accountTypeText = type == .mobile ? "手机号" : "邮箱"
 
-        let displayAccountInfo = showPassword ? (accountInfo) : (accountInfo.maskedAccount)
+        let displayAccountInfo = showPassword ? accountInfo : (accountInfo.maskedAccount)
 
         return "已绑定\(accountTypeText): \(displayAccountInfo)"
     }

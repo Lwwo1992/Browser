@@ -27,24 +27,26 @@ class LoginManager: ObservableObject {
         }
     }
 
-    static func fetchUserInfo() {
-        if LoginManager.shared.info.logintype == "1" {
-            APIProvider.shared.request(.browserAccount(userId: LoginManager.shared.info.id), model: LoginModel.self) { result in
-                switch result {
-                case let .success(model):
-                    DBaseManager.share.updateToDb(table: S.Table.loginInfo,
-                                                  on: [
-                                                      LoginModel.Properties.name,
-                                                      LoginModel.Properties.account,
-                                                      LoginModel.Properties.mailbox,
-                                                      LoginModel.Properties.mobile,
-                                                      LoginModel.Properties.createTime,
-                                                  ],
-                                                  with: model)
-
-                case let .failure(error):
-                    print("Request failed with error: \(error)")
+    func fetchUserInfo(_ userID: String = LoginManager.shared.info.id) {
+        APIProvider.shared.request(.browserAccount(userId: userID), model: LoginModel.self) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(model):
+                DBaseManager.share.updateToDb(table: S.Table.loginInfo,
+                                              on: [
+                                                  LoginModel.Properties.name,
+                                                  LoginModel.Properties.account,
+                                                  LoginModel.Properties.mailbox,
+                                                  LoginModel.Properties.mobile,
+                                                  LoginModel.Properties.createTime,
+                                              ],
+                                              with: model)
+                if let info = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self)?.first {
+                    self.info = info
                 }
+
+            case let .failure(error):
+                print("Request failed with error: \(error)")
             }
         }
     }

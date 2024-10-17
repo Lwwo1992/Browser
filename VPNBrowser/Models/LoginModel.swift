@@ -8,8 +8,8 @@
 import UIKit
 
 class LoginModel: BaseModel, TableCodable {
-    var token: String?
-    var vistoken: String?
+    var token: String = ""
+    var vistoken: String = ""
     var memberKey: String?
     var account: String?
     var mobile = ""
@@ -25,7 +25,7 @@ class LoginModel: BaseModel, TableCodable {
     var deviceId = ""
     var gender = ""
     var headPortrait = ""
-    var name = ""
+    var name: String?
     var state = ""
     var updateBy = ""
     var updateTime = ""

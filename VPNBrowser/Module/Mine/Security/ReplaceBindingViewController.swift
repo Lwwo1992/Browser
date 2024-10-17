@@ -8,14 +8,10 @@
 import UIKit
 
 class ReplaceBindingViewController: ViewController {
-    
-    var acctype:AccountType = .mailbox
+    var acctype: AccountType = .mailbox
+
     override var rootView: AnyView? {
-        
-        var v = ReplaceBindingView()
-        v.type = acctype
-        
-        return AnyView(v)
+        return AnyView(ReplaceBindingView(type: acctype))
     }
 
     override func viewDidLoad() {

@@ -80,6 +80,9 @@ enum APITarget {
     case fileSize(url: String)
     /// 查询用户信息
     case browserAccount(userId: String)
+
+    /// 忘记密码
+    case forgetPassword(password: String)
 }
 
 extension APITarget: TargetType {
@@ -90,8 +93,8 @@ extension APITarget: TargetType {
             // "http://guide-api.saas-xy.com:86" //测试环境
             return URL(string: "http://guide-api.saas-xy.com:86")!
         default:
-//            return URL(string: "https://browser-api.xiwshijieheping.com")!
-            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
+            return URL(string: "https://browser-api.xiwshijieheping.com")!
+//            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
         }
     }
 
@@ -110,7 +113,7 @@ extension APITarget: TargetType {
         case .login:
             return "/browser/app/visitorAccess/login"
         case .checkValidCode:
-            return "/browser/app/visitorAccess/checkValidCode"
+            return "/browser/app/browserAccount/checkValidCode"
         case .enginePage:
             return "/browser/app/visitorAccess/enginePage"
         case .logout:
@@ -133,12 +136,14 @@ extension APITarget: TargetType {
             return url
         case let .browserAccount(id):
             return "/browser/app/browserAccount/\(id)"
+        case let .forgetPassword:
+            return "/browser/app/browserAccount/forgetPassword"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword:
             return .post
 
         case .fileSize:
@@ -184,8 +189,6 @@ extension APITarget: TargetType {
             data["id"] = id
             parameters = ["data": data]
 
-        case .logout, .anonymousConfig, .uploadConfig:
-            break
         case .browserAccount:
             return .requestPlain
 
@@ -210,7 +213,10 @@ extension APITarget: TargetType {
             if let uuid = UIDevice.current.identifierForVendor?.uuidString {
                 parameters = ["data": ["deviceId": uuid]]
             }
-        case .logout, .anonymousConfig, .fileSize, .downloadFile:
+        case let .forgetPassword(password):
+            parameters = ["data": ["newPassword": password]]
+
+        case .logout, .anonymousConfig, .uploadConfig, .fileSize, .downloadFile:
             break
         }
 
@@ -225,9 +231,15 @@ extension APITarget: TargetType {
                 "ClientAuthorization": TokenGenerator.generateTokenGuide(),
             ]
         default:
+            var token = ""
+            if LoginManager.shared.info.logintype == "0" {
+                token = LoginManager.shared.info.vistoken
+            } else {
+                token = LoginManager.shared.info.token
+            }
             return [
                 "Content-Type": "application/json",
-                "AuthorizationApp": LoginManager.shared.info.token ?? "",
+                "AuthorizationApp": token,
             ]
         }
     }

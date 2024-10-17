@@ -84,7 +84,9 @@ struct VerificationCodeView: View {
             case let .success(model):
 
                 model.logintype = "1"
+                
                 LoginManager.shared.info = model
+
                 DBaseManager.share.updateToDb(table: S.Table.loginInfo,
                                               on: [
                                                   LoginModel.Properties.id,
@@ -92,6 +94,8 @@ struct VerificationCodeView: View {
                                                   LoginModel.Properties.logintype,
                                               ],
                                               with: model)
+
+                LoginManager.shared.fetchUserInfo(model.id)
 
                 Util.topViewController().navigationController?.popToRootViewController(animated: true)
 

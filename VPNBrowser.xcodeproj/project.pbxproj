@@ -72,6 +72,11 @@
 		44984FF62CC0E7E300158380 /* MineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FEF2CC0E7E300158380 /* MineView.swift */; };
 		44984FF72CC0E7E300158380 /* MineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FF02CC0E7E300158380 /* MineViewModel.swift */; };
 		44984FF82CC0E7E300158380 /* MineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FF22CC0E7E300158380 /* MineViewController.swift */; };
+		44984FFA2CC129FB00158380 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FF92CC129FB00158380 /* AccountViewController.swift */; };
+		44984FFC2CC12A0800158380 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FFB2CC12A0800158380 /* AccountView.swift */; };
+		44984FFE2CC12B5D00158380 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FFD2CC12B5D00158380 /* ChangePasswordViewController.swift */; };
+		449850002CC12BA800158380 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FFF2CC12BA800158380 /* ChangePasswordView.swift */; };
+		449850022CC130AE00158380 /* ForgotPasswordBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449850012CC130AE00158380 /* ForgotPasswordBottomSheet.swift */; };
 		44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 44AA507E2CB4DDB4005EBC36 /* WTool */; };
 		44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50802CB4DF83005EBC36 /* TabBarController.swift */; };
 		44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */; };
@@ -191,6 +196,11 @@
 		44984FEF2CC0E7E300158380 /* MineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineView.swift; sourceTree = "<group>"; };
 		44984FF02CC0E7E300158380 /* MineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineViewModel.swift; sourceTree = "<group>"; };
 		44984FF22CC0E7E300158380 /* MineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineViewController.swift; sourceTree = "<group>"; };
+		44984FF92CC129FB00158380 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		44984FFB2CC12A0800158380 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		44984FFD2CC12B5D00158380 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		44984FFF2CC12BA800158380 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
+		449850012CC130AE00158380 /* ForgotPasswordBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordBottomSheet.swift; sourceTree = "<group>"; };
 		44AA50802CB4DF83005EBC36 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		44AA50842CB4E007005EBC36 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
@@ -490,6 +500,8 @@
 				44AA50972CB522BE005EBC36 /* ChangeNicknameViewController.swift */,
 				44AA509C2CB53649005EBC36 /* BindingViewController.swift */,
 				440F93232CBCABFD00D94AD0 /* ReplaceBindingViewController.swift */,
+				44984FF92CC129FB00158380 /* AccountViewController.swift */,
+				44984FFD2CC12B5D00158380 /* ChangePasswordViewController.swift */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -500,6 +512,9 @@
 				44AA50952CB510C5005EBC36 /* SecurityView.swift */,
 				446009F82CBAAA530085DC74 /* BindingView.swift */,
 				440F93252CBCAC6C00D94AD0 /* ReplaceBindingView.swift */,
+				44984FFB2CC12A0800158380 /* AccountView.swift */,
+				44984FFF2CC12BA800158380 /* ChangePasswordView.swift */,
+				449850012CC130AE00158380 /* ForgotPasswordBottomSheet.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -800,14 +815,17 @@
 			files = (
 				44AA664F2CB62A0500E4253F /* FootprintViewController.swift in Sources */,
 				44DA8E262CB6645F003B1C34 /* CloudSyncView.swift in Sources */,
+				44984FFA2CC129FB00158380 /* AccountViewController.swift in Sources */,
 				446009DF2CBA251F0085DC74 /* BaseModel.swift in Sources */,
 				446009E52CBA6D790085DC74 /* LoginManager.swift in Sources */,
 				8CEB245C2CBD3B35006F8485 /* BroAESCipher.swift in Sources */,
 				444C93642CB4D8F50092FECB /* AppDelegate.swift in Sources */,
 				440F932A2CBCC5BB00D94AD0 /* BrowserWebView.swift in Sources */,
+				44984FFC2CC12A0800158380 /* AccountView.swift in Sources */,
 				44AA50982CB522BE005EBC36 /* ChangeNicknameViewController.swift in Sources */,
 				44DA8E362CB68565003B1C34 /* AboutView.swift in Sources */,
 				44984FDC2CBFD2B700158380 /* DownloadModel.swift in Sources */,
+				44984FFE2CC12B5D00158380 /* ChangePasswordViewController.swift in Sources */,
 				4486C9042CBE98840024381A /* MoreGuideViewController.swift in Sources */,
 				44984E482CBF575100158380 /* DownloadViewController.swift in Sources */,
 				440F93242CBCABFD00D94AD0 /* ReplaceBindingViewController.swift in Sources */,
@@ -845,6 +863,7 @@
 				446009F72CBAA39B0085DC74 /* FlowLayout.swift in Sources */,
 				44CF209D2CB8C46000772B9C /* APIProvider.swift in Sources */,
 				44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */,
+				449850022CC130AE00158380 /* ForgotPasswordBottomSheet.swift in Sources */,
 				440F932F2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift in Sources */,
 				44CF20B62CB9333000772B9C /* S.swift in Sources */,
 				4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */,
@@ -866,6 +885,7 @@
 				44984F352CBFC28100158380 /* NSObject+TFPopupMethodExchange.m in Sources */,
 				4486C9062CBE99320024381A /* MoreGuideView.swift in Sources */,
 				4486C9022CBE96520024381A /* GuideView.swift in Sources */,
+				449850002CC12BA800158380 /* ChangePasswordView.swift in Sources */,
 				44CF20BB2CB942C300772B9C /* AccountLoginViewController.swift in Sources */,
 				444C93662CB4D8F50092FECB /* ViewController.swift in Sources */,
 				446009E92CBA82E70085DC74 /* EngineModel.swift in Sources */,

@@ -74,13 +74,23 @@ struct AccountLoginView: View {
             HUD.hideNow()
             switch result {
             case let .success(model):
-
                 model.logintype = "1"
+                
                 LoginManager.shared.info = model
 
-                HUD.showTipMessage("登录成功")
-                
+                DBaseManager.share.updateToDb(table: S.Table.loginInfo,
+                                              on: [
+                                                  LoginModel.Properties.id,
+                                                  LoginModel.Properties.token,
+                                                  LoginModel.Properties.logintype,
+                                              ],
+                                              with: model)
+
+                LoginManager.shared.fetchUserInfo(model.id)
+
                 Util.topViewController().navigationController?.popToRootViewController(animated: true)
+
+                HUD.showTipMessage("登录成功")
 
             case let .failure(error):
                 print("Request failed with error: \(error)")

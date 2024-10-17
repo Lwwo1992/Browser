@@ -12,23 +12,29 @@ struct GuideView: View {
     @ObservedObject var viewModel = GuideViewModel()
 
     let itemSpacing: CGFloat = 16
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: S.Config.maxAppNum)
     let maxVisibleRows = 2 // 最多展示两排
+
+    // 动态列数
+    var columns: [GridItem] {
+        let totalWidth = UIScreen.main.bounds.width - 32 // 减去两侧的 padding
+        let itemWidth = (totalWidth - CGFloat(S.Config.maxAppNum - 1) * itemSpacing) / CGFloat(S.Config.maxAppNum)
+        return Array(repeating: GridItem(.flexible(minimum: itemWidth), spacing: itemSpacing), count: S.Config.maxAppNum)
+    }
 
     var body: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    ForEach(viewModel.guideSections, id: \.id) { senction in
-                        if let rows = senction.data, !rows.isEmpty {
+                    ForEach(viewModel.guideSections, id: \.id) { section in
+                        if let rows = section.data, !rows.isEmpty {
                             VStack(alignment: .leading) {
                                 HStack {
-                                    KFImage(Util.getCompleteImageUrl(from: senction.icon))
+                                    KFImage(Util.getCompleteImageUrl(from: section.icon))
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: 20, height: 20)
                                         .cornerRadius(5)
-                                    Text(senction.name ?? "")
+                                    Text(section.name ?? "")
                                         .font(.headline)
                                         .padding(.leading, 16)
                                 }
@@ -39,7 +45,7 @@ struct GuideView: View {
 
                                     ForEach(0 ..< displayedRows, id: \.self) { index in
                                         if isMoreAppsButton(index: index, total: displayedRows, rows: rows) {
-                                            moreAppsButton(data: senction)
+                                            moreAppsButton(data: section)
                                         } else {
                                             appCell(for: rows[index])
                                         }
@@ -58,14 +64,16 @@ struct GuideView: View {
         return index == (columns.count * maxVisibleRows - 1) && total < rows.count
     }
 
-    // 应用单元格视图
     @ViewBuilder
     private func appCell(for row: GuideItem) -> some View {
+        let totalWidth = UIScreen.main.bounds.width - 32 // 减去两侧的 padding
+        let itemWidth = (totalWidth - CGFloat(S.Config.maxAppNum - 1) * itemSpacing) / CGFloat(S.Config.maxAppNum)
+
         VStack(spacing: 5) {
             KFImage(Util.getCompleteImageUrl(from: row.icon))
                 .resizable()
                 .scaledToFill()
-                .frame(width: 40, height: 40)
+                .frame(width: itemWidth * 0.4, height: itemWidth * 0.4) // 图标宽高为 item 宽度的 40%
                 .cornerRadius(5)
 
             Text(row.name ?? "")
@@ -79,9 +87,11 @@ struct GuideView: View {
         }
     }
 
-    // "更多应用" 按钮视图
     @ViewBuilder
     private func moreAppsButton(data: GuideResponse) -> some View {
+        let totalWidth = UIScreen.main.bounds.width - 32
+        let itemWidth = (totalWidth - CGFloat(S.Config.maxAppNum - 1) * itemSpacing) / CGFloat(S.Config.maxAppNum)
+
         Button {
             let vc = MoreGuideViewController()
             vc.guideResponse = data
@@ -91,7 +101,7 @@ struct GuideView: View {
                 Image(.more)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 40, height: 40)
+                    .frame(width: itemWidth * 0.4, height: itemWidth * 0.4) // 图标宽高为 item 宽度的 40%
                     .cornerRadius(5)
 
                 Text("更多应用")
@@ -102,7 +112,3 @@ struct GuideView: View {
         }
     }
 }
-
-// #Preview {
-//    GuideView()
-// }

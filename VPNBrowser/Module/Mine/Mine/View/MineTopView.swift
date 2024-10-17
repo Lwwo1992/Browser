@@ -10,7 +10,8 @@ import SDWebImageSwiftUI
 import SwiftUI
 
 struct MineTopView: View {
-    @State private var model = LoginManager.shared.info
+    @StateObject var viewModel = LoginManager.shared
+
     @State private var historyNumber: String = "0"
     @State private var collectNumber: String = "0"
     @State private var downloadNumber: String = "0"
@@ -18,7 +19,7 @@ struct MineTopView: View {
     var body: some View {
         VStack {
             HStack {
-                WebImage(url: URL(string: model.headPortrait)) { image in
+                WebImage(url: URL(string: viewModel.info.headPortrait)) { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -30,21 +31,16 @@ struct MineTopView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(model.account ?? "游客登录")
+                    Text(viewModel.info.name ?? "游客登录")
                         .font(.system(size: 18))
                         .font(.system(size: 18))
-                    Text("已经陪伴你\(model.createTime.daysFromNow)天")
+                    Text("已经陪伴你\(viewModel.info.createTime.daysFromNow)天")
                         .font(.system(size: 12))
                         .foregroundColor(.gray)
                 }
                 .onTapGesture {
                     if LoginManager.shared.info.logintype == "0" {
                         Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
-                    }
-                }
-                .onAppear {
-                    if let model = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self)?.first {
-                        self.model = model
                     }
                 }
 
