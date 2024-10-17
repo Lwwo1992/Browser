@@ -163,7 +163,8 @@ struct SecurityView: View {
               
                 
                 s3Client.uploadImageToS3(filePath: urlStr, model: m) { imgUrl, error in
-                    LoginManager.shared.loginInfo.userHead = imgUrl ?? ""
+                    
+                    LoginManager.shared.loginInfo.headPortrait = imgUrl ?? ""
                     
                     updateUserInfo(imgUrl: imgUrl ?? "")
                     
