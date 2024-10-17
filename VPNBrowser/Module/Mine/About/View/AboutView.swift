@@ -31,7 +31,7 @@ struct AboutView: View {
                 .frame(width: 200)
                 .padding(.top, 20)
 
-            Text("")
+            Text(Util.appVersion())
                 .font(.system(size: 14))
                 .opacity(0.5)
 

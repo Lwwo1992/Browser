@@ -27,15 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //
 //        DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
-//        
+//
 //        let loginInfo: LoginModel =  LoginModel()
 //        loginInfo.id = "1846399316753186818"
 //        loginInfo.loginId = "1846399316753186818"
-//        
-////        DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.id,LoginModel.Properties.loginId], with: loginInfo)
+//
+        ////        DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.id,LoginModel.Properties.loginId], with: loginInfo)
 //        LoginManager.shared.saveLoginInfo(loginInfo)
-        
-        
+
         return true
     }
 }
@@ -43,8 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     private func confing() {
         initTable()
-        
-        
+
         initConfig()
 
         if #available(iOS 13.0, *) {
@@ -65,72 +63,35 @@ extension AppDelegate {
     }
 
     private func initConfig() {
-
-         
-        if S.Config.isLogin{
- 
+        if S.Config.isLogin {
             fetchConfigByType()
             fetchAnonymousConfig()
-             
-        }else{
-            
+
+        } else {
             APIProvider.shared.request(.generateVisitorToken, progress: { _ in
-                
+
             }) { result in
                 switch result {
                 case let .success(response):
                     if let responseString = String(data: response.data, encoding: .utf8) {
                         print("Response: \(responseString)") // 打印响应内容，方便调试
-//=======
-//        APIProvider.shared.request(.generateVisitorToken, progress: { _ in
-//
-//        }) { result in
-//            switch result {
-//            case let .success(response):
-//                if let responseString = String(data: response.data, encoding: .utf8) {
-//                    print("Response: \(responseString)") // 打印响应内容，方便调试
-//                }
-//
-//                do {
-//                    if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
-//                       let data = json["data"] as? [String: Any],
-//                       let token = data["token"] as? String {
-//                        if LoginManager.shared.loginInfo == nil {
-//                            LoginManager.shared.loginInfo = LoginModel()
-//                        }
-//                        LoginManager.shared.loginInfo?.token = token
-//
-//                        print("LoginManager.shared.loginInfo?.token--%@", LoginManager.shared.loginInfo?.token as Any)
-//                        // 继续执行其他接口请求
-//                        self.fetchConfigByType()
-//                        self.fetchAnonymousConfig()
-//                    } else {
-//                        print("无法提取 token")
-//>>>>>>> f52f4de6f7716e1a8bd90862cee532a64305ca34
                     }
-                    
+
                     do {
                         if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
                            let data = json["data"] as? [String: Any],
-                           let token = data["token"] as? String , let userId = data["id"] as? String {
- 
-                            LoginManager.shared.loginInfo.vistoken = token //单例存储
-                            
+                           let token = data["token"] as? String, let userId = data["id"] as? String {
+                            LoginManager.shared.loginInfo.vistoken = token // 单例存储
+
                             let info = LoginManager.shared.fetchUserModel()
                             info.id = userId
                             info.logintype = "0"
-                            
-//                            DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
-//                            LoginManager.shared.saveLoginInfo(info)
-                            
-                            DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.id,LoginModel.Properties.logintype], with: info)
-                            
-                            
-                            
-                            // 继续执行其他接口请求
+
+                            DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.id, LoginModel.Properties.logintype], with: info)
+
                             self.fetchConfigByType()
                             self.fetchAnonymousConfig()
-                            //MineViewModel().fetchdata()
+
                         } else {
                             print("无法提取 token")
                         }
@@ -138,14 +99,12 @@ extension AppDelegate {
                         HUD.showTipMessage(error.localizedDescription)
                         print("JSON 解析失败: \(error)")
                     }
-                    
+
                 case let .failure(error):
                     print("请求失败: \(error)")
                 }
             }
-            
         }
-       
     }
 
     private func fetchConfigByType() {

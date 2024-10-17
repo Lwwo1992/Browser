@@ -6,41 +6,42 @@
 //
 
 import Kingfisher
-import SwiftUI
 import SDWebImageSwiftUI
+import SwiftUI
 
 struct MineTopView: View {
     @ObservedObject var loginManager = LoginManager.shared
- 
-    @State var model:LoginModel = LoginModel()
-    
-    
+
+    @State var model: LoginModel = LoginModel()
 
     @State private var historyNumber: String = "0"
     @State private var collectNumber: String = "0"
     @State private var downloadNumber: String = "0"
 
-
     var body: some View {
         VStack {
             HStack {
-                
-                
-                WebImage(url: URL(string: model.headPortrait))
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
+                WebImage(url: URL(string: model.headPortrait)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                } placeholder: {
+                    Image(systemName: "person.crop.circle.fill")
+                        .font(.system(size: 40))
+                }
+
                 VStack(alignment: .leading, spacing: 5) {
                     Text(loginManager.loginInfo.account ?? "游客登录")
                         .font(.system(size: 18))
                         .font(.system(size: 18))
-                    Text("已经陪伴你8天")
+                    Text("已经陪伴你")
                         .font(.system(size: 12))
                         .foregroundColor(.gray)
                 }
                 .onTapGesture {
-                    if S.Config.isLogin {
+                    if !S.Config.isLogin {
                         Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
                     }
                 }

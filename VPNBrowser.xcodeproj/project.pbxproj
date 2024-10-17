@@ -67,14 +67,15 @@
 		44984FDC2CBFD2B700158380 /* DownloadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FDB2CBFD2B700158380 /* DownloadModel.swift */; };
 		44984FDE2CBFD59600158380 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FDD2CBFD59600158380 /* DownloadView.swift */; };
 		44984FE02CBFEFBE00158380 /* DocumentInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FDF2CBFEFBE00158380 /* DocumentInteractionController.swift */; };
+		44984FF42CC0E7E300158380 /* MineBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FED2CC0E7E300158380 /* MineBottomView.swift */; };
+		44984FF52CC0E7E300158380 /* MineTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FEE2CC0E7E300158380 /* MineTopView.swift */; };
+		44984FF62CC0E7E300158380 /* MineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FEF2CC0E7E300158380 /* MineView.swift */; };
+		44984FF72CC0E7E300158380 /* MineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FF02CC0E7E300158380 /* MineViewModel.swift */; };
+		44984FF82CC0E7E300158380 /* MineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FF22CC0E7E300158380 /* MineViewController.swift */; };
 		44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 44AA507E2CB4DDB4005EBC36 /* WTool */; };
 		44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50802CB4DF83005EBC36 /* TabBarController.swift */; };
 		44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */; };
 		44AA50852CB4E007005EBC36 /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50842CB4E007005EBC36 /* BrowserViewController.swift */; };
-		44AA50872CB4E016005EBC36 /* MineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50862CB4E016005EBC36 /* MineViewController.swift */; };
-		44AA508D2CB50315005EBC36 /* MineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA508C2CB50315005EBC36 /* MineView.swift */; };
-		44AA508F2CB5055F005EBC36 /* MineTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA508E2CB5055F005EBC36 /* MineTopView.swift */; };
-		44AA50912CB5056F005EBC36 /* MineBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50902CB5056F005EBC36 /* MineBottomView.swift */; };
 		44AA50932CB50D37005EBC36 /* SecurityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50922CB50D37005EBC36 /* SecurityViewController.swift */; };
 		44AA50962CB510C5005EBC36 /* SecurityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50952CB510C5005EBC36 /* SecurityView.swift */; };
 		44AA50982CB522BE005EBC36 /* ChangeNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50972CB522BE005EBC36 /* ChangeNicknameViewController.swift */; };
@@ -106,7 +107,6 @@
 		44DA8E332CB6853C003B1C34 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E322CB6853C003B1C34 /* AboutViewController.swift */; };
 		44DA8E362CB68565003B1C34 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E352CB68565003B1C34 /* AboutView.swift */; };
 		44DA8E382CB68750003B1C34 /* OptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E372CB68750003B1C34 /* OptionListView.swift */; };
-		8CC709092CC0CACE008A0FC8 /* MineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC709082CC0CACE008A0FC8 /* MineViewModel.swift */; };
 		8CEB24542CBD3750006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24532CBD3750006F8485 /* WTool */; };
 		8CEB24572CBD3820006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24562CBD3820006F8485 /* WTool */; };
 		8CEB245A2CBD3884006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24592CBD3884006F8485 /* WTool */; };
@@ -186,13 +186,14 @@
 		44984FDB2CBFD2B700158380 /* DownloadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadModel.swift; sourceTree = "<group>"; };
 		44984FDD2CBFD59600158380 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
 		44984FDF2CBFEFBE00158380 /* DocumentInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentInteractionController.swift; sourceTree = "<group>"; };
+		44984FED2CC0E7E300158380 /* MineBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineBottomView.swift; sourceTree = "<group>"; };
+		44984FEE2CC0E7E300158380 /* MineTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineTopView.swift; sourceTree = "<group>"; };
+		44984FEF2CC0E7E300158380 /* MineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineView.swift; sourceTree = "<group>"; };
+		44984FF02CC0E7E300158380 /* MineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineViewModel.swift; sourceTree = "<group>"; };
+		44984FF22CC0E7E300158380 /* MineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineViewController.swift; sourceTree = "<group>"; };
 		44AA50802CB4DF83005EBC36 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		44AA50842CB4E007005EBC36 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
-		44AA50862CB4E016005EBC36 /* MineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineViewController.swift; sourceTree = "<group>"; };
-		44AA508C2CB50315005EBC36 /* MineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineView.swift; sourceTree = "<group>"; };
-		44AA508E2CB5055F005EBC36 /* MineTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineTopView.swift; sourceTree = "<group>"; };
-		44AA50902CB5056F005EBC36 /* MineBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineBottomView.swift; sourceTree = "<group>"; };
 		44AA50922CB50D37005EBC36 /* SecurityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityViewController.swift; sourceTree = "<group>"; };
 		44AA50952CB510C5005EBC36 /* SecurityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityView.swift; sourceTree = "<group>"; };
 		44AA50972CB522BE005EBC36 /* ChangeNicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNicknameViewController.swift; sourceTree = "<group>"; };
@@ -219,7 +220,6 @@
 		44DA8E352CB68565003B1C34 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		44DA8E372CB68750003B1C34 /* OptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionListView.swift; sourceTree = "<group>"; };
 		724979C7A2BC482E06F3B646 /* Pods-VPNBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNBrowser.release.xcconfig"; path = "Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser.release.xcconfig"; sourceTree = "<group>"; };
-		8CC709082CC0CACE008A0FC8 /* MineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineViewModel.swift; sourceTree = "<group>"; };
 		8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroAESCipher.swift; sourceTree = "<group>"; };
 		8CEB245D2CBD530B006F8485 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BAC52216964DC1709C01EEF9 /* Pods-VPNBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNBrowser.debug.xcconfig"; path = "Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser.debug.xcconfig"; sourceTree = "<group>"; };
@@ -415,6 +415,26 @@
 			path = TFPopup;
 			sourceTree = "<group>";
 		};
+		44984FF12CC0E7E300158380 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				44984FEF2CC0E7E300158380 /* MineView.swift */,
+				44984FEE2CC0E7E300158380 /* MineTopView.swift */,
+				44984FED2CC0E7E300158380 /* MineBottomView.swift */,
+				44984FF02CC0E7E300158380 /* MineViewModel.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		44984FF32CC0E7E300158380 /* Mine */ = {
+			isa = PBXGroup;
+			children = (
+				44984FF12CC0E7E300158380 /* View */,
+				44984FF22CC0E7E300158380 /* MineViewController.swift */,
+			);
+			path = Mine;
+			sourceTree = "<group>";
+		};
 		44AA50882CB50160005EBC36 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -440,6 +460,7 @@
 		44AA508A2CB5017B005EBC36 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
+				44984FF32CC0E7E300158380 /* Mine */,
 				44AA50A22CB53742005EBC36 /* Security */,
 				44AA509E2CB536F3005EBC36 /* SearchBrowse */,
 				44DA8E1C2CB663AF003B1C34 /* CloudSync */,
@@ -448,17 +469,6 @@
 				44DA8E212CB663FE003B1C34 /* About */,
 			);
 			path = Mine;
-			sourceTree = "<group>";
-		};
-		44AA508B2CB50195005EBC36 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				44AA508C2CB50315005EBC36 /* MineView.swift */,
-				44AA508E2CB5055F005EBC36 /* MineTopView.swift */,
-				44AA50902CB5056F005EBC36 /* MineBottomView.swift */,
-				8CC709082CC0CACE008A0FC8 /* MineViewModel.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		44AA509E2CB536F3005EBC36 /* SearchBrowse */ = {
@@ -472,15 +482,6 @@
 			path = SearchBrowse;
 			sourceTree = "<group>";
 		};
-		44AA509F2CB5370D005EBC36 /* Mine */ = {
-			isa = PBXGroup;
-			children = (
-				44AA508B2CB50195005EBC36 /* View */,
-				44AA50862CB4E016005EBC36 /* MineViewController.swift */,
-			);
-			path = Mine;
-			sourceTree = "<group>";
-		};
 		44AA50A22CB53742005EBC36 /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -489,7 +490,6 @@
 				44AA50972CB522BE005EBC36 /* ChangeNicknameViewController.swift */,
 				44AA509C2CB53649005EBC36 /* BindingViewController.swift */,
 				440F93232CBCABFD00D94AD0 /* ReplaceBindingViewController.swift */,
-				44AA509F2CB5370D005EBC36 /* Mine */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -815,7 +815,6 @@
 				44984E4A2CBF64D100158380 /* UserGuideViewController.swift in Sources */,
 				446009E12CBA4F8E0085DC74 /* WebView.swift in Sources */,
 				446009F92CBAAA530085DC74 /* BindingView.swift in Sources */,
-				44AA508F2CB5055F005EBC36 /* MineTopView.swift in Sources */,
 				44AA50852CB4E007005EBC36 /* BrowserViewController.swift in Sources */,
 				44AA50A62CB537E3005EBC36 /* SearchBrowseView.swift in Sources */,
 				4486C90A2CBEA3150024381A /* DownloadBottomSheetView.swift in Sources */,
@@ -831,29 +830,30 @@
 				44AA50932CB50D37005EBC36 /* SecurityViewController.swift in Sources */,
 				4409D42F2CB7CEE200C81871 /* LoginViewController.swift in Sources */,
 				44984E4D2CBF651800158380 /* UserGuideView.swift in Sources */,
-				8CC709092CC0CACE008A0FC8 /* MineViewModel.swift in Sources */,
 				44984E4F2CBF687F00158380 /* UserGuideModel.swift in Sources */,
 				443A817C2CBD55140093BC22 /* TabsViewController.swift in Sources */,
 				446009D42CBA0D5B0085DC74 /* VerificationCodeView.swift in Sources */,
 				4486C9082CBE9BB20024381A /* Util.swift in Sources */,
 				443A817E2CBD553A0093BC22 /* TabsView.swift in Sources */,
 				446009DA2CBA1AF60085DC74 /* HomeView.swift in Sources */,
+				44984FF42CC0E7E300158380 /* MineBottomView.swift in Sources */,
+				44984FF52CC0E7E300158380 /* MineTopView.swift in Sources */,
+				44984FF62CC0E7E300158380 /* MineView.swift in Sources */,
+				44984FF72CC0E7E300158380 /* MineViewModel.swift in Sources */,
+				44984FF82CC0E7E300158380 /* MineViewController.swift in Sources */,
 				446009E72CBA73060085DC74 /* CustomTextField.swift in Sources */,
-				44AA50872CB4E016005EBC36 /* MineViewController.swift in Sources */,
 				446009F72CBAA39B0085DC74 /* FlowLayout.swift in Sources */,
 				44CF209D2CB8C46000772B9C /* APIProvider.swift in Sources */,
 				44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */,
 				440F932F2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift in Sources */,
 				44CF20B62CB9333000772B9C /* S.swift in Sources */,
 				4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */,
-				44AA50912CB5056F005EBC36 /* MineBottomView.swift in Sources */,
 				44AA50962CB510C5005EBC36 /* SecurityView.swift in Sources */,
 				4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */,
 				446009F22CBA9B5E0085DC74 /* DropdownCell.swift in Sources */,
 				44DA8E2A2CB67814003B1C34 /* GeneralViewController.swift in Sources */,
 				44DA8E382CB68750003B1C34 /* OptionListView.swift in Sources */,
 				440F93312CBCEF5600D94AD0 /* RankingModel.swift in Sources */,
-				44AA508D2CB50315005EBC36 /* MineView.swift in Sources */,
 				44DA8E2D2CB6784E003B1C34 /* GeneralView.swift in Sources */,
 				44DA8E332CB6853C003B1C34 /* AboutViewController.swift in Sources */,
 				44AA50A12CB5372A005EBC36 /* SearchBrowseViewController.swift in Sources */,
