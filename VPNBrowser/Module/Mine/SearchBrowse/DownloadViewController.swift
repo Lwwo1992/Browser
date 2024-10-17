@@ -16,16 +16,30 @@ class DownloadViewController: ViewController {
         return AnyView(DownloadView(viewModel: viewModel))
     }
 
+    private lazy var editButton = Button().then {
+        $0.title("编辑")
+            .titleFont(.systemFont(ofSize: 14))
+            .tapAction = { [weak self] in
+                guard let self else { return }
+                self.editAction()
+            }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewModel.$selectedFileUrl
             .dropFirst()
-            .sink { [weak self] fileUrl in
-                guard let self else { return }
-                let documentInteractionController = UIDocumentInteractionController(url: fileUrl)
-                documentInteractionController.delegate = self
-                documentInteractionController.presentPreview(animated: true)
+            .sink { fileUrl in
+                guard var components = URLComponents(url: fileUrl, resolvingAgainstBaseURL: false) else { return }
+
+                components.scheme = "shareddocuments"
+
+                guard let newURL = components.url else { return }
+
+                if UIApplication.shared.canOpenURL(newURL) {
+                    UIApplication.shared.open(newURL)
+                }
             }
             .store(in: &cancellables)
     }
@@ -35,11 +49,11 @@ extension DownloadViewController {
     override func initUI() {
         super.initUI()
         title = "下载管理"
-    }
-}
 
-extension DownloadViewController: UIDocumentInteractionControllerDelegate {
-    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
-        return self
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: editButton)
+    }
+
+    private func editAction() {
+        
     }
 }

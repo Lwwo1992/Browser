@@ -9,6 +9,8 @@ import Kingfisher
 import SwiftUI
 
 struct DownloadView: View {
+    // checkmark.circle.platter
+    // circle
     @ObservedObject var viewModel: DownloadViewModel
 
     var body: some View {
@@ -16,6 +18,10 @@ struct DownloadView: View {
             LazyVGrid(columns: [GridItem(.flexible())], spacing: 20) {
                 ForEach(viewModel.array) { model in
                     HStack {
+                        if viewModel.isEdit {
+                            Image(systemName: "circle")
+                        }
+
                         KFImage(URL(string: model.url))
                             .resizable()
                             .scaledToFill()
@@ -39,14 +45,14 @@ struct DownloadView: View {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 16))
                             .padding(.leading, 10)
+                            .onTapGesture {
+                                if let fileUrl = URL(string: model.url) {
+                                    viewModel.selectedFileUrl = fileUrl
+                                }
+                            }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color.white)
-                    .onTapGesture {
-                        if let fileUrl = URL(string: model.url) {
-                            viewModel.selectedFileUrl = fileUrl
-                        }
-                    }
                 }
                 .padding(.horizontal, 16)
             }

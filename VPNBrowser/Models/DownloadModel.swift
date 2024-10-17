@@ -10,6 +10,7 @@ import UIKit
 class DownloadViewModel: ObservableObject {
     @Published var selectedFileUrl: URL = URL(fileURLWithPath: "")
     @Published var array: [DownloadModel] = []
+    @Published var isEdit: Bool = false
 
     init() {
         loadData()
@@ -29,6 +30,7 @@ class DownloadModel: TableCodable, Identifiable {
     var url = ""
     var size: Int64 = 0
     var timestamp: TimeInterval = Date().timeIntervalSince1970
+    var isSelected: Bool = false
 
     enum CodingKeys: String, CodingTableKey {
         typealias Root = DownloadModel
