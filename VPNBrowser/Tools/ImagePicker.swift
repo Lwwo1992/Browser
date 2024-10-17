@@ -114,8 +114,50 @@ class S3ClientUtils {
         }
     }
     
-     
+     /*
 
+    func uploadImageToS3(filePath: String, model: UpdateHeadInfo, completion: @escaping (String?, Error?) -> Void) {
+        
+        let fileURL = URL(fileURLWithPath: filePath)
+        // 创建默认的 AWSS3TransferManager 实例
+        let transferManager = AWSS3TransferManager.default()
+
+        let fileLast = fileURL.lastPathComponent
+        let key = "\(model.uploadAddrPrefix)\(fileLast)"
+        
+        // 创建上传请求
+        let uploadRequest = AWSS3TransferManagerUploadRequest()
+        uploadRequest?.bucket = model.bucket // 替换为你的 S3 桶名
+        uploadRequest?.key = key // 替换为上传的文件名
+        uploadRequest?.body = fileURL // 替换为你要上传的文件路径
+
+        // 检查 uploadRequest 是否为非 nil
+        guard let uploadRequest = uploadRequest else {
+            print("Failed to create upload request")
+            completion(nil, NSError(domain: "UploadError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create upload request"]))
+            return
+        }
+
+        // 构建图片的 URL
+        let imgUrl = "\(model.endpoint)/\(model.bucket)/\(key)"
+          
+        // 上传文件
+        transferManager.upload(uploadRequest).continueWith { (task) -> AnyObject? in
+            if let error = task.error {
+                print("上传失败：\(error)")
+                DispatchQueue.main.async {
+                    completion(nil, error) // 上传失败时回调错误
+                }
+            } else {
+                print("上传成功！图片的访问地址为: \(imgUrl)")
+                DispatchQueue.main.async {
+                    completion(imgUrl, nil) // 上传成功时回调图片 URL
+                }
+            }
+            return nil
+        }
+    }
+*/
     func uploadImageToS3(filePath: String, model: UpdateHeadInfo, completion: @escaping (String?, Error?) -> Void) {
         
         let fileURL = URL(fileURLWithPath: filePath)
