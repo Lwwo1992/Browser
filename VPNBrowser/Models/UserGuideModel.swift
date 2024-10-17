@@ -36,7 +36,7 @@ class UserGuideViewModel: ObservableObject {
     }
 }
 
-class UserGuideResponse: BaseModel, Identifiable {
+class UserGuideResponse: BaseModel {
     var title: String?
     var record: [UserGuideModel]?
 
@@ -48,7 +48,6 @@ class UserGuideResponse: BaseModel, Identifiable {
 }
 
 class UserGuideModel: BaseModel {
-    var id: String?
     var icon: String?
     var title: String?
     var content: String?

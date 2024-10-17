@@ -21,13 +21,6 @@
 		440F93312CBCEF5600D94AD0 /* RankingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93302CBCEF5600D94AD0 /* RankingModel.swift */; };
 		440F93332CBD0E6B00D94AD0 /* HistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93322CBD0E6B00D94AD0 /* HistoryModel.swift */; };
 		440F93372CBD1DBB00D94AD0 /* BrowseHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93362CBD1DBB00D94AD0 /* BrowseHistory.swift */; };
-		443A81732CBD4B4A0093BC22 /* UIView+TFPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81712CBD4B4A0093BC22 /* UIView+TFPopup.m */; };
-		443A81742CBD4B4A0093BC22 /* UIScrollView+TFPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A816F2CBD4B4A0093BC22 /* UIScrollView+TFPopup.m */; };
-		443A81752CBD4B4A0093BC22 /* TFPopupParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A816B2CBD4B4A0093BC22 /* TFPopupParam.m */; };
-		443A81762CBD4B4A0093BC22 /* TFPopupExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81672CBD4B4A0093BC22 /* TFPopupExtension.m */; };
-		443A81772CBD4B4A0093BC22 /* TFPopupToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A816D2CBD4B4A0093BC22 /* TFPopupToast.m */; };
-		443A81782CBD4B4A0093BC22 /* TFPopupLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81692CBD4B4A0093BC22 /* TFPopupLoading.m */; };
-		443A81792CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = 443A81632CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m */; };
 		443A817C2CBD55140093BC22 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817B2CBD55140093BC22 /* TabsViewController.swift */; };
 		443A817E2CBD553A0093BC22 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817D2CBD553A0093BC22 /* TabsView.swift */; };
 		444C93602CB4D8F50092FECB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 444C93572CB4D8F50092FECB /* Assets.xcassets */; };
@@ -49,21 +42,31 @@
 		446009EC2CBA89C40085DC74 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 446009EB2CBA89C40085DC74 /* Kingfisher */; };
 		446009EE2CBA8E5C0085DC74 /* AnonymousConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009ED2CBA8E5C0085DC74 /* AnonymousConfigModel.swift */; };
 		446009F22CBA9B5E0085DC74 /* DropdownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F12CBA9B5E0085DC74 /* DropdownCell.swift */; };
-		446009F52CBA9D150085DC74 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F42CBA9D150085DC74 /* UIImageViewExtension.swift */; };
 		446009F72CBAA39B0085DC74 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F62CBAA39B0085DC74 /* FlowLayout.swift */; };
 		446009F92CBAAA530085DC74 /* BindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F82CBAAA530085DC74 /* BindingView.swift */; };
-		446009FB2CBAB5730085DC74 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009FA2CBAB5730085DC74 /* StringExtension.swift */; };
+		446009FB2CBAB5730085DC74 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009FA2CBAB5730085DC74 /* Extension.swift */; };
 		4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FA2CBE567F0024381A /* TokenGenerator.swift */; };
 		4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FF2CBE66EF0024381A /* GuideModel.swift */; };
 		4486C9022CBE96520024381A /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9012CBE96520024381A /* GuideView.swift */; };
 		4486C9042CBE98840024381A /* MoreGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9032CBE98840024381A /* MoreGuideViewController.swift */; };
 		4486C9062CBE99320024381A /* MoreGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9052CBE99320024381A /* MoreGuideView.swift */; };
 		4486C9082CBE9BB20024381A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9072CBE9BB20024381A /* Util.swift */; };
-		4486C90A2CBEA3150024381A /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9092CBEA3150024381A /* DownloadView.swift */; };
-		44984E482CBF575100158380 /* DownloadManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E472CBF575000158380 /* DownloadManagerViewController.swift */; };
+		4486C90A2CBEA3150024381A /* DownloadBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9092CBEA3150024381A /* DownloadBottomSheetView.swift */; };
+		44984E482CBF575100158380 /* DownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E472CBF575000158380 /* DownloadViewController.swift */; };
 		44984E4A2CBF64D100158380 /* UserGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E492CBF64D100158380 /* UserGuideViewController.swift */; };
 		44984E4D2CBF651800158380 /* UserGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E4C2CBF651800158380 /* UserGuideView.swift */; };
 		44984E4F2CBF687F00158380 /* UserGuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E4E2CBF687F00158380 /* UserGuideModel.swift */; };
+		44984E552CBFBD6200158380 /* BWebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984E522CBFBD6200158380 /* BWebViewManager.swift */; };
+		44984F2F2CBFC28100158380 /* TFPopupExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 44984F242CBFC28100158380 /* TFPopupExtension.m */; };
+		44984F302CBFC28100158380 /* TFPopupToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 44984F2A2CBFC28100158380 /* TFPopupToast.m */; };
+		44984F312CBFC28100158380 /* TFPopupLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 44984F262CBFC28100158380 /* TFPopupLoading.m */; };
+		44984F322CBFC28100158380 /* TFPopupParam.m in Sources */ = {isa = PBXBuildFile; fileRef = 44984F282CBFC28100158380 /* TFPopupParam.m */; };
+		44984F332CBFC28100158380 /* UIView+TFPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 44984F2E2CBFC28100158380 /* UIView+TFPopup.m */; };
+		44984F342CBFC28100158380 /* UIScrollView+TFPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 44984F2C2CBFC28100158380 /* UIScrollView+TFPopup.m */; };
+		44984F352CBFC28100158380 /* NSObject+TFPopupMethodExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = 44984F202CBFC28100158380 /* NSObject+TFPopupMethodExchange.m */; };
+		44984FDC2CBFD2B700158380 /* DownloadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FDB2CBFD2B700158380 /* DownloadModel.swift */; };
+		44984FDE2CBFD59600158380 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FDD2CBFD59600158380 /* DownloadView.swift */; };
+		44984FE02CBFEFBE00158380 /* DocumentInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44984FDF2CBFEFBE00158380 /* DocumentInteractionController.swift */; };
 		44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 44AA507E2CB4DDB4005EBC36 /* WTool */; };
 		44AA50812CB4DF83005EBC36 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50802CB4DF83005EBC36 /* TabBarController.swift */; };
 		44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */; };
@@ -125,22 +128,6 @@
 		440F93302CBCEF5600D94AD0 /* RankingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingModel.swift; sourceTree = "<group>"; };
 		440F93322CBD0E6B00D94AD0 /* HistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryModel.swift; sourceTree = "<group>"; };
 		440F93362CBD1DBB00D94AD0 /* BrowseHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseHistory.swift; sourceTree = "<group>"; };
-		443A81622CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+TFPopupMethodExchange.h"; sourceTree = "<group>"; };
-		443A81632CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+TFPopupMethodExchange.m"; sourceTree = "<group>"; };
-		443A81642CBD4B4A0093BC22 /* TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopup.h; sourceTree = "<group>"; };
-		443A81652CBD4B4A0093BC22 /* TFPopupConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupConst.h; sourceTree = "<group>"; };
-		443A81662CBD4B4A0093BC22 /* TFPopupExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupExtension.h; sourceTree = "<group>"; };
-		443A81672CBD4B4A0093BC22 /* TFPopupExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupExtension.m; sourceTree = "<group>"; };
-		443A81682CBD4B4A0093BC22 /* TFPopupLoading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupLoading.h; sourceTree = "<group>"; };
-		443A81692CBD4B4A0093BC22 /* TFPopupLoading.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupLoading.m; sourceTree = "<group>"; };
-		443A816A2CBD4B4A0093BC22 /* TFPopupParam.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupParam.h; sourceTree = "<group>"; };
-		443A816B2CBD4B4A0093BC22 /* TFPopupParam.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupParam.m; sourceTree = "<group>"; };
-		443A816C2CBD4B4A0093BC22 /* TFPopupToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupToast.h; sourceTree = "<group>"; };
-		443A816D2CBD4B4A0093BC22 /* TFPopupToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupToast.m; sourceTree = "<group>"; };
-		443A816E2CBD4B4A0093BC22 /* UIScrollView+TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TFPopup.h"; sourceTree = "<group>"; };
-		443A816F2CBD4B4A0093BC22 /* UIScrollView+TFPopup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TFPopup.m"; sourceTree = "<group>"; };
-		443A81702CBD4B4A0093BC22 /* UIView+TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+TFPopup.h"; sourceTree = "<group>"; };
-		443A81712CBD4B4A0093BC22 /* UIView+TFPopup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+TFPopup.m"; sourceTree = "<group>"; };
 		443A817A2CBD4B700093BC22 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		443A817B2CBD55140093BC22 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		443A817D2CBD553A0093BC22 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
@@ -164,21 +151,40 @@
 		446009E82CBA82E70085DC74 /* EngineModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineModel.swift; sourceTree = "<group>"; };
 		446009ED2CBA8E5C0085DC74 /* AnonymousConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousConfigModel.swift; sourceTree = "<group>"; };
 		446009F12CBA9B5E0085DC74 /* DropdownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownCell.swift; sourceTree = "<group>"; };
-		446009F42CBA9D150085DC74 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
 		446009F62CBAA39B0085DC74 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		446009F82CBAAA530085DC74 /* BindingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingView.swift; sourceTree = "<group>"; };
-		446009FA2CBAB5730085DC74 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		446009FA2CBAB5730085DC74 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		4486C8FA2CBE567F0024381A /* TokenGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenGenerator.swift; sourceTree = "<group>"; };
 		4486C8FF2CBE66EF0024381A /* GuideModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideModel.swift; sourceTree = "<group>"; };
 		4486C9012CBE96520024381A /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
 		4486C9032CBE98840024381A /* MoreGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreGuideViewController.swift; sourceTree = "<group>"; };
 		4486C9052CBE99320024381A /* MoreGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreGuideView.swift; sourceTree = "<group>"; };
 		4486C9072CBE9BB20024381A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
-		4486C9092CBEA3150024381A /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
-		44984E472CBF575000158380 /* DownloadManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerViewController.swift; sourceTree = "<group>"; };
+		4486C9092CBEA3150024381A /* DownloadBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadBottomSheetView.swift; sourceTree = "<group>"; };
+		44984E472CBF575000158380 /* DownloadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewController.swift; sourceTree = "<group>"; };
 		44984E492CBF64D100158380 /* UserGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGuideViewController.swift; sourceTree = "<group>"; };
 		44984E4C2CBF651800158380 /* UserGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGuideView.swift; sourceTree = "<group>"; };
 		44984E4E2CBF687F00158380 /* UserGuideModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGuideModel.swift; sourceTree = "<group>"; };
+		44984E522CBFBD6200158380 /* BWebViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BWebViewManager.swift; sourceTree = "<group>"; };
+		44984F1F2CBFC28100158380 /* NSObject+TFPopupMethodExchange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+TFPopupMethodExchange.h"; sourceTree = "<group>"; };
+		44984F202CBFC28100158380 /* NSObject+TFPopupMethodExchange.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+TFPopupMethodExchange.m"; sourceTree = "<group>"; };
+		44984F212CBFC28100158380 /* TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopup.h; sourceTree = "<group>"; };
+		44984F222CBFC28100158380 /* TFPopupConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupConst.h; sourceTree = "<group>"; };
+		44984F232CBFC28100158380 /* TFPopupExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupExtension.h; sourceTree = "<group>"; };
+		44984F242CBFC28100158380 /* TFPopupExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupExtension.m; sourceTree = "<group>"; };
+		44984F252CBFC28100158380 /* TFPopupLoading.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupLoading.h; sourceTree = "<group>"; };
+		44984F262CBFC28100158380 /* TFPopupLoading.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupLoading.m; sourceTree = "<group>"; };
+		44984F272CBFC28100158380 /* TFPopupParam.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupParam.h; sourceTree = "<group>"; };
+		44984F282CBFC28100158380 /* TFPopupParam.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupParam.m; sourceTree = "<group>"; };
+		44984F292CBFC28100158380 /* TFPopupToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFPopupToast.h; sourceTree = "<group>"; };
+		44984F2A2CBFC28100158380 /* TFPopupToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TFPopupToast.m; sourceTree = "<group>"; };
+		44984F2B2CBFC28100158380 /* UIScrollView+TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TFPopup.h"; sourceTree = "<group>"; };
+		44984F2C2CBFC28100158380 /* UIScrollView+TFPopup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TFPopup.m"; sourceTree = "<group>"; };
+		44984F2D2CBFC28100158380 /* UIView+TFPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+TFPopup.h"; sourceTree = "<group>"; };
+		44984F2E2CBFC28100158380 /* UIView+TFPopup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+TFPopup.m"; sourceTree = "<group>"; };
+		44984FDB2CBFD2B700158380 /* DownloadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadModel.swift; sourceTree = "<group>"; };
+		44984FDD2CBFD59600158380 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
+		44984FDF2CBFEFBE00158380 /* DocumentInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentInteractionController.swift; sourceTree = "<group>"; };
 		44AA50802CB4DF83005EBC36 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		44AA50842CB4E007005EBC36 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
@@ -253,7 +259,7 @@
 				440F932E2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift */,
 				443A817D2CBD553A0093BC22 /* TabsView.swift */,
 				4486C9052CBE99320024381A /* MoreGuideView.swift */,
-				4486C9092CBEA3150024381A /* DownloadView.swift */,
+				4486C9092CBEA3150024381A /* DownloadBottomSheetView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -277,29 +283,6 @@
 				446009D32CBA0D5B0085DC74 /* VerificationCodeView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		443A81722CBD4B4A0093BC22 /* TFPopup */ = {
-			isa = PBXGroup;
-			children = (
-				443A81622CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.h */,
-				443A81632CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m */,
-				443A81642CBD4B4A0093BC22 /* TFPopup.h */,
-				443A81652CBD4B4A0093BC22 /* TFPopupConst.h */,
-				443A81662CBD4B4A0093BC22 /* TFPopupExtension.h */,
-				443A81672CBD4B4A0093BC22 /* TFPopupExtension.m */,
-				443A81682CBD4B4A0093BC22 /* TFPopupLoading.h */,
-				443A81692CBD4B4A0093BC22 /* TFPopupLoading.m */,
-				443A816A2CBD4B4A0093BC22 /* TFPopupParam.h */,
-				443A816B2CBD4B4A0093BC22 /* TFPopupParam.m */,
-				443A816C2CBD4B4A0093BC22 /* TFPopupToast.h */,
-				443A816D2CBD4B4A0093BC22 /* TFPopupToast.m */,
-				443A816E2CBD4B4A0093BC22 /* UIScrollView+TFPopup.h */,
-				443A816F2CBD4B4A0093BC22 /* UIScrollView+TFPopup.m */,
-				443A81702CBD4B4A0093BC22 /* UIView+TFPopup.h */,
-				443A81712CBD4B4A0093BC22 /* UIView+TFPopup.m */,
-			);
-			path = TFPopup;
 			sourceTree = "<group>";
 		};
 		444C93332CB4D89D0092FECB = {
@@ -355,6 +338,7 @@
 				44AA50802CB4DF83005EBC36 /* TabBarController.swift */,
 				444C936B2CB4D9930092FECB /* NavigationController.swift */,
 				44CF20BE2CB9489000772B9C /* TextDisplayViewController.swift */,
+				44984FDF2CBFEFBE00158380 /* DocumentInteractionController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -385,7 +369,7 @@
 				446009DC2CBA1CE70085DC74 /* MHVerifyCodeView.swift */,
 				8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */,
 				8CEB245D2CBD530B006F8485 /* ImagePicker.swift */,
-				443A81722CBD4B4A0093BC22 /* TFPopup */,
+				44984F162CBFC22000158380 /* TFPopup */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -393,8 +377,7 @@
 		446009F32CBA9CFA0085DC74 /* Extenon */ = {
 			isa = PBXGroup;
 			children = (
-				446009F42CBA9D150085DC74 /* UIImageViewExtension.swift */,
-				446009FA2CBAB5730085DC74 /* StringExtension.swift */,
+				446009FA2CBAB5730085DC74 /* Extension.swift */,
 			);
 			path = Extenon;
 			sourceTree = "<group>";
@@ -405,6 +388,29 @@
 				44984E4C2CBF651800158380 /* UserGuideView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		44984F162CBFC22000158380 /* TFPopup */ = {
+			isa = PBXGroup;
+			children = (
+				44984F1F2CBFC28100158380 /* NSObject+TFPopupMethodExchange.h */,
+				44984F202CBFC28100158380 /* NSObject+TFPopupMethodExchange.m */,
+				44984F212CBFC28100158380 /* TFPopup.h */,
+				44984F222CBFC28100158380 /* TFPopupConst.h */,
+				44984F232CBFC28100158380 /* TFPopupExtension.h */,
+				44984F242CBFC28100158380 /* TFPopupExtension.m */,
+				44984F252CBFC28100158380 /* TFPopupLoading.h */,
+				44984F262CBFC28100158380 /* TFPopupLoading.m */,
+				44984F272CBFC28100158380 /* TFPopupParam.h */,
+				44984F282CBFC28100158380 /* TFPopupParam.m */,
+				44984F292CBFC28100158380 /* TFPopupToast.h */,
+				44984F2A2CBFC28100158380 /* TFPopupToast.m */,
+				44984F2B2CBFC28100158380 /* UIScrollView+TFPopup.h */,
+				44984F2C2CBFC28100158380 /* UIScrollView+TFPopup.m */,
+				44984F2D2CBFC28100158380 /* UIView+TFPopup.h */,
+				44984F2E2CBFC28100158380 /* UIView+TFPopup.m */,
+			);
+			path = TFPopup;
 			sourceTree = "<group>";
 		};
 		44AA50882CB50160005EBC36 /* Home */ = {
@@ -432,7 +438,6 @@
 		44AA508A2CB5017B005EBC36 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
-				44AA509F2CB5370D005EBC36 /* Mine */,
 				44AA50A22CB53742005EBC36 /* Security */,
 				44AA509E2CB536F3005EBC36 /* SearchBrowse */,
 				44DA8E1C2CB663AF003B1C34 /* CloudSync */,
@@ -459,7 +464,7 @@
 				44AA50A42CB537CA005EBC36 /* View */,
 				44AA50A02CB5372A005EBC36 /* SearchBrowseViewController.swift */,
 				44AA664E2CB62A0500E4253F /* FootprintViewController.swift */,
-				44984E472CBF575000158380 /* DownloadManagerViewController.swift */,
+				44984E472CBF575000158380 /* DownloadViewController.swift */,
 			);
 			path = SearchBrowse;
 			sourceTree = "<group>";
@@ -481,6 +486,7 @@
 				44AA50972CB522BE005EBC36 /* ChangeNicknameViewController.swift */,
 				44AA509C2CB53649005EBC36 /* BindingViewController.swift */,
 				440F93232CBCABFD00D94AD0 /* ReplaceBindingViewController.swift */,
+				44AA509F2CB5370D005EBC36 /* Mine */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -501,6 +507,7 @@
 				44AA50A52CB537E3005EBC36 /* SearchBrowseView.swift */,
 				44AA66532CB6587600E4253F /* FootprintView.swift */,
 				440F93362CBD1DBB00D94AD0 /* BrowseHistory.swift */,
+				44984FDD2CBFD59600158380 /* DownloadView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -535,6 +542,7 @@
 				440F93322CBD0E6B00D94AD0 /* HistoryModel.swift */,
 				4486C8FF2CBE66EF0024381A /* GuideModel.swift */,
 				44984E4E2CBF687F00158380 /* UserGuideModel.swift */,
+				44984FDB2CBFD2B700158380 /* DownloadModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -554,6 +562,7 @@
 			children = (
 				44CF20B72CB933A400772B9C /* DBManager.swift */,
 				446009E42CBA6D790085DC74 /* LoginManager.swift */,
+				44984E522CBFBD6200158380 /* BWebViewManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -795,15 +804,9 @@
 				440F932A2CBCC5BB00D94AD0 /* BrowserWebView.swift in Sources */,
 				44AA50982CB522BE005EBC36 /* ChangeNicknameViewController.swift in Sources */,
 				44DA8E362CB68565003B1C34 /* AboutView.swift in Sources */,
-				443A81732CBD4B4A0093BC22 /* UIView+TFPopup.m in Sources */,
-				443A81742CBD4B4A0093BC22 /* UIScrollView+TFPopup.m in Sources */,
-				443A81752CBD4B4A0093BC22 /* TFPopupParam.m in Sources */,
-				443A81762CBD4B4A0093BC22 /* TFPopupExtension.m in Sources */,
-				443A81772CBD4B4A0093BC22 /* TFPopupToast.m in Sources */,
+				44984FDC2CBFD2B700158380 /* DownloadModel.swift in Sources */,
 				4486C9042CBE98840024381A /* MoreGuideViewController.swift in Sources */,
-				443A81782CBD4B4A0093BC22 /* TFPopupLoading.m in Sources */,
-				443A81792CBD4B4A0093BC22 /* NSObject+TFPopupMethodExchange.m in Sources */,
-				44984E482CBF575100158380 /* DownloadManagerViewController.swift in Sources */,
+				44984E482CBF575100158380 /* DownloadViewController.swift in Sources */,
 				440F93242CBCABFD00D94AD0 /* ReplaceBindingViewController.swift in Sources */,
 				44CD45FB2CBE2BAA003A415E /* ViewModel.swift in Sources */,
 				44984E4A2CBF64D100158380 /* UserGuideViewController.swift in Sources */,
@@ -812,7 +815,7 @@
 				44AA508F2CB5055F005EBC36 /* MineTopView.swift in Sources */,
 				44AA50852CB4E007005EBC36 /* BrowserViewController.swift in Sources */,
 				44AA50A62CB537E3005EBC36 /* SearchBrowseView.swift in Sources */,
-				4486C90A2CBEA3150024381A /* DownloadView.swift in Sources */,
+				4486C90A2CBEA3150024381A /* DownloadBottomSheetView.swift in Sources */,
 				440F93262CBCAC6C00D94AD0 /* ReplaceBindingView.swift in Sources */,
 				44AA509D2CB53649005EBC36 /* BindingViewController.swift in Sources */,
 				444C936C2CB4D9930092FECB /* NavigationController.swift in Sources */,
@@ -850,27 +853,36 @@
 				44DA8E2D2CB6784E003B1C34 /* GeneralView.swift in Sources */,
 				44DA8E332CB6853C003B1C34 /* AboutViewController.swift in Sources */,
 				44AA50A12CB5372A005EBC36 /* SearchBrowseViewController.swift in Sources */,
+				44984F2F2CBFC28100158380 /* TFPopupExtension.m in Sources */,
+				44984F302CBFC28100158380 /* TFPopupToast.m in Sources */,
+				44984F312CBFC28100158380 /* TFPopupLoading.m in Sources */,
+				44984F322CBFC28100158380 /* TFPopupParam.m in Sources */,
+				44984F332CBFC28100158380 /* UIView+TFPopup.m in Sources */,
+				44984F342CBFC28100158380 /* UIScrollView+TFPopup.m in Sources */,
+				44984F352CBFC28100158380 /* NSObject+TFPopupMethodExchange.m in Sources */,
 				4486C9062CBE99320024381A /* MoreGuideView.swift in Sources */,
 				4486C9022CBE96520024381A /* GuideView.swift in Sources */,
 				44CF20BB2CB942C300772B9C /* AccountLoginViewController.swift in Sources */,
 				444C93662CB4D8F50092FECB /* ViewController.swift in Sources */,
 				446009E92CBA82E70085DC74 /* EngineModel.swift in Sources */,
 				446009D22CBA0D480085DC74 /* VerificationCodeViewController.swift in Sources */,
+				44984FE02CBFEFBE00158380 /* DocumentInteractionController.swift in Sources */,
 				44CF20BD2CB942D800772B9C /* AccountLoginView.swift in Sources */,
-				446009FB2CBAB5730085DC74 /* StringExtension.swift in Sources */,
+				446009FB2CBAB5730085DC74 /* Extension.swift in Sources */,
 				44CF20BF2CB9489000772B9C /* TextDisplayViewController.swift in Sources */,
 				8CEB245E2CBD530B006F8485 /* ImagePicker.swift in Sources */,
 				4409D4282CB7A7E100C81871 /* BrowserView.swift in Sources */,
 				44CF20A02CB8CE5800772B9C /* ConfigByTypeModel.swift in Sources */,
+				44984FDE2CBFD59600158380 /* DownloadView.swift in Sources */,
 				44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */,
 				440F93282CBCC09200D94AD0 /* BrowserWebViewController.swift in Sources */,
+				44984E552CBFBD6200158380 /* BWebViewManager.swift in Sources */,
 				44DA8E232CB66417003B1C34 /* CloudSyncViewController.swift in Sources */,
 				44CF20B82CB933A400772B9C /* DBManager.swift in Sources */,
 				44DA8E2F2CB67F75003B1C34 /* RecommendedModeViewController.swift in Sources */,
 				44DA8E312CB67FA8003B1C34 /* RecommendedModeView.swift in Sources */,
 				4409D4322CB7CF0B00C81871 /* LoginView.swift in Sources */,
 				446009DD2CBA1CE70085DC74 /* MHVerifyCodeView.swift in Sources */,
-				446009F52CBA9D150085DC74 /* UIImageViewExtension.swift in Sources */,
 				4409D42A2CB7AE9300C81871 /* SearchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

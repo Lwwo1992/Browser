@@ -55,12 +55,14 @@ struct SearchBrowseView: View {
             Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 1), animated: true)
         case .tabs:
             Util.topViewController().navigationController?.pushViewController(TabsViewController(), animated: true)
+        case .downloads:
+            Util.topViewController().navigationController?.pushViewController(DownloadViewController(), animated: true)
         default:
             break
         }
     }
 }
 
-#Preview {
-    SearchBrowseView()
-}
+//#Preview {
+//    SearchBrowseView()
+//}

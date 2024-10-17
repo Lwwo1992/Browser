@@ -69,8 +69,7 @@ class GuideViewModel: ObservableObject {
     }
 }
 
-class GuideItem: BaseModel, Identifiable {
-    var id: String?
+class GuideItem: BaseModel {
     var name: String?
     var icon: String?
     var downloadUrl: String?
@@ -78,7 +77,7 @@ class GuideItem: BaseModel, Identifiable {
 }
 
 // 用于表示返回的数据结构
-class GuideResponse: BaseModel, Identifiable {
+class GuideResponse: BaseModel {
     var name: String?
     var icon: String?
     var appIcon: String?

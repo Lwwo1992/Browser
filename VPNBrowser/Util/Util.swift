@@ -74,4 +74,21 @@ extension Util {
             break
         }
     }
+
+    static func formatFileSize(_ size: Int64) -> String {
+        let units = ["B", "KB", "MB", "GB"]
+        var sizeInUnit = Double(size)
+        var unitIndex = 0
+
+        while sizeInUnit >= 1024 && unitIndex < units.count - 1 {
+            sizeInUnit /= 1024
+            unitIndex += 1
+        }
+
+        if sizeInUnit.truncatingRemainder(dividingBy: 1) == 0 {
+            return String(format: "%.0f %@", sizeInUnit, units[unitIndex])
+        } else {
+            return String(format: "%.2f %@", sizeInUnit, units[unitIndex])
+        }
+    }
 }

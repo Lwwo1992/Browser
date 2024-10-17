@@ -107,6 +107,7 @@ struct BrowserWebView: View {
                 .onTapGesture {
                     viewModel.showBottomSheet.toggle()
                 }
+                .padding()
         }
         .padding(.vertical, 15)
         .padding(.horizontal, 30)

@@ -21,6 +21,8 @@ struct S {
         static let collect = "collectTable"
         /// 书签
         static let bookmark = "bookmarkTable"
+        /// 下载
+        static let download = "downloadTable"
     }
 
     struct Files {

@@ -75,7 +75,7 @@ extension BrowserWebBottomSheet: UICollectionViewDelegate, UICollectionViewDataS
         case "收藏":
             Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 0), animated: true)
         case "下载":
-            Util.topViewController().navigationController?.pushViewController(DownloadManagerViewController(), animated: true)
+            Util.topViewController().navigationController?.pushViewController(DownloadViewController(), animated: true)
         default:
             break
         }

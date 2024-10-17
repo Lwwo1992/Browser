@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DownloadView: UIView {
+class DownloadBottomSheetView: UIView {
     var model: GuideItem? {
         didSet {
             guard let model else {
@@ -21,7 +21,7 @@ class DownloadView: UIView {
                 getFileSize(from: url) { [weak self] size, error in
                     guard let self else { return }
                     if let size = size {
-                        self.sizeLabel.text = formatFileSize(size)
+                        self.sizeLabel.text = Util.formatFileSize(size)
                     } else if let error = error {
                         print("获取文件大小失败: \(error)")
                     }
@@ -130,23 +130,6 @@ class DownloadView: UIView {
             case let .failure(error):
                 completion(nil, error) // 返回错误
             }
-        }
-    }
-
-    private func formatFileSize(_ size: Int64) -> String {
-        let units = ["B", "KB", "MB", "GB"]
-        var sizeInUnit = Double(size)
-        var unitIndex = 0
-
-        while sizeInUnit >= 1024 && unitIndex < units.count - 1 {
-            sizeInUnit /= 1024
-            unitIndex += 1
-        }
-
-        if sizeInUnit.truncatingRemainder(dividingBy: 1) == 0 {
-            return String(format: "%.0f %@", sizeInUnit, units[unitIndex])
-        } else {
-            return String(format: "%.2f %@", sizeInUnit, units[unitIndex])
         }
     }
 
