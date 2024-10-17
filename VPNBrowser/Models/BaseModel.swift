@@ -9,11 +9,8 @@ import HandyJSON
 import UIKit
 
 class BaseModel: NSObject, HandyJSON, Identifiable {
-
     override required init() { }
 
-    
-    
     func mapping(mapper: HelpingMapper) {
     }
 }

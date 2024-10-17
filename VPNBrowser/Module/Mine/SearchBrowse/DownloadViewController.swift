@@ -42,6 +42,14 @@ class DownloadViewController: ViewController {
                 }
             }
             .store(in: &cancellables)
+
+        viewModel.$isEdit
+            .dropFirst()
+            .sink { [weak self] value in
+                guard let self else { return }
+                editButton.title(!value ? "编辑" : "删除")
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -54,6 +62,28 @@ extension DownloadViewController {
     }
 
     private func editAction() {
-        
+        viewModel.isEdit.toggle()
+        if viewModel.isEdit == false && !viewModel.selectedArray.isEmpty {
+            showDeleteConfirmation()
+        }
+    }
+
+    private func showDeleteConfirmation() {
+        let alert = UIAlertController(
+            title: "确认删除",
+            message: "您确定要删除选中的项目吗？",
+            preferredStyle: .alert
+        )
+
+        let deleteAction = UIAlertAction(title: "删除", style: .destructive) { _ in
+            self.viewModel.deleteSelectedItems()
+        }
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true, completion: nil)
     }
 }
