@@ -17,7 +17,7 @@ class MineViewModel: ObservableObject {
             return
         }
         
-        let dataid  = LoginManager.shared.loginInfo.id
+        let dataid  = LoginManager.shared.info.id
          
         APIProvider.shared.request(.browserAccount(userId: dataid), model: LoginModel.self) { result in
 
@@ -26,17 +26,7 @@ class MineViewModel: ObservableObject {
                 
                 let mo = LoginManager.shared.fetchUserModel()
                 model.token = mo.token
-                do {
-                    try DBaseManager.share.db?.insertOrReplace([model], intoTable: S.Table.loginInfo)
-                    print("更新成功")
-                     
-                    DispatchQueue.main.async {
-                        success()
-                    }
-                    
-                } catch {
-                    print("更新失败: \(error)")
-                }
+
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }

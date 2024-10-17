@@ -22,11 +22,5 @@ class ViewModel: ObservableObject {
         }
     }
 
-    @Published var isLogin: Bool = false {
-        willSet {
-            S.Config.openNoTrace = newValue
-        }
-    }
-
     private init() {}
 }

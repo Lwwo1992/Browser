@@ -25,16 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         window?.rootViewController = TabBarController()
 
-//
-//        DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
-//
-//        let loginInfo: LoginModel =  LoginModel()
-//        loginInfo.id = "1846399316753186818"
-//        loginInfo.loginId = "1846399316753186818"
-//
-        ////        DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.id,LoginModel.Properties.loginId], with: loginInfo)
-//        LoginManager.shared.saveLoginInfo(loginInfo)
-
         return true
     }
 }
@@ -62,46 +52,66 @@ extension AppDelegate {
         DBaseManager.share.createTable(table: S.Table.download, of: DownloadModel.self)
     }
 
-    private func initConfig() {
-        if S.Config.isLogin {
+    func initConfig(completion: ((Bool) -> Void)? = nil) {
+        if LoginManager.shared.info.logintype == "1" {
             fetchConfigByType()
             fetchAnonymousConfig()
-
+            completion?(true)
         } else {
+            HUD.showLoading()
             APIProvider.shared.request(.generateVisitorToken, progress: { _ in
 
-            }) { result in
+            }) { [weak self] result in
+                guard let self else { return }
+                HUD.hideNow()
                 switch result {
                 case let .success(response):
                     if let responseString = String(data: response.data, encoding: .utf8) {
-                        print("Response: \(responseString)") // 打印响应内容，方便调试
+                        print("Response: \(responseString)")
                     }
 
                     do {
                         if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
                            let data = json["data"] as? [String: Any],
-                           let token = data["token"] as? String, let userId = data["id"] as? String {
-                            LoginManager.shared.loginInfo.vistoken = token // 单例存储
+                           let token = data["token"] as? String,
+                           let userId = data["id"] as? String {
+                            let model = LoginModel()
+                            model.id = userId
+                            model.token = token
+                            model.logintype = "0"
 
-                            let info = LoginManager.shared.fetchUserModel()
-                            info.id = userId
-                            info.logintype = "0"
+                            LoginManager.shared.info = model
 
-                            DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.id, LoginModel.Properties.logintype], with: info)
+                            if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self), array.count > 0 {
+                                DBaseManager.share.updateToDb(table: S.Table.loginInfo,
+                                                              on: [
+                                                                  LoginModel.Properties.id,
+                                                                  LoginModel.Properties.token,
+                                                                  LoginModel.Properties.logintype,
+                                                              ],
+                                                              with: model)
+                            } else {
+                                DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
+                            }
 
+                            // 配置获取成功
                             self.fetchConfigByType()
                             self.fetchAnonymousConfig()
+                            completion?(true)
 
                         } else {
                             print("无法提取 token")
+                            completion?(false) // 提取 token 失败
                         }
                     } catch {
                         HUD.showTipMessage(error.localizedDescription)
                         print("JSON 解析失败: \(error)")
+                        completion?(false) // JSON 解析失败
                     }
 
                 case let .failure(error):
                     print("请求失败: \(error)")
+                    completion?(false) // 请求失败
                 }
             }
         }

@@ -10,10 +10,7 @@ import SDWebImageSwiftUI
 import SwiftUI
 
 struct MineTopView: View {
-    @ObservedObject var loginManager = LoginManager.shared
-
-    @State var model: LoginModel = LoginModel()
-
+    @State private var model = LoginManager.shared.info
     @State private var historyNumber: String = "0"
     @State private var collectNumber: String = "0"
     @State private var downloadNumber: String = "0"
@@ -33,16 +30,21 @@ struct MineTopView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(loginManager.loginInfo.account ?? "游客登录")
+                    Text(model.account ?? "游客登录")
                         .font(.system(size: 18))
                         .font(.system(size: 18))
-                    Text("已经陪伴你")
+                    Text("已经陪伴你\(model.createTime.daysFromNow)天")
                         .font(.system(size: 12))
                         .foregroundColor(.gray)
                 }
                 .onTapGesture {
-                    if !S.Config.isLogin {
+                    if LoginManager.shared.info.logintype == "0" {
                         Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                    }
+                }
+                .onAppear {
+                    if let model = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self)?.first {
+                        self.model = model
                     }
                 }
 
@@ -128,7 +130,6 @@ struct MineTopView: View {
                     }
                 }
             }
-
             .padding(.vertical, 25)
             .padding(.horizontal, 24)
             .background(Color.white)

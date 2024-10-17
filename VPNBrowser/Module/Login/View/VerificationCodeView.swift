@@ -77,38 +77,25 @@ struct VerificationCodeView: View {
     }
 
     private func login(_ code: String) {
-        
         HUD.showLoading()
         APIProvider.shared.request(.login(credential: code, identifier: accountNum, type: accountType.rawValue), model: LoginModel.self) { result in
             HUD.hideNow()
             switch result {
             case let .success(model):
-                
-                LoginManager.shared.loginInfo = LoginModel()
-                DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
 
-                switch accountType {
-                case .mobile:
-                    model.mobile = accountNum
-                case .mailbox:
-                    model.mailbox = accountNum
-                case .account:
-                    break
-                }
-
-                
-                S.Config.isLogin = true
                 model.logintype = "1"
-                LoginManager.shared.loginInfo = model
-                let v = LoginManager.shared.loginInfo
-                print("LoginManager.shared.loginInfo---\(v.id)")
-                print("LoginManager.shared.loginInfo---\(v.deviceId)")
-                  
-//                DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
-                LoginManager.shared.saveLoginInfo(model)
+                LoginManager.shared.info = model
+                DBaseManager.share.updateToDb(table: S.Table.loginInfo,
+                                              on: [
+                                                  LoginModel.Properties.id,
+                                                  LoginModel.Properties.token,
+                                                  LoginModel.Properties.logintype,
+                                              ],
+                                              with: model)
+
+                Util.topViewController().navigationController?.popToRootViewController(animated: true)
 
                 HUD.showTipMessage("登录成功")
-                Util.topViewController().navigationController?.popToRootViewController(animated: true)
 
             case let .failure(error):
                 print("Request failed with error: \(error)")
@@ -117,7 +104,6 @@ struct VerificationCodeView: View {
     }
 
     private func checkValidCode(_ code: String) {
-        
         APIProvider.shared.request(.checkValidCode(credential: code, identifier: accountNum, type: accountType.rawValue)) { result in
             HUD.hideNow()
             switch result {
@@ -130,7 +116,6 @@ struct VerificationCodeView: View {
     }
 
     private func updateEmailOrMobile(_ code: String) {
-        
         HUD.showLoading()
         APIProvider.shared.request(.updateEmailOrMobile(credential: code, identifier: accountNum, type: accountType.rawValue)) { result in
             HUD.hideNow()

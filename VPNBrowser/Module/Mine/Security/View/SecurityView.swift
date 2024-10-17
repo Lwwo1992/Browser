@@ -4,11 +4,11 @@
 //
 //  Created by xyxy on 2024/10/8.
 //
-import SwiftUI
-import WTool
 import AWSMobileClient
 import AWSS3
 import SDWebImageSwiftUI
+import SwiftUI
+import WTool
 
 struct SecurityView: View {
     enum SecurityOption: String, CaseIterable {
@@ -62,23 +62,21 @@ struct SecurityView: View {
                 .default(Text("相册")) {
                     presentImagePicker(sourceType: .photoLibrary)
                 },
-                .cancel()
+                .cancel(),
             ])
         }
     }
-    
+
     private var avatarView: some View {
         Group {
-
-            if LoginManager.shared.fetchUserModel().headPortrait.count > 0{
-                
+            if LoginManager.shared.fetchUserModel().headPortrait.count > 0 {
                 WebImage(url: URL(string: LoginManager.shared.fetchUserModel().headPortrait))
                     .resizable()
                     .scaledToFill()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-                
-            }else{
+
+            } else {
                 if let selectedImage = selectedImage {
                     Image(uiImage: selectedImage)
                         .resizable()
@@ -101,7 +99,7 @@ struct SecurityView: View {
         switch item {
         case .avatar:
             isShowingActionSheet = true
-            
+
         case .nickname:
             Util.topViewController().navigationController?.pushViewController(ChangeNicknameViewController(), animated: true)
         case .phoneNumber, .email:
@@ -116,71 +114,51 @@ struct SecurityView: View {
     }
 
     private func logout() {
-            HUD.showLoading()
-            APIProvider.shared.request(.logout) { result in
-                HUD.hideNow()
-                switch result {
-                case .success:
-                      
-                    LoginManager.shared.loginInfo = LoginModel()
-                    DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
-                     
-                    Util.topViewController().navigationController?.popToRootViewController(animated: true)
-                    
-                    
-                    
-                    
-                    
-                case let .failure(error):
-                    print("Request failed with error: \(error)")
-                }
+        HUD.showLoading()
+        APIProvider.shared.request(.logout) { result in
+            HUD.hideNow()
+            switch result {
+            case .success:
+                LoginManager.shared.info = LoginModel()
+                DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+            case let .failure(error):
+                print("Request failed with error: \(error)")
             }
         }
-    
-    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+    }
 
-        
-        imagePickerManager.pickImage(sourceType: sourceType, from: Util.topViewController()) { image,urlstring in
+    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+        imagePickerManager.pickImage(sourceType: sourceType, from: Util.topViewController()) { image, urlstring in
             if let image = image {
                 selectedImage = image
                 // 这里可以添加额外的处理，例如上传头像
-                
                 UpdateImageInfo(urlStr: urlstring ?? "")
             }
         }
     }
-    
-    private func UpdateImageInfo(urlStr:String){
-        
-        APIProvider.shared.request(.uploadConfig,model: UpdateHeadInfo.self) { result in
+
+    private func UpdateImageInfo(urlStr: String) {
+        APIProvider.shared.request(.uploadConfig, model: UpdateHeadInfo.self) { result in
             switch result {
-            case .success(let response):
-                
+            case let .success(response):
+
                 // 处理响应
                 let m = response
-                
+
                 let s3Client = S3ClientUtils(accessKey: m.accessKey, secretKey: m.secretKey, token: m.token, endpoint: m.endpoint)
-              
-                
-                s3Client.uploadImageToS3(filePath: urlStr, model: m) { imgUrl, error in
-                    LoginManager.shared.loginInfo.userHead = imgUrl ?? ""
-                    
+
+                s3Client.uploadImageToS3(filePath: urlStr, model: m) { imgUrl, _ in
+                    LoginManager.shared.info.userHead = imgUrl ?? ""
+
                     updateUserInfo(imgUrl: imgUrl ?? "")
-                    
-                    
                 }
-                
-                
-            case .failure(let error):
+
+            case let .failure(error):
                 print("请求失败，错误：\(error)")
             }
         }
-        
-         
-    
     }
-    
-    
+
     private func rightTitle(for item: SecurityOption) -> String? {
         switch item {
         case .nickname:
@@ -195,31 +173,29 @@ struct SecurityView: View {
             return nil
         }
     }
-    
-    
-    private func updateUserInfo(imgUrl:String) {
-        HUD.showLoading()
-        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "", id : LoginManager.shared.fetchUserModel().id)) {
-            result in
-               HUD.hideNow()
-               switch result {
-               case .success:
-                   
-                   let model = LoginManager.shared.fetchUserModel()
-                   model.headPortrait = imgUrl
-                   
-                   DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.headPortrait], with: model)
-                   
-                   
-                   HUD.showTipMessage("修改成功")
-                   Util.topViewController().navigationController?.popToRootViewController(animated: true)
-               case let .failure(error):
-                   print("Request failed with error: \(error)")
-               }
-        }
-        
-    }
 
+    private func updateUserInfo(imgUrl: String) {
+        HUD.showLoading()
+        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "", id: LoginManager.shared.fetchUserModel().id)) {
+            result in
+            HUD.hideNow()
+            switch result {
+            case .success:
+
+                LoginManager.shared.info.headPortrait = imgUrl
+
+                DBaseManager.share.updateToDb(table: S.Table.loginInfo,
+                                              on: [LoginModel.Properties.headPortrait],
+                                              with: LoginManager.shared.info
+                )
+
+                Util.topViewController().navigationController?.popToRootViewController(animated: true)
+                HUD.showTipMessage("修改成功")
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
 }
 
 #Preview {

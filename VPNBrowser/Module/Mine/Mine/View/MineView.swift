@@ -8,27 +8,13 @@
 import SwiftUI
 
 struct MineView: View {
-    @State var model = LoginModel()
-    
     var body: some View {
-        
         ScrollView(showsIndicators: false) {
-            MineTopView(model: model)
+            MineTopView()
             MineBottomView()
         }
         .padding(.horizontal, 16)
         .background(Color(hex: 0xF8F5F5))
-        .onAppear{
-            
-//            MineViewModel().fetchdata {
-//                DispatchQueue.main.async {
-//                    model = LoginManager.shared.fetchUserModel()
-//                    print("模型更新成功：\(model)")
-//                }
-//                 
-//            }
-           
-        }
     }
 }
 

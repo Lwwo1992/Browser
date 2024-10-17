@@ -75,13 +75,11 @@ struct AccountLoginView: View {
             switch result {
             case let .success(model):
 
-                S.Config.isLogin = true
                 model.logintype = "1"
-                LoginManager.shared.loginInfo = model
-                
-                DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
+                LoginManager.shared.info = model
 
                 HUD.showTipMessage("登录成功")
+                
                 Util.topViewController().navigationController?.popToRootViewController(animated: true)
 
             case let .failure(error):

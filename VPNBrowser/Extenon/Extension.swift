@@ -19,6 +19,27 @@ extension String {
 
         return replacingCharacters(in: maskedRange, with: mask)
     }
+
+    // 扩展添加计算与当前时间天数差的属性
+    var daysFromNow: Int {
+        // 将字符串转换为 Int64 时间戳
+        guard let timestamp = Int64(self) else { return 0 }
+
+        // 将时间戳转换为秒
+        let timestampInSeconds = TimeInterval(timestamp) / 1000
+
+        // 将时间戳转换为 Date 对象
+        let eventDate = Date(timeIntervalSince1970: timestampInSeconds)
+
+        // 获取当前日期
+        let currentDate = Date()
+
+        // 计算两个日期之间的天数差
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.day], from: eventDate, to: currentDate)
+
+        return components.day ?? 0
+    }
 }
 
 extension UIImageView {

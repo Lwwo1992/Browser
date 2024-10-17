@@ -43,16 +43,6 @@ struct S {
             static let mode = "webMode"
         }
 
-        /// 是否登录
-        static var isLogin: Bool {
-            get {
-                return UserDefaults.standard.bool(forKey: "login")
-            }
-            set {
-                UserDefaults.standard.set(newValue, forKey: "login")
-            }
-        }
-
         /// 开启无痕浏览
         static var openNoTrace: Bool {
             get {
