@@ -47,6 +47,9 @@ struct BrowseHistory: View {
                                                 .resizable()
                                                 .scaledToFit()
                                                 .frame(width: 20, height: 20)
+                                        } else {
+                                            Image(systemName: "network")
+                                                .font(.system(size: 16))
                                         }
 
                                         VStack(alignment: .leading, spacing: 5) {
@@ -121,6 +124,7 @@ struct BrowseHistory: View {
         .font(.system(size: 16))
         .foregroundColor(.black)
         .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
         .background(Color.gray.opacity(0.5))
         .alert(isPresented: $showingDeleteAlert) {
             Alert(

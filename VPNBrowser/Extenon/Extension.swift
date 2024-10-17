@@ -20,3 +20,14 @@ extension String {
         return replacingCharacters(in: maskedRange, with: mask)
     }
 }
+
+extension UIImageView {
+    func setImage(with url: URL?, placeholder: String? = nil) {
+        let placeholderImage = placeholder != nil ? UIImage(named: placeholder!) : nil
+
+        kf.setImage(
+            with: url,
+            placeholder: placeholderImage
+        )
+    }
+}

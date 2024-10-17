@@ -14,17 +14,21 @@ class HomeViewController: ViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+}
 
-        // Do any additional setup after loading the view.
+extension HomeViewController {
+    override func initUI() {
+        super.initUI()
+        setupGradientBackground()
     }
 
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         // Get the new view controller using segue.destination.
-         // Pass the selected object to the new view controller.
-     }
-     */
+    private func setupGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [UIColor.red.withAlphaComponent(0.6).cgColor, UIColor.white.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
+        view.layer.insertSublayer(gradientLayer, at: 0)
+    }
 }

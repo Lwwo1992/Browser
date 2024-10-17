@@ -6,7 +6,6 @@
 //
 
 import UIKit
- 
 
 class LoginModel: BaseModel, TableCodable {
     var token: String?

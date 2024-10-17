@@ -11,12 +11,16 @@ import SDWebImageSwiftUI
 
 struct MineTopView: View {
     @ObservedObject var loginManager = LoginManager.shared
-    @State private var historyNumber: String = ""
-    @State private var collectNumber: String = ""
-    
+ 
     @State var model:LoginModel = LoginModel()
     
     
+
+    @State private var historyNumber: String = "0"
+    @State private var collectNumber: String = "0"
+    @State private var downloadNumber: String = "0"
+
+
     var body: some View {
         VStack {
             HStack {
@@ -70,6 +74,14 @@ struct MineTopView: View {
                 .onTapGesture {
                     Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 0), animated: true)
                 }
+                .onAppear {
+                    let number = DBaseManager.share.qureyFromDb(fromTable: S.Table.collect, cls: HistoryModel.self)?.count ?? 0
+                    if number >= 999 {
+                        self.collectNumber = "999+"
+                    } else {
+                        self.collectNumber = "\(number)"
+                    }
+                }
 
                 Spacer()
 
@@ -80,6 +92,14 @@ struct MineTopView: View {
                         .font(.system(size: 12))
                         .opacity(0.5)
                 }
+                .onAppear {
+                    let number = DBaseManager.share.qureyFromDb(fromTable: S.Table.browseHistory, cls: HistoryModel.self)?.count ?? 0
+                    if number >= 999 {
+                        self.historyNumber = "999+"
+                    } else {
+                        self.historyNumber = "\(number)"
+                    }
+                }
                 .onTapGesture {
                     Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 1), animated: true)
                 }
@@ -87,11 +107,24 @@ struct MineTopView: View {
                 Spacer()
 
                 VStack(spacing: 5) {
-                    Text("0")
+                    Text(downloadNumber)
                         .font(.system(size: 18))
                     Text("下载")
                         .font(.system(size: 12))
                         .opacity(0.5)
+                }
+                .onTapGesture {
+                    Util.topViewController().navigationController?.pushViewController(DownloadViewController(), animated: true)
+                }
+                .onAppear {
+                    if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.download, cls: DownloadModel.self) {
+                        let number = array.count
+                        if number >= 999 {
+                            self.downloadNumber = "999+"
+                        } else {
+                            self.downloadNumber = "\(number)"
+                        }
+                    }
                 }
             }
 
@@ -100,22 +133,6 @@ struct MineTopView: View {
             .background(Color.white)
             .cornerRadius(10)
             .padding(.top, 20)
-        }
-        .onAppear {
-             
-            let historyNumber = DBaseManager.share.qureyFromDb(fromTable: S.Table.browseHistory, cls: HistoryModel.self)?.count ?? 0
-            if historyNumber >= 999 {
-                self.historyNumber = "999+"
-            } else {
-                self.historyNumber = "\(historyNumber)"
-            }
-
-            let collectNumber = DBaseManager.share.qureyFromDb(fromTable: S.Table.collect, cls: HistoryModel.self)?.count ?? 0
-            if collectNumber >= 999 {
-                self.collectNumber = "999+"
-            } else {
-                self.collectNumber = "\(collectNumber)"
-            }
         }
     }
 }

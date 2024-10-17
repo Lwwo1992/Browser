@@ -7,7 +7,36 @@
 
 import UIKit
 
-class UserGuideResponse: BaseModel, Identifiable {
+class UserGuideViewModel: ObservableObject {
+    @Published var userGuideData: [UserGuideResponse] = []
+
+    init() {
+        loadData()
+    }
+
+    func loadData() {
+        HUD.showLoading()
+        APIProvider.shared.request(.userGuidePage, model: UserGuideResponse.self) { result in
+            HUD.hideNow()
+            switch result {
+            case let .success(model):
+                if let record = model.record {
+                    let groupedData = Dictionary(grouping: record) { $0.classifyName ?? "未知" }
+                    let classifiedData = groupedData.map { key, value in
+                        UserGuideResponse(title: key, record: value)
+                    }
+                    DispatchQueue.main.async {
+                        self.userGuideData = classifiedData
+                    }
+                }
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+}
+
+class UserGuideResponse: BaseModel {
     var title: String?
     var record: [UserGuideModel]?
 
@@ -19,7 +48,6 @@ class UserGuideResponse: BaseModel, Identifiable {
 }
 
 class UserGuideModel: BaseModel {
-    var id: String?
     var icon: String?
     var title: String?
     var content: String?

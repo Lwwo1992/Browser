@@ -149,6 +149,9 @@ struct SearchView: View {
                             .font(.system(size: 14, weight: .medium))
                             .opacity(0.6)
                             .padding(.vertical, 8)
+                            .onTapGesture {
+                                
+                            }
 
                             Divider()
                         }

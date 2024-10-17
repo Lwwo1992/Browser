@@ -45,6 +45,11 @@ struct WebView: UIViewRepresentable {
                 .store(in: &cancellables)
         }
 
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            print(webView.url?.absoluteString ?? "")
+            print("网页开始加载")
+        }
+
         // 页面加载完成时保存书签
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             withAnimation {
@@ -72,18 +77,30 @@ struct WebView: UIViewRepresentable {
             }
         }
 
+        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            guard let url = navigationAction.request.url else {
+                decisionHandler(.allow)
+                return
+            }
+
+            // 检查是否是下载链接
+            if BWebViewManager.share.isDownloadLink(url: url) {
+                BWebViewManager.share.handleDownload(url: url) { [self] url1, name, size in
+
+                    self.saveDownInfo(url: url1?.absoluteString ?? "", name: name ?? "", size: size ?? 0)
+                }
+                decisionHandler(.cancel)
+            } else {
+                decisionHandler(.allow)
+            }
+        }
+
         // 加载失败
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
             print("Failed to load webpage: \(error.localizedDescription)")
             withAnimation {
                 parent.viewModel.refresh = false
             }
-        }
-
-        // 控制加载策略和内容模式
-        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-            preferences.preferredContentMode = mode
-            decisionHandler(.allow, preferences)
         }
 
         private func takeSnapshot(completion: @escaping (String?) -> Void) {
@@ -131,13 +148,23 @@ struct WebView: UIViewRepresentable {
             return nil
         }
 
-        // 加载网站
+        /// 加载网站
         private func loadWebsite(_ url: URL) {
             let request = URLRequest(url: url)
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.webView.load(request)
             }
+        }
+
+        /// 保存下载数据
+        func saveDownInfo(url: String, name: String, size: Int64) {
+            let model = DownloadModel()
+            model.url = url
+            model.size = size
+            model.title = name
+            DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.download)
+            HUD.showTipMessage("下载成功")
         }
     }
 

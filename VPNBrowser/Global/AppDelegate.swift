@@ -10,6 +10,7 @@
 @_exported import WCDBSwift
 @_exported import WTool
 
+import IQKeyboardManagerSwift
 import UIKit
 
 @main
@@ -46,6 +47,11 @@ extension AppDelegate {
         
         initConfig()
 
+        if #available(iOS 13.0, *) {
+            self.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle.light
+        }
+        IQKeyboardManager.shared.enable = true
+
         Util.createFolderIfNotExists(S.Files.imageURL)
     }
 
@@ -55,10 +61,11 @@ extension AppDelegate {
         DBaseManager.share.createTable(table: S.Table.searchHistory, of: HistoryModel.self)
         DBaseManager.share.createTable(table: S.Table.browseHistory, of: HistoryModel.self)
         DBaseManager.share.createTable(table: S.Table.collect, of: HistoryModel.self)
-        DBaseManager.share.createTable(table: S.Table.bookmark, of: HistoryModel.self)
+        DBaseManager.share.createTable(table: S.Table.download, of: DownloadModel.self)
     }
 
     private func initConfig() {
+
          
         if S.Config.isLogin{
  
@@ -74,6 +81,32 @@ extension AppDelegate {
                 case let .success(response):
                     if let responseString = String(data: response.data, encoding: .utf8) {
                         print("Response: \(responseString)") // 打印响应内容，方便调试
+//=======
+//        APIProvider.shared.request(.generateVisitorToken, progress: { _ in
+//
+//        }) { result in
+//            switch result {
+//            case let .success(response):
+//                if let responseString = String(data: response.data, encoding: .utf8) {
+//                    print("Response: \(responseString)") // 打印响应内容，方便调试
+//                }
+//
+//                do {
+//                    if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
+//                       let data = json["data"] as? [String: Any],
+//                       let token = data["token"] as? String {
+//                        if LoginManager.shared.loginInfo == nil {
+//                            LoginManager.shared.loginInfo = LoginModel()
+//                        }
+//                        LoginManager.shared.loginInfo?.token = token
+//
+//                        print("LoginManager.shared.loginInfo?.token--%@", LoginManager.shared.loginInfo?.token as Any)
+//                        // 继续执行其他接口请求
+//                        self.fetchConfigByType()
+//                        self.fetchAnonymousConfig()
+//                    } else {
+//                        print("无法提取 token")
+//>>>>>>> f52f4de6f7716e1a8bd90862cee532a64305ca34
                     }
                     
                     do {
@@ -116,7 +149,6 @@ extension AppDelegate {
     }
 
     private func fetchConfigByType() {
-        
         APIProvider.shared.request(.getConfigByType(data: 1), model: ConfigByTypeModel.self) { result in
             switch result {
             case let .success(model):

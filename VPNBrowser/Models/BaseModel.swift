@@ -8,7 +8,8 @@
 import HandyJSON
 import UIKit
 
-class BaseModel: NSObject, HandyJSON {
+class BaseModel: NSObject, HandyJSON, Identifiable {
+
     override required init() { }
 
     

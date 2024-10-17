@@ -5,7 +5,6 @@
 //  Created by xyxy on 2024/10/11.
 //
 
-import AdSupport
 import HandyJSON
 import Moya
 
@@ -186,10 +185,8 @@ extension APITarget: TargetType {
             data["id"] = id
             parameters = ["data": data]
 
-
-        case .logout, .anonymousConfig,.uploadConfig:
+        case .logout, .anonymousConfig, .uploadConfig:
             break
- 
         case .browserAccount:
             return .requestPlain
 
@@ -210,9 +207,10 @@ extension APITarget: TargetType {
             let data: [String: Any] = [:]
             parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": 10]
         case .generateVisitorToken:
-            let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
-            parameters = ["data": ["deviceId": idfa]]
-            
+ 
+            if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+                parameters = ["data": ["deviceId": uuid]]
+            }
         case .logout, .anonymousConfig, .fileSize, .downloadFile:
             break
         }
