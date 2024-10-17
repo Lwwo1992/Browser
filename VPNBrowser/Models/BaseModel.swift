@@ -11,6 +11,8 @@ import UIKit
 class BaseModel: NSObject, HandyJSON {
     override required init() { }
 
+    
+    
     func mapping(mapper: HelpingMapper) {
     }
 }

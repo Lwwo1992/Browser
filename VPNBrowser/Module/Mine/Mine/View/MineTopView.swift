@@ -7,32 +7,28 @@
 
 import Kingfisher
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MineTopView: View {
     @ObservedObject var loginManager = LoginManager.shared
     @State private var historyNumber: String = ""
     @State private var collectNumber: String = ""
-
+    
+    @State var model:LoginModel = LoginModel()
+    
+    
     var body: some View {
         VStack {
             HStack {
-                if let userHead = loginManager.loginInfo?.userHead {
-                    KFImage(URL(string: userHead))
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-//                        .placeholder {
-//                            Image("default_image") // 替换为你项目中的默认图片名
-//                                .resizable()
-//                                .scaledToFill()
-//                                .frame(width: 40, height: 40)
-//                                .clipShape(Circle())
-//                        }
-                }
-
+                
+                
+                WebImage(url: URL(string: model.headPortrait))
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(loginManager.loginInfo?.account ?? "游客登录")
+                    Text(loginManager.loginInfo.account ?? "游客登录")
                         .font(.system(size: 18))
                         .font(.system(size: 18))
                     Text("已经陪伴你8天")
@@ -106,6 +102,7 @@ struct MineTopView: View {
             .padding(.top, 20)
         }
         .onAppear {
+             
             let historyNumber = DBaseManager.share.qureyFromDb(fromTable: S.Table.browseHistory, cls: HistoryModel.self)?.count ?? 0
             if historyNumber >= 999 {
                 self.historyNumber = "999+"

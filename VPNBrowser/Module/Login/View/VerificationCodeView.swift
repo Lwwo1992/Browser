@@ -83,6 +83,9 @@ struct VerificationCodeView: View {
             HUD.hideNow()
             switch result {
             case let .success(model):
+                
+                LoginManager.shared.loginInfo = LoginModel()
+                DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
 
                 switch accountType {
                 case .mobile:
@@ -93,11 +96,16 @@ struct VerificationCodeView: View {
                     break
                 }
 
-                S.Config.isLogin = true
                 
+                S.Config.isLogin = true
+                model.logintype = "1"
                 LoginManager.shared.loginInfo = model
-
-                DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
+                let v = LoginManager.shared.loginInfo
+                print("LoginManager.shared.loginInfo---\(v.id)")
+                print("LoginManager.shared.loginInfo---\(v.deviceId)")
+                  
+//                DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
+                LoginManager.shared.saveLoginInfo(model)
 
                 HUD.showTipMessage("登录成功")
                 Util.topViewController().navigationController?.popToRootViewController(animated: true)
@@ -131,9 +139,9 @@ struct VerificationCodeView: View {
 
                 switch accountType {
                 case .mobile:
-                    LoginManager.shared.loginInfo?.mobile = accountNum
+                    LoginManager.shared.fetchUserModel().mobile = accountNum
                 case .mailbox:
-                    LoginManager.shared.loginInfo?.mailbox = accountNum
+                    LoginManager.shared.fetchUserModel().mailbox = accountNum
                 case .account:
                     break
                 }

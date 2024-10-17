@@ -8,6 +8,7 @@ import SwiftUI
 import WTool
 import AWSMobileClient
 import AWSS3
+import SDWebImageSwiftUI
 
 struct SecurityView: View {
     enum SecurityOption: String, CaseIterable {
@@ -28,7 +29,7 @@ struct SecurityView: View {
         }
     }
 
-    @State private var selectedImage: UIImage? = nil
+    @State private var selectedImage: UIImage?
     @State private var isShowingActionSheet = false
     private let imagePickerManager = ImagePicker()
 
@@ -65,22 +66,33 @@ struct SecurityView: View {
             ])
         }
     }
-
+    
     private var avatarView: some View {
         Group {
-            if let selectedImage = selectedImage {
-                Image(uiImage: selectedImage)
+
+            if LoginManager.shared.fetchUserModel().headPortrait.count > 0{
+                
+                WebImage(url: URL(string: LoginManager.shared.fetchUserModel().headPortrait))
                     .resizable()
                     .scaledToFill()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-            } else {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                    .foregroundColor(.gray)
+                
+            }else{
+                if let selectedImage = selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                } else {
+                    Image(systemName: "person.crop.circle.fill")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                        .foregroundColor(.gray)
+                }
             }
         }
     }
@@ -109,9 +121,16 @@ struct SecurityView: View {
                 HUD.hideNow()
                 switch result {
                 case .success:
-                    LoginManager.shared.loginInfo = nil
+                      
+                    LoginManager.shared.loginInfo = LoginModel()
                     DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+                     
                     Util.topViewController().navigationController?.popToRootViewController(animated: true)
+                    
+                    
+                    
+                    
+                    
                 case let .failure(error):
                     print("Request failed with error: \(error)")
                 }
@@ -144,7 +163,7 @@ struct SecurityView: View {
               
                 
                 s3Client.uploadImageToS3(filePath: urlStr, model: m) { imgUrl, error in
-                    LoginManager.shared.loginInfo?.userHead = imgUrl ?? ""
+                    LoginManager.shared.loginInfo.userHead = imgUrl ?? ""
                     
                     updateUserInfo(imgUrl: imgUrl ?? "")
                     
@@ -165,13 +184,13 @@ struct SecurityView: View {
     private func rightTitle(for item: SecurityOption) -> String? {
         switch item {
         case .nickname:
-            return LoginManager.shared.loginInfo?.account
+            return LoginManager.shared.fetchUserModel().name
         case .phoneNumber:
-            return LoginManager.shared.loginInfo?.mobile.maskedAccount
+            return LoginManager.shared.fetchUserModel().mobile.maskedAccount
         case .email:
-            return LoginManager.shared.loginInfo?.mailbox.maskedAccount
+            return LoginManager.shared.fetchUserModel().mailbox.maskedAccount
         case .account:
-            return LoginManager.shared.loginInfo?.account
+            return LoginManager.shared.fetchUserModel().account
         default:
             return nil
         }
@@ -180,11 +199,18 @@ struct SecurityView: View {
     
     private func updateUserInfo(imgUrl:String) {
         HUD.showLoading()
-        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "")) {
+        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "", id : LoginManager.shared.fetchUserModel().id)) {
             result in
                HUD.hideNow()
                switch result {
                case .success:
+                   
+                   let model = LoginManager.shared.fetchUserModel()
+                   model.headPortrait = imgUrl
+                   
+                   DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.headPortrait], with: model)
+                   
+                   
                    HUD.showTipMessage("修改成功")
                    Util.topViewController().navigationController?.popToRootViewController(animated: true)
                case let .failure(error):

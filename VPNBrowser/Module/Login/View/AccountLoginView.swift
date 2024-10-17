@@ -76,9 +76,9 @@ struct AccountLoginView: View {
             case let .success(model):
 
                 S.Config.isLogin = true
-
+                model.logintype = "1"
                 LoginManager.shared.loginInfo = model
-
+                
                 DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
 
                 HUD.showTipMessage("登录成功")

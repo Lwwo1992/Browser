@@ -24,6 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         window?.rootViewController = TabBarController()
 
+//
+//        DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+//        
+//        let loginInfo: LoginModel =  LoginModel()
+//        loginInfo.id = "1846399316753186818"
+//        loginInfo.loginId = "1846399316753186818"
+//        
+////        DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.id,LoginModel.Properties.loginId], with: loginInfo)
+//        LoginManager.shared.saveLoginInfo(loginInfo)
+        
+        
         return true
     }
 }
@@ -31,6 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     private func confing() {
         initTable()
+        
+        
         initConfig()
 
         Util.createFolderIfNotExists(S.Files.imageURL)
@@ -46,48 +59,64 @@ extension AppDelegate {
     }
 
     private func initConfig() {
-        APIProvider.shared.request(.generateVisitorToken, progress: { _ in
-
-        }) { result in
-            switch result {
-            case let .success(response):
-                if let responseString = String(data: response.data, encoding: .utf8) {
-                    print("Response: \(responseString)") // 打印响应内容，方便调试
-                }
-
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
-                       let data = json["data"] as? [String: Any],
-                       let token = data["token"] as? String {
-                        if LoginManager.shared.loginInfo == nil {
-                            LoginManager.shared.loginInfo = LoginModel()
-                        } 
-                        LoginManager.shared.loginInfo?.token = token
-                        
-                        print("LoginManager.shared.loginInfo?.token--%@",LoginManager.shared.loginInfo?.token as Any)
-                        // 继续执行其他接口请求
-                        self.fetchConfigByType()
-                        self.fetchAnonymousConfig()
-                    } else {
-                        print("无法提取 token")
+         
+        if S.Config.isLogin{
+ 
+            fetchConfigByType()
+            fetchAnonymousConfig()
+             
+        }else{
+            
+            APIProvider.shared.request(.generateVisitorToken, progress: { _ in
+                
+            }) { result in
+                switch result {
+                case let .success(response):
+                    if let responseString = String(data: response.data, encoding: .utf8) {
+                        print("Response: \(responseString)") // 打印响应内容，方便调试
                     }
-                } catch {
-                    HUD.showTipMessage(error.localizedDescription)
-                    print("JSON 解析失败: \(error)")
+                    
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
+                           let data = json["data"] as? [String: Any],
+                           let token = data["token"] as? String , let userId = data["id"] as? String {
+ 
+                            LoginManager.shared.loginInfo.vistoken = token //单例存储
+                            
+                            let info = LoginManager.shared.fetchUserModel()
+                            info.id = userId
+                            info.logintype = "0"
+                            
+//                            DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+//                            LoginManager.shared.saveLoginInfo(info)
+                            
+                            DBaseManager.share.updateToDb(table: S.Table.loginInfo, on: [LoginModel.Properties.id,LoginModel.Properties.logintype], with: info)
+                            
+                            
+                            
+                            // 继续执行其他接口请求
+                            self.fetchConfigByType()
+                            self.fetchAnonymousConfig()
+                            //MineViewModel().fetchdata()
+                        } else {
+                            print("无法提取 token")
+                        }
+                    } catch {
+                        HUD.showTipMessage(error.localizedDescription)
+                        print("JSON 解析失败: \(error)")
+                    }
+                    
+                case let .failure(error):
+                    print("请求失败: \(error)")
                 }
-
-            case let .failure(error):
-                print("请求失败: \(error)")
             }
+            
         }
-
-        if let model = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self)?.first {
-            LoginManager.shared.loginInfo = model
-        }
+       
     }
 
     private func fetchConfigByType() {
-        print("LoginManager.shared.loginInfo?.token--%@",LoginManager.shared.loginInfo?.token as Any)
+        
         APIProvider.shared.request(.getConfigByType(data: 1), model: ConfigByTypeModel.self) { result in
             switch result {
             case let .success(model):

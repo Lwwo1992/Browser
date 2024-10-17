@@ -104,6 +104,7 @@
 		44DA8E332CB6853C003B1C34 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E322CB6853C003B1C34 /* AboutViewController.swift */; };
 		44DA8E362CB68565003B1C34 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E352CB68565003B1C34 /* AboutView.swift */; };
 		44DA8E382CB68750003B1C34 /* OptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E372CB68750003B1C34 /* OptionListView.swift */; };
+		8CC709072CBFB449008A0FC8 /* MineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC709062CBFB449008A0FC8 /* MineViewModel.swift */; };
 		8CEB24542CBD3750006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24532CBD3750006F8485 /* WTool */; };
 		8CEB24572CBD3820006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24562CBD3820006F8485 /* WTool */; };
 		8CEB245A2CBD3884006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24592CBD3884006F8485 /* WTool */; };
@@ -213,6 +214,7 @@
 		44DA8E352CB68565003B1C34 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		44DA8E372CB68750003B1C34 /* OptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionListView.swift; sourceTree = "<group>"; };
 		724979C7A2BC482E06F3B646 /* Pods-VPNBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNBrowser.release.xcconfig"; path = "Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		8CC709062CBFB449008A0FC8 /* MineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineViewModel.swift; sourceTree = "<group>"; };
 		8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroAESCipher.swift; sourceTree = "<group>"; };
 		8CEB245D2CBD530B006F8485 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BAC52216964DC1709C01EEF9 /* Pods-VPNBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNBrowser.debug.xcconfig"; path = "Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser.debug.xcconfig"; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 				44AA508C2CB50315005EBC36 /* MineView.swift */,
 				44AA508E2CB5055F005EBC36 /* MineTopView.swift */,
 				44AA50902CB5056F005EBC36 /* MineBottomView.swift */,
+				8CC709062CBFB449008A0FC8 /* MineViewModel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -868,6 +871,7 @@
 				44CF20A02CB8CE5800772B9C /* ConfigByTypeModel.swift in Sources */,
 				44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */,
 				440F93282CBCC09200D94AD0 /* BrowserWebViewController.swift in Sources */,
+				8CC709072CBFB449008A0FC8 /* MineViewModel.swift in Sources */,
 				44DA8E232CB66417003B1C34 /* CloudSyncViewController.swift in Sources */,
 				44CF20B82CB933A400772B9C /* DBManager.swift in Sources */,
 				44DA8E2F2CB67F75003B1C34 /* RecommendedModeViewController.swift in Sources */,
@@ -913,11 +917,15 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Brower;
+				INFOPLIST_KEY_NSCameraUsageDescription = "app需要您的允许才能上传头像或动态";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "app需要您的允许才能上传头像或动态";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -950,11 +958,15 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Brower;
+				INFOPLIST_KEY_NSCameraUsageDescription = "app需要您的允许才能上传头像或动态";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "app需要您的允许才能上传头像或动态";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
