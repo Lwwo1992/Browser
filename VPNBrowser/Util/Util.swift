@@ -91,4 +91,26 @@ extension Util {
             return String(format: "%.2f %@", sizeInUnit, units[unitIndex])
         }
     }
+
+    /// 验证密码正确性
+    static func isPasswordValid(_ password: String) -> Bool {
+        // 确保密码长度大于6位
+        if password.count <= 6 {
+            HUD.showTipMessage("密码必须大于6位")
+            return false
+        }
+
+        // 只能包含英文字母和数字
+        let allowedCharacters = CharacterSet.alphanumerics
+
+        // 遍历密码，检查是否每个字符都在 allowedCharacters 中
+        for char in password.unicodeScalars {
+            if !allowedCharacters.contains(char) {
+                HUD.showTipMessage("密码不能包含特殊字符或中文")
+                return false
+            }
+        }
+
+        return true
+    }
 }

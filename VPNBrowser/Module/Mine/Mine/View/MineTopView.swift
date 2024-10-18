@@ -31,7 +31,7 @@ struct MineTopView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(viewModel.info.name ?? "游客登录")
+                    Text(viewModel.info.name ?? "立即登录")
                         .font(.system(size: 18))
                         .font(.system(size: 18))
                     Text("已经陪伴你\(viewModel.info.createTime.daysFromNow)天")

@@ -19,6 +19,8 @@ struct S {
         static let browseHistory = "browseHistoryTable"
         /// 收藏
         static let collect = "collectTable"
+        /// 文件夹
+        static let folder = "folderTable"
         /// 书签
         static let bookmark = "bookmarkTable"
         /// 下载
@@ -56,7 +58,7 @@ struct S {
         /// 导航模式，使用 UserDefaults 持久化
         static var mode: WebMode {
             get {
-                let modeString = UserDefaults.standard.string(forKey: Keys.mode) ?? WebMode.guide.rawValue
+                let modeString = UserDefaults.standard.string(forKey: Keys.mode) ?? WebMode.web.rawValue
                 return WebMode(rawValue: modeString) ?? .web
             }
             set {

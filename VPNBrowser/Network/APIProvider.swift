@@ -83,6 +83,12 @@ enum APITarget {
 
     /// 忘记密码
     case forgetPassword(password: String)
+
+    /// 修改密码
+    case updatePassword(new: String, old: String)
+
+    /// 同步书签
+    case syncBookmark(dic: Dictionary<String, Any>)
 }
 
 extension APITarget: TargetType {
@@ -121,7 +127,7 @@ extension APITarget: TargetType {
         case .anonymousConfig:
             return "/browser/app/visitorAccess/config"
         case .updateEmailOrMobile:
-            return "/browser/app/visitorAccess/updateEmailOrMobile"
+            return "/browser/app/browserAccount/updateEmailOrMobile"
         case .rankingPage:
             return "/browser/app/visitorAccess/rankingPage"
         case .editUserInfo:
@@ -136,14 +142,18 @@ extension APITarget: TargetType {
             return url
         case let .browserAccount(id):
             return "/browser/app/browserAccount/\(id)"
-        case let .forgetPassword:
+        case .forgetPassword:
             return "/browser/app/browserAccount/forgetPassword"
+        case .updatePassword:
+            return "/browser/app/browserAccount/updatePassword"
+        case .syncBookmark:
+            return "/browser/app/browserBookmarkCollect/syncBookmark"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark:
             return .post
 
         case .fileSize:
@@ -216,6 +226,12 @@ extension APITarget: TargetType {
         case let .forgetPassword(password):
             parameters = ["data": ["newPassword": password]]
 
+        case let .updatePassword(new, old):
+            parameters = ["data": ["newPassword": new, "oldPassword": old]]
+
+        case let .syncBookmark(dic):
+            parameters = ["data": dic]
+
         case .logout, .anonymousConfig, .uploadConfig, .fileSize, .downloadFile:
             break
         }
@@ -270,10 +286,12 @@ extension MoyaProvider {
                         completion(.failure(NSError(domain: "APIError", code: -1, userInfo: [NSLocalizedDescriptionKey: baseResponse.message ?? "Unknown error"])))
                     }
                 } else {
+                    HUD.hideNow()
                     print("未能将 JSON 解析为 BaseResponse")
                 }
 
             case let .failure(error):
+                HUD.hideNow()
                 // 捕获网络请求失败的错误
                 print("请求失败，出现错误: \(error)")
             }
@@ -299,6 +317,7 @@ extension MoyaProvider {
                         if let decodedModel = baseResponse.data {
                             completion(.success(decodedModel))
                         } else {
+                            HUD.hideNow()
                             print("未能解析 'data' 字段。")
                         }
                     } else {
@@ -308,10 +327,12 @@ extension MoyaProvider {
                         completion(.failure(NSError(domain: "APIError", code: -1, userInfo: [NSLocalizedDescriptionKey: baseResponse.message ?? "Unknown error"])))
                     }
                 } else {
+                    HUD.hideNow()
                     print("未能将 JSON 解析为 BaseResponse")
                 }
 
             case let .failure(error):
+                HUD.hideNow()
                 print("请求失败，出现错误: \(error)")
             }
         }

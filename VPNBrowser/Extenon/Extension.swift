@@ -76,3 +76,35 @@ extension URL {
         return (try? resourceValues(forKeys: [.localizedNameKey]))?.localizedName
     }
 }
+
+extension Date {
+    var isToday: Bool {
+        return Calendar.current.isDateInToday(self)
+    }
+
+    func formattedDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: self)
+    }
+}
+
+extension Array where Element == HistoryModel {
+    func groupedByDate() -> [Date: [HistoryModel]] {
+        let calendar = Calendar.current
+        var groupedHistory: [Date: [HistoryModel]] = [:]
+
+        for history in self {
+            let date = Date(timeIntervalSince1970: history.timestamp)
+            let dateWithoutTime = calendar.startOfDay(for: date)
+
+            if groupedHistory[dateWithoutTime] != nil {
+                groupedHistory[dateWithoutTime]?.append(history)
+            } else {
+                groupedHistory[dateWithoutTime] = [history]
+            }
+        }
+
+        return groupedHistory
+    }
+}

@@ -42,6 +42,8 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initUI()
+
+        selectedIndex = ContentStyle.allCases.firstIndex(of: .browser) ?? 1
     }
 
     private func initUI() {

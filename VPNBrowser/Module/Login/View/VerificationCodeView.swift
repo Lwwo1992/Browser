@@ -14,6 +14,7 @@ enum AccountType: Int {
 enum VerificationCodeType {
     case login
     case replace
+    case verify
 }
 
 struct VerificationCodeView: View {
@@ -71,7 +72,7 @@ struct VerificationCodeView: View {
         switch verificationCodeType {
         case .login:
             login(AecCode)
-        case .replace:
+        case .replace, .verify:
             checkValidCode(AecCode)
         }
     }
@@ -84,7 +85,7 @@ struct VerificationCodeView: View {
             case let .success(model):
 
                 model.logintype = "1"
-                
+
                 LoginManager.shared.info = model
 
                 DBaseManager.share.updateToDb(table: S.Table.loginInfo,
@@ -112,7 +113,12 @@ struct VerificationCodeView: View {
             HUD.hideNow()
             switch result {
             case .success:
-                updateEmailOrMobile(code)
+                if verificationCodeType == .replace {
+                    updateEmailOrMobile(code)
+                } else {
+                    Util.topViewController().navigationController?.pushViewController(SetupPasswordViewController(), animated: true)
+                }
+
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }
@@ -125,16 +131,14 @@ struct VerificationCodeView: View {
             HUD.hideNow()
             switch result {
             case .success:
-
-                switch accountType {
-                case .mobile:
-                    LoginManager.shared.fetchUserModel().mobile = accountNum
-                case .mailbox:
-                    LoginManager.shared.fetchUserModel().mailbox = accountNum
-                case .account:
-                    break
+                
+                LoginManager.shared.fetchUserInfo()
+                
+                if let navigationController = Util.topViewController().navigationController {
+                    if let securityVC = navigationController.viewControllers.first(where: { $0 is SecurityViewController }) {
+                        navigationController.popToViewController(securityVC, animated: true)
+                    }
                 }
-                Util.topViewController().navigationController?.popToRootViewController(animated: true)
 
             case let .failure(error):
                 print("Request failed with error: \(error)")

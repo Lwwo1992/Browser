@@ -29,6 +29,7 @@ struct SecurityView: View {
         }
     }
 
+    @ObservedObject var viewModel = LoginManager.shared
     @State private var selectedImage: UIImage?
     @State private var isShowingActionSheet = false
     private let imagePickerManager = ImagePicker()
@@ -69,21 +70,20 @@ struct SecurityView: View {
 
     private var avatarView: some View {
         Group {
-            if LoginManager.shared.fetchUserModel().headPortrait.count > 0 {
-                WebImage(url: URL(string: LoginManager.shared.fetchUserModel().headPortrait))
+            if let selectedImage = selectedImage {
+                Image(uiImage: selectedImage)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-
             } else {
-                if let selectedImage = selectedImage {
-                    Image(uiImage: selectedImage)
+                WebImage(url: URL(string: viewModel.info.headPortrait)) { Image in
+                    Image
                         .resizable()
                         .scaledToFill()
                         .frame(width: 40, height: 40)
                         .clipShape(Circle())
-                } else {
+                } placeholder: {
                     Image(systemName: "person.crop.circle.fill")
                         .resizable()
                         .scaledToFill()
@@ -194,13 +194,13 @@ struct SecurityView: View {
     private func rightTitle(for item: SecurityOption) -> String? {
         switch item {
         case .nickname:
-            return LoginManager.shared.fetchUserModel().name
+            return viewModel.info.name
         case .phoneNumber:
-            return LoginManager.shared.fetchUserModel().mobile.maskedAccount
+            return viewModel.info.mobile.maskedAccount
         case .email:
-            return LoginManager.shared.fetchUserModel().mailbox.maskedAccount
+            return viewModel.info.mailbox.maskedAccount
         case .account:
-            return LoginManager.shared.fetchUserModel().account
+            return viewModel.info.account
         default:
             return nil
         }
@@ -208,21 +208,30 @@ struct SecurityView: View {
 
     private func updateUserInfo(imgUrl: String) {
         HUD.showLoading()
-        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "", id: LoginManager.shared.fetchUserModel().id)) {
+        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "", id: LoginManager.shared.info.id)) {
             result in
             HUD.hideNow()
             switch result {
             case .success:
 
-                LoginManager.shared.info.headPortrait = imgUrl
+                HUD.showTipMessage("修改成功")
+
+                let model = LoginModel()
+                model.headPortrait = imgUrl
 
                 DBaseManager.share.updateToDb(table: S.Table.loginInfo,
                                               on: [LoginModel.Properties.headPortrait],
-                                              with: LoginManager.shared.info
+                                              with: model
                 )
 
-                Util.topViewController().navigationController?.popToRootViewController(animated: true)
-                HUD.showTipMessage("修改成功")
+                LoginManager.shared.fetchUserInfo()
+
+                if let navigationController = Util.topViewController().navigationController {
+                    if let securityVC = navigationController.viewControllers.first(where: { $0 is SecurityViewController }) {
+                        navigationController.popToViewController(securityVC, animated: true)
+                    }
+                }
+
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }

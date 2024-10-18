@@ -52,15 +52,7 @@ struct BrowserWebView: View {
                 .font(.system(size: 14))
                 .foregroundColor(isCollect ? .yellow : .gray)
                 .onTapGesture {
-                    isCollect.toggle()
-
-                    if isCollect {
-                        let model = HistoryModel()
-                        model.path = viewModel.urlString
-                        DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.collect)
-                    } else {
-                        DBaseManager.share.deleteFromDb(fromTable: S.Table.collect, where: HistoryModel.Properties.path == viewModel.urlString)
-                    }
+                    handleCollectAction()
                 }
         }
         .frame(height: 40)
@@ -76,41 +68,69 @@ struct BrowserWebView: View {
     @ViewBuilder
     private func bottomView() -> some View {
         HStack {
-            Image(.backIndicator)
+            Text("返回")
+                .frame(maxWidth: .infinity)
                 .onTapGesture {
                     Util.topViewController().navigationController?.popViewController(animated: true)
                 }
 
             Spacer()
 
-            Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
-                .rotationEffect(Angle(degrees: viewModel.refresh ? 360 : 0))
+            Text("刷新")
+                .frame(maxWidth: .infinity)
                 .onTapGesture {
-                    withAnimation {
-                        withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
-                            viewModel.refresh = true
-                        }
-                    }
+                    viewModel.refresh = true
                 }
 
             Spacer()
 
-//            RoundedRectangle(cornerRadius: 2)
-//                .stroke(Color.black, lineWidth: 1)
-//                .frame(width: 15, height: 15)
-//                .background(Color.white)
-//
-//            Spacer()
-
-            Image(systemName: "ellipsis")
-                .foregroundColor(.black)
+            Text("更多")
+                .frame(maxWidth: .infinity)
                 .onTapGesture {
                     viewModel.showBottomSheet.toggle()
                 }
-                .padding()
         }
-        .padding(.vertical, 15)
-        .padding(.horizontal, 30)
-        .background(Color(hex: 0xF8F5F5))
+        .font(.system(size: 14))
+        .padding(.vertical, 10)
+        .background(Color.gray.opacity(0.1))
+    }
+}
+
+extension BrowserWebView {
+    private func handleCollectAction() {
+        if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.folder, cls: FolderModel.self) {
+            presentFolderDialog(with: array)
+        } else {
+            isCollect.toggle()
+            updateDatabase()
+        }
+    }
+
+    // 弹出文件夹选择对话框
+    private func presentFolderDialog(with folders: [FolderModel]) {
+        Util.topViewController().popup.dialog {
+            let folderDialog = FolderDialogView(frame: CGRect(x: 0, y: 0, width: 240, height: 260))
+            folderDialog.array = folders
+            folderDialog.onFolderSelected = { folder in
+                isCollect.toggle() // 切换收藏状态
+                updateDatabase(for: folder) // 更新数据库
+            }
+            return folderDialog
+        }
+    }
+
+    // 更新数据库状态
+    private func updateDatabase(for folder: FolderModel? = nil) {
+        let model = HistoryModel()
+        model.path = viewModel.urlString
+        if let folder {
+            model.folderID = folder.id
+        }
+
+        if isCollect {
+            DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.collect)
+        } else {
+            DBaseManager.share.deleteFromDb(fromTable: S.Table.collect, where: HistoryModel.Properties.path == viewModel.urlString)
+        }
     }
 }

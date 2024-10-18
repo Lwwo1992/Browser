@@ -8,19 +8,23 @@
 import SwiftUI
 
 struct FootprintView: View {
-    @State var viewModel = FootprintViewModel()
-
-    @State private var content: String = ""
+    @ObservedObject var viewModel: HistoryViewModel
 
     var body: some View {
         VStack(spacing: 20) {
-//            TextField("搜索内容", text: $content)
-//                .textFieldStyle(RoundedBorderTextFieldStyle())
-//                .font(.system(size: 14))
-
-            BrowseHistory()
+            if viewModel.selectedSegmentIndex == 0 {
+                CollectionView()
+            } else {
+                HistoryView()
+            }
         }
         .padding(.top, 8)
+        .onAppear {
+            viewModel.loadHistory()
+        }
+        .onChange(of: viewModel.selectedSegmentIndex) { _ in
+            viewModel.loadHistory()
+        }
         .environmentObject(viewModel)
     }
 }

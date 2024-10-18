@@ -66,20 +66,24 @@ extension ChangeNicknameViewController {
 extension ChangeNicknameViewController {
     private func updateUserInfo() {
         HUD.showLoading()
-        APIProvider.shared.request(.editUserInfo(headPortrait: "", name: textField.text ?? "", id: LoginManager.shared.info.id)) { [weak self]
-            result in
-                HUD.hideNow()
-                switch result {
-                case .success:
-                    HUD.showTipMessage("修改成功")
+        APIProvider.shared.request(.editUserInfo(headPortrait: "", name: textField.text ?? "", id: LoginManager.shared.info.id)) { [weak self] result in
+            guard let self else { return }
+            HUD.hideNow()
+            switch result {
+            case .success:
+                HUD.showTipMessage("修改成功")
 
-                    LoginManager.shared.fetchUserInfo()
+                LoginManager.shared.fetchUserInfo()
 
-                    self?.navigationController?.popToRootViewController(animated: true)
-                    
-                case let .failure(error):
-                    print("Request failed with error: \(error)")
+                if let navigationController = self.navigationController {
+                    if let securityVC = navigationController.viewControllers.first(where: { $0 is SecurityViewController }) {
+                        navigationController.popToViewController(securityVC, animated: true)
+                    }
                 }
+
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
         }
     }
 }

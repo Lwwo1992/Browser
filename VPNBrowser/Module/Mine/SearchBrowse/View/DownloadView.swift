@@ -12,16 +12,21 @@ struct DownloadView: View {
     @ObservedObject var viewModel: DownloadViewModel
 
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible())], spacing: 20) {
-                ForEach(viewModel.array) { model in
-                    DownloadRowView(model: model, viewModel: viewModel)
+        if !viewModel.array.isEmpty {
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.flexible())], spacing: 20) {
+                    ForEach(viewModel.array) { model in
+                        DownloadRowView(model: model, viewModel: viewModel)
+                    }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
+                .padding(.top, 6)
             }
-            .padding(.top, 6)
+            .background(Color.white)
+        } else {
+            Text("暂无数据")
+                .font(.system(size: 16))
         }
-        .background(Color.white)
     }
 }
 

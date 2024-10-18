@@ -16,16 +16,7 @@ class LoginManager: ObservableObject {
         }
     }
 
-    func fetchUserModel() -> LoginModel {
-        if let model = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self)?.first {
-            DispatchQueue.main.async {
-                self.info = model
-            }
-            return model
-        } else {
-            return LoginModel()
-        }
-    }
+   
 
     func fetchUserInfo(_ userID: String = LoginManager.shared.info.id) {
         APIProvider.shared.request(.browserAccount(userId: userID), model: LoginModel.self) { [weak self] result in
