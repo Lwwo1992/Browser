@@ -59,7 +59,7 @@ struct WebView: UIViewRepresentable {
             // 创建历史记录模型
             let model = HistoryModel()
             model.title = webView.title
-            model.path = parent.viewModel.urlString
+            model.address = parent.viewModel.urlString
 
             // 获取页面 logo（书签图标）
             webView.evaluateJavaScript("document.querySelector('link[rel*=\"icon\"]').href") { result, error in

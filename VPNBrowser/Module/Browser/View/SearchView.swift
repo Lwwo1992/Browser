@@ -5,6 +5,7 @@
 //  Created by xyxy on 2024/10/10.
 //
 import Kingfisher
+import SDWebImageSwiftUI
 import SwiftUI
 
 struct SearchView: View {
@@ -15,8 +16,6 @@ struct SearchView: View {
     @State private var historise: [HistoryModel]? = nil
 
     @State private var showingDeleteAlert = false
-
-    let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 5)
 
     var body: some View {
         ScrollView {
@@ -38,28 +37,31 @@ struct SearchView: View {
             }
         }
         .onAppear {
-            historise = DBaseManager.share.qureyFromDb(fromTable: S.Table.searchHistory, cls: HistoryModel.self)
+            historise = DBaseManager.share.qureyFromDb(fromTable: S.Table.searchHistory, cls: HistoryModel.self)?.reversed()
         }
     }
 
     @ViewBuilder
     private func topView() -> some View {
-        LazyVGrid(columns: columns, spacing: 10) {
-            ForEach(self.recordStore.records, id: \.name) { record in
-                HStack(spacing: 2) {
-                    KFImage(Util.getCompleteImageUrl(from: record.logo))
+        FlowLayout(items: recordStore.records) { record in
+            HStack(spacing: 2) {
+                WebImage(url: Util.getCompleteImageUrl(from: record.logo)) { image in
+                    image
                         .resizable()
                         .scaledToFit()
                         .frame(width: 20, height: 20)
-
-                    Text(record.name ?? "未知")
-                        .font(.system(size: 12))
-                        .frame(maxWidth: 55, alignment: .leading)
-                        .frame(width: 60)
+                } placeholder: {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.1))
+                        .cornerRadius(5)
+                        .frame(width: 20, height: 20)
                 }
-                .padding()
+
+                Text(record.name ?? "未知")
+                    .font(.system(size: 12))
             }
         }
+        .padding(.top, 10)
     }
 
     @ViewBuilder
@@ -92,21 +94,18 @@ struct SearchView: View {
                             }
                     }
 
-                    ForEach(historise.chunked(into: 2), id: \.self) { row in
+                    FlowLayout(items: historise) { item in
                         HStack {
-                            ForEach(row, id: \.id) { item in
-                                Text(item.title ?? "")
-                                    .font(.system(size: 14))
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .cornerRadius(5)
-                                    .onTapGesture {
-                                        recordStore.content = item.title ?? ""
-                                    }
-                            }
+                            Text(item.title ?? "")
+                                .font(.system(size: 14))
+                                .onTapGesture {
+                                    recordStore.content = item.title ?? ""
+                                }
                         }
+                        .frame(minWidth: 20)
                     }
                 }
-                .padding(.top, 20)
+                .padding(.top, 10)
             } else {
                 EmptyView()
             }
@@ -150,7 +149,8 @@ struct SearchView: View {
                             .opacity(0.6)
                             .padding(.vertical, 8)
                             .onTapGesture {
-                                
+                                let vc = BrowserViewController()
+                                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
                             }
 
                             Divider()

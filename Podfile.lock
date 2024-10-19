@@ -26,6 +26,7 @@ PODS:
     - BlueRSA (~> 1.0)
     - KituraContracts (~> 1.2)
     - LoggerAPI (~> 1.7)
+  - TagListView (1.4.1)
   - WCDB.swift (2.1.8):
     - WCDBOptimizedSQLCipher (= 1.4.6)
   - WCDBOptimizedSQLCipher (1.4.6)
@@ -35,6 +36,7 @@ DEPENDENCIES:
   - AWSS3 (~> 2.15.1)
   - IQKeyboardManagerSwift
   - SwiftJWT
+  - TagListView (~> 1.0)
   - WCDB.swift
 
 SPEC REPOS:
@@ -53,6 +55,7 @@ SPEC REPOS:
     - LoggerAPI
     - Logging
     - SwiftJWT
+    - TagListView
     - WCDB.swift
     - WCDBOptimizedSQLCipher
 
@@ -71,9 +74,10 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
+  TagListView: a1c236d17960a0cf64156725a76ce6d73ebce2be
   WCDB.swift: 603b32d432a58ec2e6eef8965d8bd6bb3cc7c39a
   WCDBOptimizedSQLCipher: c6451e1dead7ec53e1344a2545aaed2c4c139fc0
 
-PODFILE CHECKSUM: 9ed67c0392f436fc1056e70549026f85f938b068
+PODFILE CHECKSUM: 86b72f5a1246ea922eda1d18bffc9f9de4495a4a
 
 COCOAPODS: 1.15.2

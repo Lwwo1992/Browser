@@ -11,29 +11,28 @@ struct CollectionView: View {
     @EnvironmentObject var viewModel: HistoryViewModel
 
     var body: some View {
-        Group {
+        VStack {
             if !viewModel.recordData.isEmpty || !viewModel.folderData.isEmpty {
-                VStack {
-                    ScrollView {
-                        LazyVStack {
-                            ForEach(viewModel.folderData) { model in
-                                FolderItemView(model: model)
-                            }
-
-                            ForEach(viewModel.recordData) { model in
-                                CollectionItemView(model: model)
-                            }
+                ScrollView {
+                    LazyVStack {
+                        ForEach(viewModel.folderData) { model in
+                            FolderItemView(model: model)
                         }
-                        .padding(.horizontal, 16)
+
+                        ForEach(viewModel.recordData) { model in
+                            CollectionItemView(model: model)
+                        }
                     }
-                    OperateBottomView(viewModel: viewModel)
+                    .padding(.horizontal, 16)
                 }
             } else {
+                Spacer()
                 Text("暂无数据")
                     .font(.system(size: 16))
+                Spacer()
             }
-        }
-        .environmentObject(viewModel)
+            OperateBottomView(viewModel: viewModel)
+        }.environmentObject(viewModel)
     }
 }
 
@@ -61,7 +60,7 @@ struct FolderItemView: View {
                 VStack(alignment: .leading, spacing: 5) {
                     Text(model.name)
                         .font(.system(size: 14))
-                    Text("\(model.bookmarks.count)个书签")
+                    Text("\(model.children.count)个书签")
                         .font(.system(size: 12))
                         .opacity(0.5)
                 }
@@ -75,7 +74,7 @@ struct FolderItemView: View {
             .onTapGesture {
                 let vc = BookmarkViewController()
                 vc.title = model.name
-                vc.bookmarks = model.bookmarks
+                vc.folderID = model.id
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }
 
@@ -97,13 +96,13 @@ struct CollectionItemView: View {
                         .onTapGesture {
                             model.isSelected.toggle()
                             viewModel.updateSelectedArray(for: model)
-                            print("History \(model.path ?? "") isSelected: \(model.isSelected)")
+                            print("History \(model.address ?? "") isSelected: \(model.isSelected)")
                         }
                 }
 
                 Image(systemName: "network")
                     .font(.system(size: 16))
-                Text(model.path ?? "")
+                Text(model.address ?? "")
                     .font(.system(size: 12))
                     .opacity(0.5)
 
@@ -118,6 +117,12 @@ struct CollectionItemView: View {
             .frame(height: 30)
 
             Divider()
+        }
+        .background(Color(hex: 0xF8F5F5))
+        .onTapGesture {
+            let vc = BrowserWebViewController()
+            vc.path = model.address ?? ""
+            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

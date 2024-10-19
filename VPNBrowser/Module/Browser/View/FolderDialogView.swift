@@ -81,10 +81,11 @@ class FolderDialogView: UIView {
     @objc private func confirmButtonTapped() {
         Util.topViewController().dismiss(animated: true)
 
+        var selectedFolder = FolderModel()
         if let selectedIndexPath = selectedIndexPath {
-            let selectedFolder = array[selectedIndexPath.row]
-            onFolderSelected?(selectedFolder)
+            selectedFolder = array[selectedIndexPath.row]
         }
+        onFolderSelected?(selectedFolder)
     }
 }
 

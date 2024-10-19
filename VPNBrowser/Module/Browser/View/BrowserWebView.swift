@@ -26,7 +26,7 @@ struct BrowserWebView: View {
             bottomView()
         }
         .onAppear {
-            if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.collect, cls: HistoryModel.self, where: HistoryModel.Properties.path == viewModel.urlString), !array.isEmpty {
+            if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.collect, cls: HistoryModel.self, where: HistoryModel.Properties.address == viewModel.urlString), !array.isEmpty {
                 isCollect = true
             }
         }
@@ -98,10 +98,9 @@ struct BrowserWebView: View {
 
 extension BrowserWebView {
     private func handleCollectAction() {
-        if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.folder, cls: FolderModel.self) {
+        if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.folder, cls: FolderModel.self), !array.isEmpty {
             presentFolderDialog(with: array)
         } else {
-            isCollect.toggle()
             updateDatabase()
         }
     }
@@ -112,25 +111,29 @@ extension BrowserWebView {
             let folderDialog = FolderDialogView(frame: CGRect(x: 0, y: 0, width: 240, height: 260))
             folderDialog.array = folders
             folderDialog.onFolderSelected = { folder in
-                isCollect.toggle() // 切换收藏状态
-                updateDatabase(for: folder) // 更新数据库
+                guard let folder else {
+                    return
+                }
+
+                updateDatabase(for: folder)
             }
             return folderDialog
         }
     }
 
     // 更新数据库状态
-    private func updateDatabase(for folder: FolderModel? = nil) {
+    private func updateDatabase(for folder: FolderModel = FolderModel()) {
+        isCollect.toggle()
+
         let model = HistoryModel()
-        model.path = viewModel.urlString
-        if let folder {
-            model.folderID = folder.id
-        }
+        model.parentId = folder.id
+        model.name = folder.name
+        model.address = viewModel.urlString
 
         if isCollect {
             DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.collect)
         } else {
-            DBaseManager.share.deleteFromDb(fromTable: S.Table.collect, where: HistoryModel.Properties.path == viewModel.urlString)
+            DBaseManager.share.deleteFromDb(fromTable: S.Table.collect, where: HistoryModel.Properties.address == viewModel.urlString)
         }
     }
 }

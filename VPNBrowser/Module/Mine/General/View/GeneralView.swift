@@ -37,7 +37,20 @@ struct GeneralView: View {
                 case .recommendedMode:
                     return viewModel.selectedModel.rawValue
                 case .clearCache:
-                    return ""
+                    return Util.formatFileSize(Util.getFileSize(dbPath: DataBasePath().dbPath) ?? 0)
+                case .defaultDownloadDir:
+                    let downloadsURL = URL(fileURLWithPath: Util.documentsPath).appendingPathComponent("Downloads")
+                    let documentsURL = URL(fileURLWithPath: Util.documentsPath)
+                    let shortString = downloadsURL.relativePath.replacingOccurrences(of: documentsURL.path, with: "")
+                    return shortString
+                default:
+                    return nil
+                }
+            },
+            rightViewProvider: { option in
+                switch option {
+                case .clearCache, .defaultDownloadDir:
+                    return AnyView(EmptyView())
                 default:
                     return nil
                 }
@@ -52,11 +65,11 @@ struct GeneralView: View {
         switch item {
         case .recommendedMode:
             vc = RecommendedModeViewController()
+            vc.title = item.rawValue
+            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         default:
             break
         }
-        vc.title = item.rawValue
-        Util.topViewController().navigationController?.pushViewController(vc, animated: true)
     }
 }
 

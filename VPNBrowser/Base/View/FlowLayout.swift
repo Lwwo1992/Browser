@@ -7,62 +7,65 @@
 
 import SwiftUI
 
-import SwiftUI
+struct FlowLayout<Item: Identifiable, ItemView: View>: View {
+    let items: [Item]
+    let itemView: (Item) -> ItemView
+    let horizontal: CGFloat = 8
+    let vertical: CGFloat = 8
 
-struct FlowLayout<Content: View>: View {
-    var items: [String] // 可以更改为你的数据类型
-    let content: (String) -> Content
+    @State private var totalHeight = CGFloat.zero
 
     var body: some View {
-        var totalWidth: CGFloat = 0
-        var row: [String] = []
-        let spacing: CGFloat = 8 // 定义元素之间的间距
-
-        return VStack(alignment: .leading) {
+        VStack {
             GeometryReader { geometry in
-                ForEach(items, id: \.self) { item in
-                    content(item)
-                        .background(GeometryReader { geo in
-                            Color.clear.preference(key: SizePreferenceKey.self, value: geo.size)
-                        })
-                        .onPreferenceChange(SizePreferenceKey.self) { size in
-                            if totalWidth + size.width + spacing > geometry.size.width {
-                                HStack {
-                                    ForEach(row, id: \.self) { rowItem in
-                                        content(rowItem)
-                                    }
-                                }
-                                .padding(.bottom, 8)
-
-                                // 清空当前行，并重置总宽度
-                                row.removeAll()
-                                totalWidth = 0
-                            }
-
-                            // 添加当前项目到当前行
-                            row.append(item)
-                            totalWidth += size.width + spacing // 加上间距
-                        }
-                }
-
-                // 渲染最后一行
-                if !row.isEmpty {
-                    HStack {
-                        ForEach(row, id: \.self) { rowItem in
-                            content(rowItem)
-                        }
-                    }
-                }
+                self.generateContent(in: geometry)
             }
         }
+        .frame(height: totalHeight)
     }
-}
 
-// PreferenceKey 用于获取视图大小
-struct SizePreferenceKey: PreferenceKey {
-    static var defaultValue: CGSize = .zero
+    private func generateContent(in g: GeometryProxy) -> some View {
+        var width = CGFloat.zero
+        var height = CGFloat.zero
 
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
-        value = nextValue()
+        return ZStack(alignment: .topLeading) {
+            ForEach(self.items) { item in
+                self.itemView(item)
+                    .padding(.horizontal, horizontal / 2)
+                    .padding(.vertical, vertical / 2)
+                    .alignmentGuide(.leading, computeValue: { d in
+                        if abs(width - d.width) > g.size.width {
+                            width = 0
+                            height -= d.height + vertical // 加入垂直间隔
+                        }
+
+                        let result = width
+                        if item.id == self.items.last!.id {
+                            width = 0 // last item
+                        } else {
+                            width -= d.width + horizontal // 加入水平间隔
+                        }
+                        return result
+                    })
+                    .alignmentGuide(.top, computeValue: { _ in
+                        let result = height
+                        if item.id == self.items.last!.id {
+                            height = 0 // last item
+                        }
+                        return result
+                    })
+            }
+        }
+        .background(viewHeightReader($totalHeight))
+    }
+
+    private func viewHeightReader(_ binding: Binding<CGFloat>) -> some View {
+        GeometryReader { geometry -> Color in
+            let rect = geometry.frame(in: .local)
+            DispatchQueue.main.async {
+                binding.wrappedValue = rect.size.height
+            }
+            return .clear
+        }
     }
 }

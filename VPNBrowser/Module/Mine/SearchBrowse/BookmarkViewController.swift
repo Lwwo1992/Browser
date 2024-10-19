@@ -8,10 +8,10 @@
 import UIKit
 
 class BookmarkViewController: ViewController {
-    var bookmarks: [HistoryModel] = []
+    var folderID: String = ""
 
     override var rootView: AnyView? {
-        return AnyView(BookmarkView(bookmarks: bookmarks))
+        return AnyView(BookmarkView(id: folderID))
     }
 
     override func viewDidLoad() {

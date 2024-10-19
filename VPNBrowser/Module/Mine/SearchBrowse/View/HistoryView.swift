@@ -89,7 +89,7 @@ struct HistoryItemView: View {
                 VStack(alignment: .leading, spacing: 5) {
                     Text(model.title ?? "")
                         .font(.system(size: 16))
-                    Text(model.path ?? "")
+                    Text(model.address ?? "")
                         .font(.system(size: 12))
                         .opacity(0.5)
                 }
@@ -107,5 +107,11 @@ struct HistoryItemView: View {
             Divider()
         }
         .padding(.horizontal, 16)
+        .background(Color(hex: 0xF8F5F5))
+            .onTapGesture {
+                let vc = BrowserWebViewController()
+                vc.path = model.address ?? ""
+                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+            }
     }
 }

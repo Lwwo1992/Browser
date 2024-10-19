@@ -62,11 +62,11 @@ extension Util {
             vc.path = model.downloadUrl ?? ""
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         case "app":
-//            Util.topViewController().popup.bottomSheet {
-//                let view = DownloadView(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 260))
-//                view.model = model
-//                return view
-//            }
+            Util.topViewController().popup.bottomSheet {
+                let view = DownloadBottomSheetView(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 260))
+                view.model = model
+                return view
+            }
             break
         case "applet":
             break
@@ -112,5 +112,26 @@ extension Util {
         }
 
         return true
+    }
+
+    /// 根据路径 计算 数据大小
+    static func getFileSize(dbPath: String) -> Int64? {
+        let fileManager = FileManager.default
+
+        // 检查文件是否存在
+        if fileManager.fileExists(atPath: dbPath) {
+            do {
+                // 获取文件属性
+                let attributes = try fileManager.attributesOfItem(atPath: dbPath)
+
+                // 获取文件大小
+                if let fileSize = attributes[.size] as? Int64 {
+                    return fileSize
+                }
+            } catch {
+                print("Error while getting file size: \(error)")
+            }
+        }
+        return nil
     }
 }

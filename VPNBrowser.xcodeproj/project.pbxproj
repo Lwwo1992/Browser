@@ -96,7 +96,6 @@
 		44CF209D2CB8C46000772B9C /* APIProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF209C2CB8C46000772B9C /* APIProvider.swift */; };
 		44CF20A02CB8CE5800772B9C /* ConfigByTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF209F2CB8CE5800772B9C /* ConfigByTypeModel.swift */; };
 		44CF20AE2CB91CFD00772B9C /* HandyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 44CF20AD2CB91CFD00772B9C /* HandyJSON */; };
-		44CF20B32CB9289600772B9C /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 44CF20B22CB9289600772B9C /* SwiftyJSON */; };
 		44CF20B62CB9333000772B9C /* S.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF20B52CB9333000772B9C /* S.swift */; };
 		44CF20B82CB933A400772B9C /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF20B72CB933A400772B9C /* DBManager.swift */; };
 		44CF20BB2CB942C300772B9C /* AccountLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44CF20BA2CB942C300772B9C /* AccountLoginViewController.swift */; };
@@ -257,7 +256,6 @@
 			files = (
 				8CEB24572CBD3820006F8485 /* WTool in Frameworks */,
 				44CD45F82CBE181E003A415E /* SDWebImageSwiftUI in Frameworks */,
-				44CF20B32CB9289600772B9C /* SwiftyJSON in Frameworks */,
 				44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */,
 				44AA509B2CB52650005EBC36 /* Then in Frameworks */,
 				8CEB24542CBD3750006F8485 /* WTool in Frameworks */,
@@ -720,7 +718,6 @@
 				44AA66512CB6338000E4253F /* JXSegmentedView */,
 				44CF20992CB8C20B00772B9C /* Moya */,
 				44CF20AD2CB91CFD00772B9C /* HandyJSON */,
-				44CF20B22CB9289600772B9C /* SwiftyJSON */,
 				446009EB2CBA89C40085DC74 /* Kingfisher */,
 				440F932C2CBCE68A00D94AD0 /* JFPopup */,
 				44CD45F72CBE181E003A415E /* SDWebImageSwiftUI */,
@@ -759,7 +756,6 @@
 				44AA66502CB6338000E4253F /* XCRemoteSwiftPackageReference "JXSegmentedView" */,
 				44CF20982CB8C20B00772B9C /* XCRemoteSwiftPackageReference "Moya" */,
 				44CF20AC2CB91CFD00772B9C /* XCRemoteSwiftPackageReference "HandyJSON" */,
-				44CF20B12CB9289600772B9C /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				446009EA2CBA89C40085DC74 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				440F932B2CBCE68A00D94AD0 /* XCRemoteSwiftPackageReference "JFPopup" */,
 				8CEB24582CBD3884006F8485 /* XCRemoteSwiftPackageReference "WTool" */,
@@ -1242,14 +1238,6 @@
 				minimumVersion = 5.0.2;
 			};
 		};
-		44CF20B12CB9289600772B9C /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
-			};
-		};
 		8CEB24582CBD3884006F8485 /* XCRemoteSwiftPackageReference "WTool" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Lwwo1992/WTool.git";
@@ -1299,11 +1287,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 44CF20AC2CB91CFD00772B9C /* XCRemoteSwiftPackageReference "HandyJSON" */;
 			productName = HandyJSON;
-		};
-		44CF20B22CB9289600772B9C /* SwiftyJSON */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 44CF20B12CB9289600772B9C /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
-			productName = SwiftyJSON;
 		};
 		8CEB24532CBD3750006F8485 /* WTool */ = {
 			isa = XCSwiftPackageProductDependency;

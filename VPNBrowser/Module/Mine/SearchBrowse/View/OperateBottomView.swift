@@ -9,6 +9,8 @@ import SwiftUI
 
 struct OperateBottomView: View {
     @ObservedObject var viewModel: HistoryViewModel
+    /// 判断需要 '新建文件夹'
+    var showFolder: Bool = true
 
     var body: some View {
         HStack {
@@ -76,37 +78,42 @@ struct OperateBottomView: View {
     @ViewBuilder
     private func normalModeButtons() -> some View {
         if viewModel.selectedSegmentIndex == 0 {
-            Button("新建文件夹") {
-                viewModel.showingTextFieldAlert.toggle()
-            }
-            .frame(maxWidth: .infinity)
-
-            Button("立即同步") {
-                if LoginManager.shared.info.logintype == "0" {
-                    Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
-                } else {
-                    syncBookmark()
+            if showFolder {
+                Button("新建文件夹") {
+                    viewModel.showingTextFieldAlert.toggle()
                 }
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity)
+
+            if !viewModel.recordData.isEmpty || !viewModel.folderData.isEmpty {
+                Button("立即同步") {
+                    if LoginManager.shared.info.logintype == "0" {
+                        Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                    } else {
+                        syncBookmark()
+                    }
+                }
+                .frame(maxWidth: .infinity)
+            }
+
         } else {
             Button("清理记录") {
                 viewModel.showingDeleteAlert.toggle()
             }
             .frame(maxWidth: .infinity)
         }
-
-        Button("编辑") {
-            viewModel.isEdit.toggle()
+        if !viewModel.recordData.isEmpty || !viewModel.folderData.isEmpty {
+            Button("编辑") {
+                viewModel.isEdit.toggle()
+            }
+            .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
     }
 
     private func syncBookmark() {
-        return
+        let parameters: [[String: Any]] = createRequestData(folderData: viewModel.folderData, recordData: viewModel.recordData)
 
-        var parameters: [String: Any] = [:]
-        APIProvider.shared.request(.syncBookmark(dic: parameters)) { result in
+        APIProvider.shared.request(.syncBookmark(data: parameters)) { result in
             switch result {
             case let .success(model):
                 break
@@ -114,5 +121,57 @@ struct OperateBottomView: View {
                 print("Request failed with error: \(error)")
             }
         }
+    }
+
+    func createRequestData(folderData: [FolderModel], recordData: [HistoryModel]) -> [[String: Any?]] {
+        var dataArray: [[String: Any?]] = []
+
+        // 处理 FolderModel 数据
+        for folder in folderData {
+            var folderDict: [String: Any?] = [
+                "id": folder.id,
+                "name": folder.name,
+                "parentId": "",
+                "address": "",
+                "icon": "",
+                "accountId": "",
+                "children": nil,
+            ]
+
+            var childrenArray: [[String: Any?]] = []
+
+            // 处理 FolderModel 的 children (HistoryModel)
+            for child in folder.children {
+                let childDict: [String: Any?] = [
+                    "id": child.id,
+                    "parentId": folder.id,
+                    "name": child.name,
+                    "address": child.address ?? "",
+                    "icon": "",
+                    "accountId": "",
+                    "children": nil,
+                ]
+                childrenArray.append(childDict)
+            }
+
+            folderDict["children"] = childrenArray
+            dataArray.append(folderDict)
+        }
+
+        // 处理单独的 HistoryModel 数据 (非 FolderModel 的 children)
+        for record in recordData {
+            let recordDict: [String: Any?] = [
+                "id": record.id,
+                "address": record.address ?? "",
+                "name": "",
+                "parentId": "",
+                "icon": "",
+                "accountId": "",
+                "children": nil,
+            ]
+            dataArray.append(recordDict)
+        }
+
+        return dataArray
     }
 }

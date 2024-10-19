@@ -5,20 +5,26 @@
 //  Created by xyxy on 2024/10/15.
 //
 
-import Kingfisher
+import SDWebImageSwiftUI
 import SwiftUI
 
 struct GuideView: View {
     @ObservedObject var viewModel = GuideViewModel()
 
+    // 每排间隔
     let itemSpacing: CGFloat = 16
-    let maxVisibleRows = 2 // 最多展示两排
+    // 最多展示两排
+    let maxVisibleRows = 2
+    // 每排展示个数
+    var maxAppNum: Int {
+        return S.Config.maxAppNum
+    }
 
     // 动态列数
     var columns: [GridItem] {
-        let totalWidth = UIScreen.main.bounds.width - 32 // 减去两侧的 padding
-        let itemWidth = (totalWidth - CGFloat(S.Config.maxAppNum - 1) * itemSpacing) / CGFloat(S.Config.maxAppNum)
-        return Array(repeating: GridItem(.flexible(minimum: itemWidth), spacing: itemSpacing), count: S.Config.maxAppNum)
+        let totalWidth = UIScreen.main.bounds.width - 32
+        let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
+        return Array(repeating: GridItem(.flexible(minimum: itemWidth), spacing: itemSpacing), count: maxAppNum)
     }
 
     var body: some View {
@@ -29,11 +35,13 @@ struct GuideView: View {
                         if let rows = section.data, !rows.isEmpty {
                             VStack(alignment: .leading) {
                                 HStack {
-                                    KFImage(Util.getCompleteImageUrl(from: section.icon))
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 20, height: 20)
-                                        .cornerRadius(5)
+//                                    WebImage(url: Util.getCompleteImageUrl(from: section.icon)) { image in
+//                                        image
+//                                            .resizable()
+//                                            .scaledToFill()
+//                                            .frame(width: 20, height: 20)
+//                                            .cornerRadius(5)
+//                                    } placeholder: {}
                                     Text(section.name ?? "")
                                         .font(.headline)
                                         .padding(.leading, 16)
@@ -66,15 +74,22 @@ struct GuideView: View {
 
     @ViewBuilder
     private func appCell(for row: GuideItem) -> some View {
-        let totalWidth = UIScreen.main.bounds.width - 32 // 减去两侧的 padding
-        let itemWidth = (totalWidth - CGFloat(S.Config.maxAppNum - 1) * itemSpacing) / CGFloat(S.Config.maxAppNum)
+        let totalWidth = UIScreen.main.bounds.width - 32
+        let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
 
         VStack(spacing: 5) {
-            KFImage(Util.getCompleteImageUrl(from: row.icon))
-                .resizable()
-                .scaledToFill()
-                .frame(width: itemWidth * 0.4, height: itemWidth * 0.4) // 图标宽高为 item 宽度的 40%
-                .cornerRadius(5)
+            WebImage(url: Util.getCompleteImageUrl(from: row.icon)) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
+                    .cornerRadius(5)
+            } placeholder: {
+                Rectangle()
+                    .fill(Color.gray)
+                    .cornerRadius(5)
+                    .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
+            }
 
             Text(row.name ?? "")
                 .font(.system(size: 14))
@@ -90,7 +105,7 @@ struct GuideView: View {
     @ViewBuilder
     private func moreAppsButton(data: GuideResponse) -> some View {
         let totalWidth = UIScreen.main.bounds.width - 32
-        let itemWidth = (totalWidth - CGFloat(S.Config.maxAppNum - 1) * itemSpacing) / CGFloat(S.Config.maxAppNum)
+        let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
 
         Button {
             let vc = MoreGuideViewController()
@@ -101,7 +116,7 @@ struct GuideView: View {
                 Image(.more)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: itemWidth * 0.4, height: itemWidth * 0.4) // 图标宽高为 item 宽度的 40%
+                    .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
                     .cornerRadius(5)
 
                 Text("更多应用")

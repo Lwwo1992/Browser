@@ -20,50 +20,57 @@ struct TabsView: View {
         let width = (Util.deviceWidth - 52) * 0.5
 
         VStack {
-            ScrollView {
-                LazyVGrid(columns: [
-                    GridItem(.flexible(), spacing: 20),
-                    GridItem(.flexible(), spacing: 20),
-                ], spacing: 20) {
-                    ForEach(bookmarkes, id: \.self) { model in
-                        VStack(spacing: 10) {
-                            ZStack(alignment: .topTrailing) {
-                                if let imageData = try? Data(contentsOf: model.url), let uiImage = UIImage(data: imageData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: width, height: width * 1.4)
-                                        .cornerRadius(8)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                                        )
-                                } else {
-                                    Rectangle()
-                                        .frame(width: width, height: width * 1.4)
-                                        .cornerRadius(8)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                                        )
+            if !bookmarkes.isEmpty {
+                ScrollView {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible(), spacing: 20),
+                        GridItem(.flexible(), spacing: 20),
+                    ], spacing: 20) {
+                        ForEach(bookmarkes, id: \.self) { model in
+                            VStack(spacing: 10) {
+                                ZStack(alignment: .topTrailing) {
+                                    if let imageData = try? Data(contentsOf: model.url), let uiImage = UIImage(data: imageData) {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: width, height: width * 1.4)
+                                            .cornerRadius(8)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                            )
+                                    } else {
+                                        Rectangle()
+                                            .frame(width: width, height: width * 1.4)
+                                            .cornerRadius(8)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                            )
+                                    }
+
+                                    Button(action: {
+                                        delete(model)
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                            .padding(5)
+                                    }
                                 }
 
-                                Button(action: {
-                                    delete(model)
-                                }) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.gray)
-                                        .padding(5)
-                                }
+                                Text(model.title ?? "")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.black)
                             }
-
-                            Text(model.title ?? "")
-                                .font(.system(size: 12))
-                                .foregroundColor(.black)
                         }
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
+            } else {
+                Spacer()
+                Text("暂无数据")
+                    .font(.system(size: 16))
+                Spacer()
             }
 
             HStack(spacing: 0) {
@@ -90,7 +97,7 @@ struct TabsView: View {
                 Spacer()
 
                 Button {
-                    if !bookmarkes.contains(where: { $0.path == bookmarkModel.path }) {
+                    if !bookmarkes.contains(where: { $0.address == bookmarkModel.address }) {
                         DBaseManager.share.insertToDb(objects: [bookmarkModel], intoTable: S.Table.bookmark)
                         bookmarkes.insert(bookmarkModel, at: 0)
                     }

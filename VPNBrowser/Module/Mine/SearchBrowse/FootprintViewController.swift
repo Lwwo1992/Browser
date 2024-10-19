@@ -62,6 +62,7 @@ extension FootprintViewController {
             guard let self else { return }
             if let inputText = alertController.textFields?.first?.text {
                 let model = FolderModel()
+                model.id = UUID().uuidString
                 model.name = inputText
                 DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.folder)
                 self.viewModel.loadFolderData()

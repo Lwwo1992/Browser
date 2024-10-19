@@ -29,15 +29,11 @@ class HistoryViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init() {
-        loadFolderData()
-    }
-
     func loadFolderData() {
         if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.folder, cls: FolderModel.self) {
             folderData = array.reversed()
-            loadHistory()
         }
+        loadHistory()
     }
 
     func loadHistory() {
@@ -46,15 +42,16 @@ class HistoryViewModel: ObservableObject {
                 recordData = DBaseManager.share.qureyFromDb(
                     fromTable: S.Table.collect,
                     cls: HistoryModel.self,
-                    where: HistoryModel.Properties.folderID == model.id
+                    where: HistoryModel.Properties.parentId == model.id
                 )?.reversed() ?? []
-                model.bookmarks = recordData
+                model.children = recordData
             }
         }
 
         recordData = DBaseManager.share.qureyFromDb(
             fromTable: selectedSegmentIndex == 0 ? S.Table.collect : S.Table.browseHistory,
-            cls: HistoryModel.self
+            cls: HistoryModel.self,
+            where: HistoryModel.Properties.parentId == ""
         )?.reversed() ?? []
     }
 
@@ -130,10 +127,11 @@ class HistoryViewModel: ObservableObject {
     }
 }
 
-class HistoryModel: TableCodable, Hashable, ObservableObject, Identifiable {
+class HistoryModel: BaseModel, TableCodable, ObservableObject {
     var id = UUID().uuidString
-    var folderID = ""
-    var path: String?
+    var parentId = ""
+    var name = ""
+    var address: String?
     var title: String?
     var pageLogo: String?
     var imagePath: String?
@@ -151,19 +149,17 @@ class HistoryModel: TableCodable, Hashable, ObservableObject, Identifiable {
         return lhs.id == rhs.id
     }
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
 
     enum CodingKeys: String, CodingTableKey {
         typealias Root = HistoryModel
         static let objectRelationalMapping = TableBinding(CodingKeys.self)
         case id
-        case path
+        case address
         case title
         case pageLogo
         case imagePath
         case timestamp
-        case folderID
+        case parentId
+        case name
     }
 }

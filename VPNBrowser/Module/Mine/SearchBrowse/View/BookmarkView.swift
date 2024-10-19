@@ -8,23 +8,39 @@
 import SwiftUI
 
 struct BookmarkView: View {
-    var bookmarks: [HistoryModel] = []
-    
+    var id: String = ""
+
     @ObservedObject var viewModel = HistoryViewModel()
-    
+
     var body: some View {
-        VStack {
-            ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.recordData) { model in
-                        CollectionItemView(model: model)
+        Group {
+            if !viewModel.recordData.isEmpty {
+                VStack {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(viewModel.recordData) { model in
+                                CollectionItemView(model: model)
+                            }
+                        }
+                        .padding(.horizontal, 16)
                     }
+                    OperateBottomView(viewModel: viewModel, showFolder: false)
                 }
-                .padding(.horizontal, 16)
+            } else {
+                Spacer()
+                Text("暂无数据")
+                    .font(.system(size: 16))
+                Spacer()
             }
-            OperateBottomView(viewModel: viewModel)
         }
         .environmentObject(viewModel)
+        .onAppear {
+            viewModel.recordData = DBaseManager.share.qureyFromDb(
+                fromTable: S.Table.collect,
+                cls: HistoryModel.self,
+                where: HistoryModel.Properties.parentId == id
+            )?.reversed() ?? []
+        }
     }
 }
 

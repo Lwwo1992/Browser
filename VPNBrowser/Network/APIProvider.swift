@@ -5,15 +5,30 @@
 //  Created by xyxy on 2024/10/11.
 //
 
+import Alamofire
 import HandyJSON
 import Moya
 
 private let channelCode = "tomato"
 
 class APIProvider {
-    static let shared = MoyaProvider<APITarget>()
+    private let requestTimeout: TimeInterval = 30
+    private let session: Session
 
-    private init() {}
+    static let shared: MoyaProvider<APITarget> = {
+        APIProvider().createProvider()
+    }()
+
+    private init() {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = requestTimeout
+        configuration.timeoutIntervalForResource = requestTimeout
+        session = Session(configuration: configuration)
+    }
+
+    private func createProvider() -> MoyaProvider<APITarget> {
+        return MoyaProvider<APITarget>(session: session)
+    }
 }
 
 enum APITarget {
@@ -88,7 +103,7 @@ enum APITarget {
     case updatePassword(new: String, old: String)
 
     /// 同步书签
-    case syncBookmark(dic: Dictionary<String, Any>)
+    case syncBookmark(data: [Dictionary<String, Any>])
 }
 
 extension APITarget: TargetType {
@@ -229,9 +244,20 @@ extension APITarget: TargetType {
         case let .updatePassword(new, old):
             parameters = ["data": ["newPassword": new, "oldPassword": old]]
 
-        case let .syncBookmark(dic):
-            parameters = ["data": dic]
+        case let .syncBookmark(data):
+            parameters = ["data": data]
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: parameters, options: [])
 
+                // 将 jsonData 转换为字符串形式（如果需要）
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    print("JSON String: \(jsonString)")
+                }
+
+                // 继续将 jsonData 作为请求体进行网络请求
+            } catch {
+                print("Failed to convert parameters to JSON: \(error)")
+            }
         case .logout, .anonymousConfig, .uploadConfig, .fileSize, .downloadFile:
             break
         }

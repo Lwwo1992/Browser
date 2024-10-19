@@ -32,6 +32,7 @@ target 'VPNBrowser' do
   pod 'SwiftJWT'
   pod 'WCDB.swift'
   pod 'IQKeyboardManagerSwift'
+  pod 'TagListView', '~> 1.0'
 
 end
 
