@@ -18,6 +18,7 @@ struct BrowserWebView: View {
             searchBar()
 
             WebView(viewModel: viewModel) { model in
+                viewModel.currentModel = model
                 if !S.Config.openNoTrace {
                     DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.browseHistory)
                 }
@@ -127,7 +128,7 @@ extension BrowserWebView {
 
         let model = HistoryModel()
         model.parentId = folder.id
-        model.name = folder.name
+        model.name = viewModel.currentModel.title ?? "未知"
         model.address = viewModel.urlString
 
         if isCollect {

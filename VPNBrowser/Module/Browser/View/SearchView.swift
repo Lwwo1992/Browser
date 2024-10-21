@@ -60,6 +60,11 @@ struct SearchView: View {
                 Text(record.name ?? "未知")
                     .font(.system(size: 12))
             }
+            .onTapGesture {
+                let vc = BrowserWebViewController()
+                vc.path = record.address ?? ""
+                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+            }
         }
         .padding(.top, 10)
     }

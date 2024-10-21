@@ -54,6 +54,7 @@ extension AppDelegate {
         DBaseManager.share.createTable(table: S.Table.browseHistory, of: HistoryModel.self)
         DBaseManager.share.createTable(table: S.Table.collect, of: HistoryModel.self)
         DBaseManager.share.createTable(table: S.Table.folder, of: HistoryModel.self)
+        DBaseManager.share.createTable(table: S.Table.bookmark, of: HistoryModel.self)
         DBaseManager.share.createTable(table: S.Table.download, of: DownloadModel.self)
     }
 

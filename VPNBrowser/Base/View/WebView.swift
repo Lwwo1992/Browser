@@ -15,6 +15,7 @@ class WebViewViewModel: ObservableObject {
     // 控制是否保存历史记录
     @Published var shouldSaveHistory: Bool = false
     @Published var showBottomSheet: Bool = false
+    @Published var currentModel = HistoryModel()
 }
 
 struct WebView: UIViewRepresentable {

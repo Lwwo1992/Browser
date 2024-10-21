@@ -152,19 +152,53 @@ struct SecurityView: View {
             HUD.hideNow()
             switch result {
             case .success:
-                let model = LoginModel()
-                model.logintype = "0"
-                model.token = "0"
-                LoginManager.shared.info = model
-                DBaseManager.share.updateToDb(table: S.Table.loginInfo,
-                                              on: [LoginModel.Properties.logintype,
-                                                   LoginModel.Properties.token,
-                                              ],
-                                              with: model)
-
-                Util.topViewController().navigationController?.popToRootViewController(animated: true)
+                fetchVisitorToken()
             case let .failure(error):
                 print("Request failed with error: \(error)")
+            }
+        }
+    }
+
+    private func fetchVisitorToken() {
+        APIProvider.shared.request(.generateVisitorToken, progress: { _ in
+
+        }) { result in
+            switch result {
+            case let .success(response):
+                if let responseString = String(data: response.data, encoding: .utf8) {
+                    print("Response: \(responseString)")
+                }
+
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any],
+                       let data = json["data"] as? [String: Any],
+                       let token = data["token"] as? String,
+                       let userId = data["id"] as? String {
+                        let model = LoginModel()
+                        model.id = userId
+                        model.logintype = "0"
+                        model.vistoken = token
+
+                        DBaseManager.share.updateToDb(table: S.Table.loginInfo,
+                                                      on: [
+                                                          LoginModel.Properties.id,
+                                                          LoginModel.Properties.vistoken,
+                                                          LoginModel.Properties.logintype,
+                                                      ],
+                                                      with: model)
+
+                        LoginManager.shared.info = model
+
+                    } else {
+                        print("无法提取 token")
+                    }
+                } catch {
+                    HUD.showTipMessage(error.localizedDescription)
+                    print("JSON 解析失败: \(error)")
+                }
+
+            case let .failure(error):
+                print("请求失败: \(error)")
             }
         }
     }

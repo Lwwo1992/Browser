@@ -56,6 +56,15 @@ extension String {
     }
 }
 
+extension Date {
+    func daysFromNow() -> Int {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let components = calendar.dateComponents([.day], from: self, to: currentDate)
+        return components.day ?? 0
+    }
+}
+
 extension UIImageView {
     func setImage(with url: URL?, placeholder: String? = nil) {
         let placeholderImage = placeholder != nil ? UIImage(named: placeholder!) : nil

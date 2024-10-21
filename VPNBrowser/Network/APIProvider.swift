@@ -101,6 +101,9 @@ enum APITarget {
 
     /// 同步书签
     case syncBookmark(data: [Dictionary<String, Any>])
+
+    /// 获取书签分页列表
+    case bookmarkPage(id: String? = nil)
 }
 
 extension APITarget: TargetType {
@@ -111,8 +114,8 @@ extension APITarget: TargetType {
             // "http://guide-api.saas-xy.com:86" //测试环境
             return URL(string: "http://guide-api.saas-xy.com:86")!
         default:
-            return URL(string: "https://browser-api.xiwshijieheping.com")!
-//            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
+//            return URL(string: "https://browser-api.xiwshijieheping.com")!
+            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
         }
     }
 
@@ -158,12 +161,14 @@ extension APITarget: TargetType {
             return "/browser/app/browserAccount/updatePassword"
         case .syncBookmark:
             return "/browser/app/browserBookmarkCollect/syncBookmark"
+        case .bookmarkPage:
+            return "//browser/app/browserBookmarkCollect/page"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage:
             return .post
 
         case .browserAccount:
@@ -224,8 +229,8 @@ extension APITarget: TargetType {
             ]
             parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": -1]
         case .userGuidePage:
-            let data: [String: Any] = [:]
-            parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": 10]
+            parameters = ["data": ["accountId": LoginManager.shared.info.id], "fetchAll": true, "pageIndex": 1, "pageSize": 10]
+
         case .generateVisitorToken:
 
             if let uuid = UIDevice.current.identifierForVendor?.uuidString {
@@ -239,18 +244,14 @@ extension APITarget: TargetType {
 
         case let .syncBookmark(data):
             parameters = ["data": data]
-            do {
-                let jsonData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            
+        case let .bookmarkPage(id):
+            let data: [String: Any] = [
+                "accountId": LoginManager.shared.info.id,
+                "parentId" : id ?? "0"
+            ]
+            parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": -1]
 
-                // 将 jsonData 转换为字符串形式（如果需要）
-                if let jsonString = String(data: jsonData, encoding: .utf8) {
-                    print("JSON String: \(jsonString)")
-                }
-
-                // 继续将 jsonData 作为请求体进行网络请求
-            } catch {
-                print("Failed to convert parameters to JSON: \(error)")
-            }
         case .logout, .anonymousConfig, .uploadConfig:
             break
         }

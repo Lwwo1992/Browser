@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CloudSyncView: View {
     @State private var isOn = false
+    
+    @ObservedObject var viewModel = HistoryViewModel()
 
     var body: some View {
         VStack(spacing: 20) {
@@ -61,6 +63,7 @@ struct CloudSyncView: View {
             Spacer()
 
             Button {
+                viewModel.syncBookmark()
             } label: {
                 Text("一键同步")
                     .font(.system(size: 16))
@@ -72,6 +75,9 @@ struct CloudSyncView: View {
             }
         }
         .padding()
+        .onAppear {
+            viewModel.loadFolderData()
+        }
     }
 }
 

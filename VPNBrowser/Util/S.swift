@@ -32,7 +32,7 @@ struct S {
             let libraryURL = URL(fileURLWithPath: Util.documentsPath)
             return libraryURL.appendingPathComponent("ImageURL", isDirectory: true)
         }
-        
+
         static var downloads: URL {
             let libraryURL = URL(fileURLWithPath: Util.documentsPath)
             return libraryURL.appendingPathComponent("Downloads", isDirectory: true)
@@ -46,7 +46,8 @@ struct S {
         static var anonymous: AnonymousConfigModel?
 
         private enum Keys {
-            static let openNoTrace = "openNoTrace"
+            static let openNoTrace = "openNoTrace" // 无痕浏览的键值
+            static let lastSyncTime = "lastSyncTime" // 同步时间的键值
             static let mode = "webMode"
         }
 
@@ -68,6 +69,16 @@ struct S {
             }
             set {
                 UserDefaults.standard.set(newValue.rawValue, forKey: Keys.mode)
+            }
+        }
+
+        /// 记录同步时间
+        static var lastSyncTime: Date? {
+            get {
+                return UserDefaults.standard.object(forKey: Keys.lastSyncTime) as? Date
+            }
+            set {
+                UserDefaults.standard.set(newValue, forKey: Keys.lastSyncTime)
             }
         }
     }

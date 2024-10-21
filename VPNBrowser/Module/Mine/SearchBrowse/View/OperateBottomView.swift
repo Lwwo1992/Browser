@@ -83,17 +83,25 @@ struct OperateBottomView: View {
                     viewModel.showingTextFieldAlert.toggle()
                 }
                 .frame(maxWidth: .infinity)
-            }
 
-            if !viewModel.recordData.isEmpty || !viewModel.folderData.isEmpty {
-                Button("立即同步") {
-                    if LoginManager.shared.info.logintype == "0" {
-                        Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
-                    } else {
-                        syncBookmark()
+                if !viewModel.recordData.isEmpty || !viewModel.folderData.isEmpty {
+                    VStack {
+                        Button("立即同步") {
+                            if LoginManager.shared.info.logintype == "0" {
+                                Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                            } else {
+                                S.Config.lastSyncTime = Date()
+                                viewModel.syncBookmark()
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+
+                        if let lastSyncTime = S.Config.lastSyncTime, lastSyncTime.daysFromNow() > 0 {
+                            Text("距离: \(lastSyncTime.daysFromNow())天")
+                                .font(.system(size: 10))
+                        }
                     }
                 }
-                .frame(maxWidth: .infinity)
             }
 
         } else {
@@ -108,70 +116,5 @@ struct OperateBottomView: View {
             }
             .frame(maxWidth: .infinity)
         }
-    }
-
-    private func syncBookmark() {
-        let parameters: [[String: Any]] = createRequestData(folderData: viewModel.folderData, recordData: viewModel.recordData)
-
-        APIProvider.shared.request(.syncBookmark(data: parameters)) { result in
-            switch result {
-            case let .success(model):
-                break
-            case let .failure(error):
-                print("Request failed with error: \(error)")
-            }
-        }
-    }
-
-    func createRequestData(folderData: [FolderModel], recordData: [HistoryModel]) -> [[String: Any?]] {
-        var dataArray: [[String: Any?]] = []
-
-        // 处理 FolderModel 数据
-        for folder in folderData {
-            var folderDict: [String: Any?] = [
-                "id": folder.id,
-                "name": folder.name,
-                "parentId": "",
-                "address": "",
-                "icon": "",
-                "accountId": "",
-                "children": nil,
-            ]
-
-            var childrenArray: [[String: Any?]] = []
-
-            // 处理 FolderModel 的 children (HistoryModel)
-            for child in folder.children {
-                let childDict: [String: Any?] = [
-                    "id": child.id,
-                    "parentId": folder.id,
-                    "name": child.name,
-                    "address": child.address ?? "",
-                    "icon": "",
-                    "accountId": "",
-                    "children": nil,
-                ]
-                childrenArray.append(childDict)
-            }
-
-            folderDict["children"] = childrenArray
-            dataArray.append(folderDict)
-        }
-
-        // 处理单独的 HistoryModel 数据 (非 FolderModel 的 children)
-        for record in recordData {
-            let recordDict: [String: Any?] = [
-                "id": record.id,
-                "address": record.address ?? "",
-                "name": "",
-                "parentId": "",
-                "icon": "",
-                "accountId": "",
-                "children": nil,
-            ]
-            dataArray.append(recordDict)
-        }
-
-        return dataArray
     }
 }

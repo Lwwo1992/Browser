@@ -11,6 +11,7 @@ class FolderModel: BaseModel, TableCodable, ObservableObject {
     var id = ""
     var name: String = ""
     var children: [HistoryModel] = []
+    var record: [HistoryModel] = []
     @Published var isSelected = false
 
     enum CodingKeys: String, CodingTableKey {
