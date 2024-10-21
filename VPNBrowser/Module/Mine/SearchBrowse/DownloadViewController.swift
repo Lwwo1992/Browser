@@ -30,15 +30,19 @@ class DownloadViewController: ViewController {
 
         viewModel.$selectedFileUrl
             .dropFirst()
-            .sink { fileUrl in
-                guard var components = URLComponents(url: fileUrl, resolvingAgainstBaseURL: false) else { return }
-
+            .sink { _ in
+                guard let components = NSURLComponents(url: S.Files.downloads, resolvingAgainstBaseURL: true) else {
+                    return
+                }
+                
                 components.scheme = "shareddocuments"
 
-                guard let newURL = components.url else { return }
-
-                if UIApplication.shared.canOpenURL(newURL) {
-                    UIApplication.shared.open(newURL)
+                if let sharedDocuments = components.url {
+                    UIApplication.shared.open(
+                        sharedDocuments,
+                        options: [:],
+                        completionHandler: nil
+                    )
                 }
             }
             .store(in: &cancellables)

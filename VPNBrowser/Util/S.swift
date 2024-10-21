@@ -30,7 +30,12 @@ struct S {
     struct Files {
         static var imageURL: URL {
             let libraryURL = URL(fileURLWithPath: Util.documentsPath)
-            return libraryURL.appendingPathComponent("imageURL", isDirectory: true)
+            return libraryURL.appendingPathComponent("ImageURL", isDirectory: true)
+        }
+        
+        static var downloads: URL {
+            let libraryURL = URL(fileURLWithPath: Util.documentsPath)
+            return libraryURL.appendingPathComponent("Downloads", isDirectory: true)
         }
     }
 

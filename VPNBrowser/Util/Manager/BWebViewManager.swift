@@ -118,27 +118,17 @@ class BWebViewManager: NSObject {
 
     // 根据文件类型选择保存路径
     func getDestinationPath(for originalFileName: String) -> URL {
-        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let folderName = "Downloads" // 目标文件夹名称
-        let folderPath = documentsPath.appendingPathComponent(folderName)
-
-        // 如果文件夹不存在，则创建它
-        if !FileManager.default.fileExists(atPath: folderPath.path) {
-            do {
-                try FileManager.default.createDirectory(at: folderPath, withIntermediateDirectories: true, attributes: nil)
-            } catch {
-                print("创建文件夹失败: \(error)")
-            }
+        if !FileManager.default.fileExists(atPath: S.Files.downloads.path) {
+            Util.createFolderIfNotExists(S.Files.downloads)
         }
 
-        // 生成目标文件路径
-        var destinationURL = folderPath.appendingPathComponent(originalFileName)
+        var destinationURL = S.Files.downloads.appendingPathComponent(originalFileName)
 
         // 检查文件是否已存在，如果存在，则重命名
         var fileIndex = 1
         while FileManager.default.fileExists(atPath: destinationURL.path) {
             let newFileNameWithIndex = "\(fileIndex)_\(originalFileName)"
-            destinationURL = folderPath.appendingPathComponent(newFileNameWithIndex)
+            destinationURL = S.Files.downloads.appendingPathComponent(newFileNameWithIndex)
             fileIndex += 1
         }
 

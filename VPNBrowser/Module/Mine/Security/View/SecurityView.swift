@@ -35,25 +35,38 @@ struct SecurityView: View {
     private let imagePickerManager = ImagePicker()
 
     var body: some View {
-        OptionListView(
-            sections: SecurityOption.sections,
-            additionalTextProvider: { option in
-                rightTitle(for: option)
-            },
-            rightViewProvider: { option in
-                if option == .avatar {
-                    return AnyView(avatarView)
-                }
-                return nil
-            },
-            heightProvider: { option in
-                if option == .avatar {
-                    return 80
-                }
-                return nil
-            },
-            onTap: handleTap(for:)
-        )
+        VStack {
+            OptionListView(
+                sections: SecurityOption.sections,
+                additionalTextProvider: { option in
+                    rightTitle(for: option)
+                },
+                rightViewProvider: { option in
+                    if option == .avatar {
+                        return AnyView(avatarView)
+                    }
+                    return nil
+                },
+                heightProvider: { option in
+                    if option == .avatar {
+                        return 80
+                    }
+                    return nil
+                },
+                onTap: handleTap(for:)
+            )
+
+            Spacer()
+
+            Button {
+            } label: {
+                Text("注销账号")
+                    .font(.system(size: 14))
+                    .foregroundColor(.black)
+                    .opacity(0.5)
+            }
+            .padding(.bottom, 20)
+        }
         .padding(.horizontal, 16)
         .actionSheet(isPresented: $isShowingActionSheet) {
             ActionSheet(title: Text("选择头像"), message: nil, buttons: [

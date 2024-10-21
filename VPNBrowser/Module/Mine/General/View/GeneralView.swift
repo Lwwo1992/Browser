@@ -11,7 +11,7 @@ struct GeneralView: View {
     enum GeneralOption: String, CaseIterable {
         case recommendedMode = "推荐模式"
         case defaultDownloadDir = "默认下载目录"
-        case clearCache = "清理缓存"
+        case clearCache = "缓存"
         case darkMode = "暗夜模式"
         case fontSize = "字体大小"
         case toolbar = "工具栏"

@@ -149,7 +149,7 @@ struct SearchView: View {
                             .opacity(0.6)
                             .padding(.vertical, 8)
                             .onTapGesture {
-                                let vc = BrowserViewController()
+                                let vc = BrowserWebViewController()
                                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
                             }
 

@@ -61,9 +61,13 @@ class DownloadBottomSheetView: UIView {
             .borderWidth(1, color: .gray)
             .cornerRadius(15)
             .tapAction = { [weak self] in
-                guard let self else { return }
+                guard let self, let model, let urlString = model.downloadUrl, let url = URL(string: urlString) else { return }
 
-                download()
+                if BWebViewManager.share.isDownloadLink(url: url) {
+                    downloadFile()
+                } else {
+                    HUD.showTipMessage("非下载地址")
+                }
             }
     }
 
@@ -116,57 +120,81 @@ class DownloadBottomSheetView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func getFileSize(from url: String, completion: @escaping (Int64?, Error?) -> Void) {
-        APIProvider.shared.request(.fileSize(url: url)) { result in
-            switch result {
-            case let .success(response):
-                if let contentLength = response.response?.allHeaderFields["Content-Length"] as? String,
-                   let size = Int64(contentLength) {
-                    completion(size, nil)
-                } else {
-                    completion(nil, NSError(domain: "APIError", code: -1, userInfo: [NSLocalizedDescriptionKey: "无法获取文件大小"]))
-                }
-
-            case let .failure(error):
-                completion(nil, error) // 返回错误
-            }
+    private func getFileSize(from urlStr: String, completion: @escaping (Int64?, Error?) -> Void) {
+        guard let url = URL(string: urlStr) else {
+            return
         }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "HEAD"
+
+        let task = URLSession.shared.dataTask(with: request) { _, response, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse,
+                  let contentLength = httpResponse.allHeaderFields["Content-Length"] as? String,
+                  let fileSize = Int64(contentLength) else {
+                completion(nil, nil)
+                return
+            }
+
+            completion(fileSize, nil)
+        }
+        task.resume()
     }
 
-    private func download() {
-        guard let model, let url = model.downloadUrl else { return }
+    private func downloadFile() {
+        guard let model, let urlString = model.downloadUrl, let url = URL(string: urlString) else {
+            return
+        }
 
-        APIProvider.shared.request(.downloadFile(url: url), progress: { response in
-            let percentage = Int(response.progress * 100)
-            DispatchQueue.main.async {
-                self.downloadButton.title("\(percentage)%")
-            }
-        }) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(response):
-                // 确保响应数据有效
-                if (200 ... 299).contains(response.statusCode) {
-                    let fileManager = FileManager.default
-                    let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-                    let fileURL = documentsURL.appendingPathComponent("downloadedFile") // 自定义文件名
-
-                    do {
-                        try response.data.write(to: fileURL)
-                        self.downloadButton.title("成功")
-                        print("文件已保存到: \(fileURL)")
-                    } catch {
-                        print("文件写入失败: \(error)")
-                    }
-                } else {
-                    self.downloadButton.title("失败")
-                    print("下载失败，状态码: \(response.statusCode)")
+        let downloadTask = URLSession.shared.downloadTask(with: url) { location, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    debugPrint("\(error.localizedDescription)")
                 }
+                return
+            }
 
-            case let .failure(error):
-                self.downloadButton.title("失败")
-                print("请求失败: \(error)")
+            guard let location = location else {
+                DispatchQueue.main.async {
+                    debugPrint("Download failed")
+                }
+                return
+            }
+
+            if !FileManager.default.fileExists(atPath: S.Files.downloads.path) {
+                Util.createFolderIfNotExists(S.Files.downloads)
+            }
+
+            let destinationURL = S.Files.downloads.appendingPathComponent(response?.suggestedFilename ?? url.lastPathComponent)
+
+            do {
+                // 移动文件到目标位置
+                try FileManager.default.moveItem(at: location, to: destinationURL)
+
+                // 获取文件大小
+                let attributes = try FileManager.default.attributesOfItem(atPath: destinationURL.path)
+                let fileSize = attributes[.size] as? Int64 ?? 0 // 文件大小，单位为字节
+
+                DispatchQueue.main.async {
+                    let model = DownloadModel()
+                    model.url = destinationURL.path
+                    model.size = fileSize
+                    model.title = response?.suggestedFilename ?? url.lastPathComponent
+                    DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.download)
+                    HUD.showTipMessage("下载成功")
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    debugPrint(error.localizedDescription)
+                }
             }
         }
+
+        downloadTask.resume()
     }
 }

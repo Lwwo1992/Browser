@@ -20,7 +20,7 @@ struct DownloadView: View {
                     }
                     .padding(.horizontal, 16)
                 }
-                .padding(.top, 6)
+                .padding(.top, 10)
             }
             .background(Color.white)
         } else {
@@ -67,6 +67,11 @@ struct DownloadRowView: View {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 16))
                 .padding(.leading, 10)
+                .onTapGesture {
+                    if let url = URL(string: model.url) {
+                        viewModel.selectedFileUrl = url
+                    }
+                }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.white)

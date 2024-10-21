@@ -86,8 +86,8 @@ struct GuideView: View {
                     .cornerRadius(5)
             } placeholder: {
                 Rectangle()
-                    .fill(Color.gray)
-                    .cornerRadius(5)
+                    .fill(Color.gray.opacity(0.2))
+                    .cornerRadius(2)
                     .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
             }
 

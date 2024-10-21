@@ -74,7 +74,6 @@ enum APITarget {
     case editUserInfo(headPortrait: String, name: String, id: String)
 
     /// 上传
-//    case uploadConfig(image: UIImage)
     case uploadConfig
 
     case rankingPage
@@ -91,8 +90,6 @@ enum APITarget {
     /// 获取分页列表(使用指南)
     case userGuidePage
 
-    case downloadFile(url: String)
-    case fileSize(url: String)
     /// 查询用户信息
     case browserAccount(userId: String)
 
@@ -153,8 +150,6 @@ extension APITarget: TargetType {
             return "/browser/app/visitorAccess/userGuidePage"
         case .generateVisitorToken:
             return "/browser/app/anonymous/generateVisitorToken"
-        case let .downloadFile(url), let .fileSize(url):
-            return url
         case let .browserAccount(id):
             return "/browser/app/browserAccount/\(id)"
         case .forgetPassword:
@@ -171,9 +166,7 @@ extension APITarget: TargetType {
         case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark:
             return .post
 
-        case .fileSize:
-            return .head
-        case .downloadFile, .browserAccount:
+        case .browserAccount:
             return .get
         }
     }
@@ -258,7 +251,7 @@ extension APITarget: TargetType {
             } catch {
                 print("Failed to convert parameters to JSON: \(error)")
             }
-        case .logout, .anonymousConfig, .uploadConfig, .fileSize, .downloadFile:
+        case .logout, .anonymousConfig, .uploadConfig:
             break
         }
 

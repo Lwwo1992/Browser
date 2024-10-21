@@ -20,10 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         confing()
 
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.backgroundColor = .white
-        window?.makeKeyAndVisible()
-        window?.rootViewController = TabBarController()
+        HUD.showLoading()
+        netWorkConfig { [weak self] in
+            guard let self else { return }
+            HUD.hideNow()
+            window = UIWindow(frame: UIScreen.main.bounds)
+            window?.backgroundColor = .white
+            window?.makeKeyAndVisible()
+            window?.rootViewController = TabBarController()
+        }
 
         return true
     }
@@ -33,14 +38,13 @@ extension AppDelegate {
     private func confing() {
         initTable()
 
-        initConfig()
-
         if #available(iOS 13.0, *) {
             self.window?.overrideUserInterfaceStyle = UIUserInterfaceStyle.light
         }
         IQKeyboardManager.shared.enable = true
 
         Util.createFolderIfNotExists(S.Files.imageURL)
+        Util.createFolderIfNotExists(S.Files.downloads)
     }
 
     private func initTable() {
@@ -53,17 +57,18 @@ extension AppDelegate {
         DBaseManager.share.createTable(table: S.Table.download, of: DownloadModel.self)
     }
 
-    func initConfig() {
+    func netWorkConfig(completion: (() -> Void)? = nil) {
         if LoginManager.shared.info.logintype == "1" {
-            fetchConfigByType()
-            fetchAnonymousConfig()
+            fetchConfigByType {
+                self.fetchAnonymousConfig {
+                    completion?()
+                }
+            }
         } else {
-            HUD.showLoading()
             APIProvider.shared.request(.generateVisitorToken, progress: { _ in
 
             }) { [weak self] result in
                 guard let self else { return }
-                HUD.hideNow()
                 switch result {
                 case let .success(response):
                     if let responseString = String(data: response.data, encoding: .utf8) {
@@ -95,8 +100,11 @@ extension AppDelegate {
                             }
 
                             // 配置获取成功
-                            self.fetchConfigByType()
-                            self.fetchAnonymousConfig()
+                            self.fetchConfigByType {
+                                self.fetchAnonymousConfig {
+                                    completion?() // 执行回调
+                                }
+                            }
 
                         } else {
                             print("无法提取 token")
@@ -113,7 +121,7 @@ extension AppDelegate {
         }
     }
 
-    private func fetchConfigByType() {
+    private func fetchConfigByType(completion: (() -> Void)? = nil) {
         APIProvider.shared.request(.getConfigByType(data: 1), model: ConfigByTypeModel.self) { result in
             switch result {
             case let .success(model):
@@ -124,17 +132,21 @@ extension AppDelegate {
                     S.Config.defalutUrl = data.defalutUrl ?? ""
                     S.Config.loginType = data.loginType
                 }
+                completion?()
+
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }
         }
     }
 
-    private func fetchAnonymousConfig() {
+    private func fetchAnonymousConfig(completion: (() -> Void)? = nil) {
         APIProvider.shared.request(.anonymousConfig, model: AnonymousConfigModel.self) { result in
             switch result {
             case let .success(model):
                 S.Config.anonymous = model
+                completion?()
+
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }

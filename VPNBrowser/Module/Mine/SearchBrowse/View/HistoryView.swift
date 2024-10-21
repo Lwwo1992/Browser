@@ -50,7 +50,7 @@ struct HistoryView: View {
                         .padding(.leading, 10)
                         .padding(.vertical, 5)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.gray.opacity(0.5))
+                        .background(Color.gray.opacity(0.2))
 
                     ForEach(groupedHistory[date]!, id: \.self) { model in
                         HistoryItemView(model: model)

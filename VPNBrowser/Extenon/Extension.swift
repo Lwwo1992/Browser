@@ -84,7 +84,7 @@ extension Date {
 
     func formattedDateString() -> String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
+        formatter.dateFormat = "yyyy年MM月dd"
         return formatter.string(from: self)
     }
 }
