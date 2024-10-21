@@ -33,6 +33,7 @@ target 'VPNBrowser' do
   pod 'WCDB.swift'
   pod 'IQKeyboardManagerSwift'
   pod 'TagListView', '~> 1.0'
+  pod 'HandyJSON', :git => 'https://github.com/Miles-Matheson/HandyJSON.git'
 
 end
 

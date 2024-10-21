@@ -20,7 +20,7 @@ class NavigationController: UINavigationController {
     private func setupNavigationBarAppearance() {
         let titleTextAttributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 18, weight: .medium),
-            .foregroundColor: UIColor(hex: 0x000000),
+            .foregroundColor: UIColor(hex: 0xffffff),
         ]
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
@@ -35,7 +35,7 @@ class NavigationController: UINavigationController {
     private func applyNavigationBarStyle(color: UIColor, shadowColor: UIColor? = nil, isTranslucent: Bool = false) {
         navigationBar.isTranslucent = isTranslucent
         navigationBar.barTintColor = UIColor.white
-        navigationBar.tintColor = UIColor(hex: 0x000000)
+        navigationBar.tintColor = UIColor(hex: 0xffffff)
 
         if #available(iOS 13.0, *) {
             let appearance = navigationBar.standardAppearance

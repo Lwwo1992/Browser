@@ -49,7 +49,7 @@ class TabBarController: UITabBarController {
     private func initUI() {
         tabBar.barStyle = .black
         tabBar.isTranslucent = false
-        tabBar.barTintColor = UIColor.black
+        tabBar.barTintColor = UIColor.white
         tabBar.tintColor = UIColor.black
         tabBar.layer.backgroundColor = UIColor(hex: 0xFFFFFF).cgColor
 

@@ -104,6 +104,9 @@ enum APITarget {
 
     /// 获取书签分页列表
     case bookmarkPage(id: String? = nil)
+
+    /// 注销账户
+    case accountDelete
 }
 
 extension APITarget: TargetType {
@@ -162,13 +165,15 @@ extension APITarget: TargetType {
         case .syncBookmark:
             return "/browser/app/browserBookmarkCollect/syncBookmark"
         case .bookmarkPage:
-            return "//browser/app/browserBookmarkCollect/page"
+            return "/browser/app/browserBookmarkCollect/page"
+        case .accountDelete:
+            return "/browser/app/browserAccount/delete"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage, .accountDelete:
             return .post
 
         case .browserAccount:
@@ -244,13 +249,16 @@ extension APITarget: TargetType {
 
         case let .syncBookmark(data):
             parameters = ["data": data]
-            
+
         case let .bookmarkPage(id):
             let data: [String: Any] = [
                 "accountId": LoginManager.shared.info.id,
-                "parentId" : id ?? "0"
+                "parentId": id ?? "0",
             ]
             parameters = ["data": data, "fetchAll": true, "pageIndex": 1, "pageSize": -1]
+
+        case .accountDelete:
+            parameters = ["data": [LoginManager.shared.info.id]]
 
         case .logout, .anonymousConfig, .uploadConfig:
             break

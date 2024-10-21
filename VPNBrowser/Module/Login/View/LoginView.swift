@@ -17,7 +17,7 @@ struct LoginView: View {
             Image(.tomatoCenter)
                 .resizable()
                 .scaledToFit()
-                .padding(.top, 30)
+                .padding(.top, 20)
 
             Spacer()
 

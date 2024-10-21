@@ -32,6 +32,7 @@ struct SecurityView: View {
     @ObservedObject var viewModel = LoginManager.shared
     @State private var selectedImage: UIImage?
     @State private var isShowingActionSheet = false
+    @State private var showingAlert = false
     private let imagePickerManager = ImagePicker()
 
     var body: some View {
@@ -59,6 +60,7 @@ struct SecurityView: View {
             Spacer()
 
             Button {
+                showingAlert.toggle()
             } label: {
                 Text("注销账号")
                     .font(.system(size: 14))
@@ -66,6 +68,16 @@ struct SecurityView: View {
                     .opacity(0.5)
             }
             .padding(.bottom, 20)
+            .alert(isPresented: $showingAlert) {
+                Alert(
+                    title: Text("提示"),
+                    message: Text("注销账号,将无法恢复"),
+                    primaryButton: .destructive(Text("删除")) {
+                        cancelAccount()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
         }
         .padding(.horizontal, 16)
         .actionSheet(isPresented: $isShowingActionSheet) {
@@ -189,6 +201,8 @@ struct SecurityView: View {
 
                         LoginManager.shared.info = model
 
+                        Util.topViewController().navigationController?.popToRootViewController(animated: true)
+
                     } else {
                         print("无法提取 token")
                     }
@@ -279,6 +293,20 @@ struct SecurityView: View {
                     }
                 }
 
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+
+    /// 注销账号
+    private func cancelAccount() {
+        HUD.showLoading()
+        APIProvider.shared.request(.accountDelete) { result in
+            HUD.hideNow()
+            switch result {
+            case .success:
+                fetchVisitorToken()
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }

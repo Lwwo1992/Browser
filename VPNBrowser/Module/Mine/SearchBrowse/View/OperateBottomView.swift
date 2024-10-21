@@ -95,11 +95,6 @@ struct OperateBottomView: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-
-                        if let lastSyncTime = S.Config.lastSyncTime, lastSyncTime.daysFromNow() > 0 {
-                            Text("距离: \(lastSyncTime.daysFromNow())天")
-                                .font(.system(size: 10))
-                        }
                     }
                 }
             }

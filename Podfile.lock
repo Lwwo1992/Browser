@@ -14,6 +14,7 @@ PODS:
   - BlueCryptor (1.0.32)
   - BlueECC (1.2.5)
   - BlueRSA (1.0.200)
+  - HandyJSON (5.0.4-beta)
   - IQKeyboardManagerSwift (7.1.1)
   - KituraContracts (1.2.1):
     - LoggerAPI (~> 1.7)
@@ -34,6 +35,7 @@ PODS:
 DEPENDENCIES:
   - AWSMobileClient (~> 2.15.1)
   - AWSS3 (~> 2.15.1)
+  - HandyJSON (from `https://github.com/Miles-Matheson/HandyJSON.git`)
   - IQKeyboardManagerSwift
   - SwiftJWT
   - TagListView (~> 1.0)
@@ -59,6 +61,15 @@ SPEC REPOS:
     - WCDB.swift
     - WCDBOptimizedSQLCipher
 
+EXTERNAL SOURCES:
+  HandyJSON:
+    :git: https://github.com/Miles-Matheson/HandyJSON.git
+
+CHECKOUT OPTIONS:
+  HandyJSON:
+    :commit: de8a7126d2270da55cea3cb45dadffcfd002dbbe
+    :git: https://github.com/Miles-Matheson/HandyJSON.git
+
 SPEC CHECKSUMS:
   AWSAuthCore: 598e8eb56e12799877414d10b04598de12a15992
   AWSCognitoIdentityProvider: 4a721292eda37a8c3ef451e8fec28abe14aff18e
@@ -69,6 +80,7 @@ SPEC CHECKSUMS:
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
+  HandyJSON: a9c67202df97805a0ba4a00e30b50e9a30ac28f3
   IQKeyboardManagerSwift: d7f3d3a562c237a0e7335e657cd598c452f57f1b
   KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
@@ -78,6 +90,6 @@ SPEC CHECKSUMS:
   WCDB.swift: 603b32d432a58ec2e6eef8965d8bd6bb3cc7c39a
   WCDBOptimizedSQLCipher: c6451e1dead7ec53e1344a2545aaed2c4c139fc0
 
-PODFILE CHECKSUM: 86b72f5a1246ea922eda1d18bffc9f9de4495a4a
+PODFILE CHECKSUM: 86aafe2c1cb851905764af3ca1836ceaef12b547
 
 COCOAPODS: 1.15.2

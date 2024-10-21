@@ -63,6 +63,28 @@ extension Date {
         let components = calendar.dateComponents([.day], from: self, to: currentDate)
         return components.day ?? 0
     }
+
+    /// 计算从当前时间到指定日期的时间差，并返回一个描述字符串
+    func timeAgoDescription() -> String {
+        let now = Date()
+        let timeInterval = now.timeIntervalSince(self)
+
+        // 使用 DateComponentsFormatter 来将时间差格式化为易读的形式
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.second, .minute, .hour, .day]
+        formatter.maximumUnitCount = 1 // 只显示最大的时间单位
+        formatter.unitsStyle = .full // 显示完整单位，如 "minutes" 而不是 "min"
+
+        // 如果时间差超过一天，显示具体日期
+        if timeInterval > 86400 { // 86400 秒 = 1 天
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium // 显示如 "Oct 20, 2014"
+            return dateFormatter.string(from: self)
+        }
+
+        // 获取时间差的格式化结果
+        return (formatter.string(from: timeInterval) ?? "")
+    }
 }
 
 extension UIImageView {
