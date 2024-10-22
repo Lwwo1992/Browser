@@ -23,6 +23,9 @@
 		440F93372CBD1DBB00D94AD0 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93362CBD1DBB00D94AD0 /* HistoryView.swift */; };
 		443A817C2CBD55140093BC22 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817B2CBD55140093BC22 /* TabsViewController.swift */; };
 		443A817E2CBD553A0093BC22 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817D2CBD553A0093BC22 /* TabsView.swift */; };
+		44444AF92CC747EC002E204B /* MarketModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44444AF82CC747EC002E204B /* MarketModel.swift */; };
+		44444AFB2CC75553002E204B /* MarketDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44444AFA2CC75553002E204B /* MarketDetailViewController.swift */; };
+		44444AFD2CC75624002E204B /* MarketDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44444AFC2CC75624002E204B /* MarketDetailView.swift */; };
 		444C93602CB4D8F50092FECB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 444C93572CB4D8F50092FECB /* Assets.xcassets */; };
 		444C93622CB4D8F50092FECB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 444C935A2CB4D8F50092FECB /* LaunchScreen.storyboard */; };
 		444C93632CB4D8F50092FECB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 444C935C2CB4D8F50092FECB /* Main.storyboard */; };
@@ -142,6 +145,9 @@
 		443A817A2CBD4B700093BC22 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		443A817B2CBD55140093BC22 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		443A817D2CBD553A0093BC22 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
+		44444AF82CC747EC002E204B /* MarketModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketModel.swift; sourceTree = "<group>"; };
+		44444AFA2CC75553002E204B /* MarketDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDetailViewController.swift; sourceTree = "<group>"; };
+		44444AFC2CC75624002E204B /* MarketDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketDetailView.swift; sourceTree = "<group>"; };
 		444C933C2CB4D89D0092FECB /* VPNBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VPNBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		444C93562CB4D8F50092FECB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		444C93572CB4D8F50092FECB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -460,6 +466,7 @@
 			children = (
 				44CD45F92CBE292F003A415E /* View */,
 				44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */,
+				44444AFA2CC75553002E204B /* MarketDetailViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -550,6 +557,7 @@
 			isa = PBXGroup;
 			children = (
 				446009D92CBA1AF60085DC74 /* HomeView.swift */,
+				44444AFC2CC75624002E204B /* MarketDetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -578,6 +586,7 @@
 				44984E4E2CBF687F00158380 /* UserGuideModel.swift */,
 				44984FDB2CBFD2B700158380 /* DownloadModel.swift */,
 				44D3C2AD2CC23C3600E41BEC /* FolderModel.swift */,
+				44444AF82CC747EC002E204B /* MarketModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -860,6 +869,7 @@
 				446009E32CBA53E50085DC74 /* LoginModel.swift in Sources */,
 				446009EE2CBA8E5C0085DC74 /* AnonymousConfigModel.swift in Sources */,
 				440F93332CBD0E6B00D94AD0 /* HistoryModel.swift in Sources */,
+				44444AFB2CC75553002E204B /* MarketDetailViewController.swift in Sources */,
 				44AA66542CB6587600E4253F /* FootprintView.swift in Sources */,
 				440F93372CBD1DBB00D94AD0 /* HistoryView.swift in Sources */,
 				44AA50932CB50D37005EBC36 /* SecurityViewController.swift in Sources */,
@@ -911,6 +921,7 @@
 				446009D22CBA0D480085DC74 /* VerificationCodeViewController.swift in Sources */,
 				44984FE02CBFEFBE00158380 /* DocumentInteractionController.swift in Sources */,
 				44CF20BD2CB942D800772B9C /* AccountLoginView.swift in Sources */,
+				44444AF92CC747EC002E204B /* MarketModel.swift in Sources */,
 				446009FB2CBAB5730085DC74 /* Extension.swift in Sources */,
 				44D3C2B22CC2636500E41BEC /* FolderDialogView.swift in Sources */,
 				44CF20BF2CB9489000772B9C /* TextDisplayViewController.swift in Sources */,
@@ -927,6 +938,7 @@
 				44DA8E312CB67FA8003B1C34 /* RecommendedModeView.swift in Sources */,
 				4409D4322CB7CF0B00C81871 /* LoginView.swift in Sources */,
 				446009DD2CBA1CE70085DC74 /* MHVerifyCodeView.swift in Sources */,
+				44444AFD2CC75624002E204B /* MarketDetailView.swift in Sources */,
 				4409D42A2CB7AE9300C81871 /* SearchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

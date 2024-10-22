@@ -8,12 +8,16 @@
 import UIKit
 
 class HomeViewController: ViewController {
+    private var viewModel = HomeViewModel()
+
     override var rootView: AnyView? {
-        return AnyView(HomeView())
+        return AnyView(HomeView(viewModel: viewModel))
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        viewModel.fetchMarketList()
     }
 }
 

@@ -107,6 +107,15 @@ enum APITarget {
 
     /// 注销账户
     case accountDelete
+
+    /// 首页活动列表
+    case marketList
+
+    /// 首页活动详情
+    case marketDetail
+
+    /// 获取分页列表
+    case browserVipCardPage
 }
 
 extension APITarget: TargetType {
@@ -168,12 +177,18 @@ extension APITarget: TargetType {
             return "/browser/app/browserBookmarkCollect/page"
         case .accountDelete:
             return "/browser/app/browserAccount/delete"
+        case .browserVipCardPage:
+            return "/browser/app/browserVipCard/page"
+        case .marketList:
+            return "/browser/app/visitorAccess/marketList"
+        case .marketDetail:
+            return "/browser/app/visitorAccess/marketDetail"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage, .accountDelete:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage, .accountDelete, .browserVipCardPage, .marketList, .marketDetail:
             return .post
 
         case .browserAccount:
@@ -192,7 +207,7 @@ extension APITarget: TargetType {
             parameters = ["data": data]
         case let .sendEmailCode(mailbox):
             parameters = ["data": mailbox]
-        case .enginePage:
+        case .enginePage, .browserVipCardPage:
             parameters = ["data": ["state": 1], "fetchAll": true, "pageIndex": 1, "pageSize": 10]
         case .rankingPage:
             parameters = ["data": ["hotList": 1], "pageIndex": 1, "pageSize": 10]
@@ -260,7 +275,10 @@ extension APITarget: TargetType {
         case .accountDelete:
             parameters = ["data": [LoginManager.shared.info.id]]
 
-        case .logout, .anonymousConfig, .uploadConfig:
+        case .marketDetail:
+            parameters = ["data": "0"]
+
+        case .logout, .anonymousConfig, .uploadConfig, .marketList:
             break
         }
 
