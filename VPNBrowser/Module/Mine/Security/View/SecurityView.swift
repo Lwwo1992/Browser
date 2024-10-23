@@ -188,14 +188,14 @@ struct SecurityView: View {
                        let userId = data["id"] as? String {
                         let model = LoginModel()
                         model.id = userId
-                        model.logintype = "0"
+                        model.userType = .visitor
                         model.vistoken = token
 
                         DBaseManager.share.updateToDb(table: S.Table.loginInfo,
                                                       on: [
                                                           LoginModel.Properties.id,
                                                           LoginModel.Properties.vistoken,
-                                                          LoginModel.Properties.logintype,
+                                                          LoginModel.Properties.userTypeV,
                                                       ],
                                                       with: model)
 

@@ -7,6 +7,12 @@
 
 import UIKit
 
+enum UserType: Int, HandyJSONEnum {
+    case visitor = 0
+    case user
+    case vipUser
+}
+
 class LoginModel: BaseModel, TableCodable {
     var token: String = ""
     var vistoken: String = ""
@@ -16,9 +22,17 @@ class LoginModel: BaseModel, TableCodable {
     var mailbox = ""
     var userHead = ""
     var id = ""
-    var logintype = "0"//0：游客 1用户
-    
-    ///查询用户信息
+    private var userTypeV: Int = 0
+    var userType: UserType {
+        get {
+            return UserType(rawValue: userTypeV) ?? .visitor
+        }
+        set {
+            userTypeV = newValue.rawValue
+        }
+    }
+
+    /// 查询用户信息
     var bookmarkNum = ""
     var createBy = ""
     var createTime = ""
@@ -29,7 +43,7 @@ class LoginModel: BaseModel, TableCodable {
     var state = ""
     var updateBy = ""
     var updateTime = ""
-    var vipCardVO:vipCardVOModel = vipCardVOModel()
+    var vipCardVO: [vipCardVOModel] = []
     var visitor = ""
 
     enum CodingKeys: String, CodingTableKey {
@@ -52,13 +66,12 @@ class LoginModel: BaseModel, TableCodable {
         case updateBy
         case updateTime
         case visitor
-        case logintype
+        case userTypeV
         case id
     }
 }
 
-
-class UpdateHeadInfo:BaseModel{
+class UpdateHeadInfo: BaseModel {
     var bucket = ""
     var uploadAddrPrefix = ""
     var endpoint = ""
@@ -69,17 +82,13 @@ class UpdateHeadInfo:BaseModel{
     var guide = guideModel()
 }
 
-class guideModel:BaseModel{
+class guideModel: BaseModel {
     var bucket = ""
     var videoUrl = ""
     var imageUrl = ""
 }
 
-
- 
-class vipCardVOModel:BaseModel{
-    
-    
+class vipCardVOModel: BaseModel {
     var activityType = ""
     var createBy = ""
     var createTime = ""
@@ -96,13 +105,11 @@ class vipCardVOModel:BaseModel{
     var validEndTime = ""
     var validStartTime = ""
     var validType = ""
-    var vipExpireTime = ""
-    var vipRights:vipRightsModel = vipRightsModel() ///会员卡权益
+    var vipExpireTime: TimeInterval?
+    var vipRights: vipRightsModel = vipRightsModel() /// 会员卡权益
 }
 
-
-class vipRightsModel:BaseModel{
-    
+class vipRightsModel: BaseModel {
     var createBy = ""
     var createTime = ""
     var des = ""
@@ -114,5 +121,4 @@ class vipRightsModel:BaseModel{
     var updateBy = ""
     var updateTime = ""
     var vipCards = ""
-    
 }

@@ -15,7 +15,10 @@ struct HomeView: View {
             topView()
             bottomView()
         }
-        .frame(height: .infinity, alignment: .top)
+        .frame(maxHeight: .infinity, alignment: .top)
+        .onAppear {
+            viewModel.fetchMarketList()
+        }
     }
 
     @ViewBuilder
@@ -43,20 +46,21 @@ struct HomeView: View {
                 .padding(.top, 5)
         }
         .padding(.top, 20)
+        .onTapGesture {
+            let vc = MarketDetailViewController()
+            vc.title = viewModel.marketModel.name
+            vc.model = viewModel.marketModel
+            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+        }
 
         HStack(spacing: 10) {
-            ForEach(0 ..< 5) { _ in
+            ForEach(0 ..< (viewModel.marketModel.template?.template?.shareUserCount ?? 0), id: \.self) { _ in
                 Image("convite")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 30, height: 30)
             }
         }
-        .frame(width: 210)
-        .frame(height: 50)
-        .background(Color.orange.opacity(0.1))
-        .cornerRadius(20)
-        .padding(.horizontal, 16)
         .padding(.top, 30)
         .padding(.bottom, 20)
     }
@@ -70,7 +74,7 @@ struct HomeView: View {
                         VStack(alignment: .leading, spacing: 6) {
                             Text(model.name)
                                 .font(.system(size: 16))
-                            Text("邀好友赚\(model.hasJoinCount)天VPN福利(0/1)")
+                            Text("邀好友赚\(model.template?.template?.getDay ?? 0)天VPN福利(0/\(model.template?.template?.shareUserCount ?? 0))")
                                 .font(.system(size: 14))
                                 .opacity(0.5)
                         }
@@ -78,11 +82,16 @@ struct HomeView: View {
                         Spacer()
 
                         Button {
-                            let vc = MarketDetailViewController()
-                            vc.viewModel = viewModel
-                            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+                            if model.userType == [2] && LoginManager.shared.info.userType == .visitor {
+                                Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                            } else {
+                                let vc = MarketDetailViewController()
+                                vc.title = model.name
+                                vc.model = model
+                                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+                            }
                         } label: {
-                            Text("在邀请\(viewModel.marketModel.template?.template?.shareUserCount ?? 0)人")
+                            Text("在邀请\(model.template?.template?.shareUserCount ?? 0)人")
                                 .font(.system(size: 14))
                                 .foregroundColor(.white)
                                 .frame(width: 80, height: 30)

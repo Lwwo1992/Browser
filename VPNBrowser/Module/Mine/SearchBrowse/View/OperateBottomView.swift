@@ -87,7 +87,7 @@ struct OperateBottomView: View {
                 if !viewModel.recordData.isEmpty || !viewModel.folderData.isEmpty {
                     VStack {
                         Button("立即同步") {
-                            if LoginManager.shared.info.logintype == "0" {
+                            if LoginManager.shared.info.userType == .visitor {
                                 Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
                             } else {
                                 S.Config.lastSyncTime = Date()

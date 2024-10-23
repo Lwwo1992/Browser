@@ -52,7 +52,7 @@ struct MineBottomView: View {
         var vc = ViewController()
         switch item {
         case .accountSecurity:
-            if LoginManager.shared.info.logintype == "1" {
+            if LoginManager.shared.info.userType == .user {
                 vc = SecurityViewController()
             } else {
                 vc = LoginViewController()

@@ -112,10 +112,28 @@ enum APITarget {
     case marketList
 
     /// 首页活动详情
-    case marketDetail
+    case marketDetail(id: String)
+
+    /// 生成浏览器分享链接
+    case generaBrowserShareUrl(id: String)
 
     /// 获取分页列表
     case browserVipCardPage
+
+    /// 获取分页列表
+    case visitorAccessPage
+
+    /// 领取活动奖励
+    case getMarketReward(id: String)
+
+    /// 根据id查询用户信息
+    case visitorAccess(id: String)
+
+    /// 获取购买vip最低价
+    case getVipLowPrice
+
+    /// 用户购买vip
+    case userBuyVip(id: String)
 }
 
 extension APITarget: TargetType {
@@ -127,6 +145,7 @@ extension APITarget: TargetType {
             return URL(string: "http://guide-api.saas-xy.com:86")!
         default:
 //            return URL(string: "https://browser-api.xiwshijieheping.com")!
+//            return URL(string: "http://merge-api.saas-xy.com:86")!
             return URL(string: "http://browser-dev-api.saas-xy.com:81")!
         }
     }
@@ -183,15 +202,27 @@ extension APITarget: TargetType {
             return "/browser/app/visitorAccess/marketList"
         case .marketDetail:
             return "/browser/app/visitorAccess/marketDetail"
+        case .generaBrowserShareUrl:
+            return "/browser/app/visitorAccess/generaBrowserShareUrl"
+        case .getMarketReward:
+            return "/browser/app/visitorAccess/getMarketReward"
+        case let .visitorAccess(id):
+            return "/browser/app/visitorAccess/\(id)"
+        case .getVipLowPrice:
+            return "/browser/app/visitorAccess/getVipLowPrice"
+        case .visitorAccessPage:
+            return "/browser/app/visitorAccess/page"
+        case .userBuyVip:
+            return "/browser/app/visitorAccess/userBuyVip"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage, .accountDelete, .browserVipCardPage, .marketList, .marketDetail:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage, .accountDelete, .browserVipCardPage, .marketList, .marketDetail, .generaBrowserShareUrl, .getMarketReward, .getVipLowPrice, .visitorAccessPage, .userBuyVip:
             return .post
 
-        case .browserAccount:
+        case .browserAccount, .visitorAccess:
             return .get
         }
     }
@@ -207,7 +238,7 @@ extension APITarget: TargetType {
             parameters = ["data": data]
         case let .sendEmailCode(mailbox):
             parameters = ["data": mailbox]
-        case .enginePage, .browserVipCardPage:
+        case .enginePage, .browserVipCardPage, .visitorAccessPage:
             parameters = ["data": ["state": 1], "fetchAll": true, "pageIndex": 1, "pageSize": 10]
         case .rankingPage:
             parameters = ["data": ["hotList": 1], "pageIndex": 1, "pageSize": 10]
@@ -232,9 +263,6 @@ extension APITarget: TargetType {
             data["id"] = id
             parameters = ["data": data]
 
-        case .browserAccount:
-            return .requestPlain
-
         case .guideLabelPage:
             let data: [String: Any] = [
                 "channelCode": channelCode,
@@ -252,10 +280,10 @@ extension APITarget: TargetType {
             parameters = ["data": ["accountId": LoginManager.shared.info.id], "fetchAll": true, "pageIndex": 1, "pageSize": 10]
 
         case .generateVisitorToken:
-
             if let uuid = UIDevice.current.identifierForVendor?.uuidString {
                 parameters = ["data": ["deviceId": uuid]]
             }
+
         case let .forgetPassword(password):
             parameters = ["data": ["newPassword": password]]
 
@@ -275,11 +303,18 @@ extension APITarget: TargetType {
         case .accountDelete:
             parameters = ["data": [LoginManager.shared.info.id]]
 
-        case .marketDetail:
-            parameters = ["data": "0"]
+        case let .marketDetail(id),
+             let .generaBrowserShareUrl(id),
+             let .getMarketReward(id),
+             let .userBuyVip(id):
 
-        case .logout, .anonymousConfig, .uploadConfig, .marketList:
+            parameters = ["data": id]
+
+        case .logout, .anonymousConfig, .uploadConfig, .marketList, .getVipLowPrice:
             break
+
+        case .browserAccount, .visitorAccess:
+            return .requestPlain
         }
 
         return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
@@ -294,7 +329,7 @@ extension APITarget: TargetType {
             ]
         default:
             var token = ""
-            if LoginManager.shared.info.logintype == "0" {
+            if LoginManager.shared.info.userType == .visitor {
                 token = LoginManager.shared.info.vistoken
             } else {
                 token = LoginManager.shared.info.token
@@ -314,6 +349,12 @@ extension MoyaProvider {
         request(target) { result in
             switch result {
             case let .success(response):
+                if response.statusCode == 502 {
+                    HUD.showTipMessage("Error 502: \(response.debugDescription)")
+                    print("Error 502: Bad Gateway")
+                    return
+                }
+
                 guard let jsonString = String(data: response.data, encoding: .utf8) else {
                     print("Failed to convert data to JSON string.")
                     completion(.failure(NSError(domain: "HandyJSONError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert data to JSON string"])))
@@ -350,6 +391,13 @@ extension MoyaProvider {
         request(target) { result in
             switch result {
             case let .success(response):
+                if response.statusCode == 502 {
+                    HUD.showTipMessage("Error 502: \(response.debugDescription)")
+                    print("Error 502: Bad Gateway")
+                    return
+                }
+
+                // 尝试将原始数据转换为字符串格式
                 guard let jsonString = String(data: response.data, encoding: .utf8) else {
                     print("Failed to convert data to JSON string.")
                     completion(.failure(NSError(domain: "HandyJSONError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert data to JSON string"])))

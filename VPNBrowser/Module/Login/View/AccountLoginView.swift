@@ -74,7 +74,7 @@ struct AccountLoginView: View {
             HUD.hideNow()
             switch result {
             case let .success(model):
-                model.logintype = "1"
+                model.userType = .user
                 
                 LoginManager.shared.info = model
 
@@ -82,7 +82,7 @@ struct AccountLoginView: View {
                                               on: [
                                                   LoginModel.Properties.id,
                                                   LoginModel.Properties.token,
-                                                  LoginModel.Properties.logintype,
+                                                  LoginModel.Properties.userTypeV,
                                               ],
                                               with: model)
 

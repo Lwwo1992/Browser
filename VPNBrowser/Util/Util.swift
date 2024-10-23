@@ -134,4 +134,17 @@ extension Util {
         }
         return nil
     }
+
+    static func createQRCodeImage(content: String) -> UIImage? {
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
+            return nil
+        }
+        let data = content.data(using: .utf8)
+        filter.setValue(data, forKey: "inputMessage")
+        let transform = CGAffineTransform(scaleX: 10, y: 10)
+        guard let ciImage = filter.outputImage?.transformed(by: transform) else {
+            return nil
+        }
+        return UIImage(ciImage: ciImage)
+    }
 }

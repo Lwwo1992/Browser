@@ -59,7 +59,9 @@ extension AppDelegate {
     }
 
     func netWorkConfig(completion: (() -> Void)? = nil) {
-        if LoginManager.shared.info.logintype == "1" {
+        LoginManager.shared.fetchUserInfo()
+
+        if LoginManager.shared.info.userType == .user {
             fetchConfigByType {
                 self.fetchAnonymousConfig {
                     completion?()
@@ -83,17 +85,17 @@ extension AppDelegate {
                            let userId = data["id"] as? String {
                             let model = LoginModel()
                             model.id = userId
-                            model.logintype = "0"
+                            model.userType = .visitor
                             model.vistoken = token
 
                             LoginManager.shared.info = model
 
-                            if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self), array.count > 0 {
+                            if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self), !array.isEmpty {
                                 DBaseManager.share.updateToDb(table: S.Table.loginInfo,
                                                               on: [
                                                                   LoginModel.Properties.id,
                                                                   LoginModel.Properties.vistoken,
-                                                                  LoginModel.Properties.logintype,
+                                                                  LoginModel.Properties.userTypeV,
                                                               ],
                                                               with: model)
                             } else {

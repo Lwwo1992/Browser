@@ -17,7 +17,7 @@ class HomeViewController: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.fetchMarketList()
+//        viewModel.fetchMarketList()
     }
 }
 

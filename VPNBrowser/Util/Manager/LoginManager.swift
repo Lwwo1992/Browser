@@ -7,6 +7,7 @@
 
 class LoginManager: ObservableObject {
     @Published var info = LoginModel()
+    @Published var userInfo = LoginModel()
 
     static let shared = LoginManager()
 
@@ -16,13 +17,13 @@ class LoginManager: ObservableObject {
         }
     }
 
-   
-
     func fetchUserInfo(_ userID: String = LoginManager.shared.info.id) {
         APIProvider.shared.request(.browserAccount(userId: userID), model: LoginModel.self) { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(model):
+                self.userInfo = model
+
                 DBaseManager.share.updateToDb(table: S.Table.loginInfo,
                                               on: [
                                                   LoginModel.Properties.name,

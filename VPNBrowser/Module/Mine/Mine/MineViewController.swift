@@ -19,7 +19,7 @@ class MineViewController: ViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if LoginManager.shared.info.logintype == "1" {
+        if LoginManager.shared.info.userType == .user {
             APIProvider.shared.request(.browserAccount(userId: LoginManager.shared.info.id), model: LoginModel.self) { result in
                 switch result {
                 case let .success(model):

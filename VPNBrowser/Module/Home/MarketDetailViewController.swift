@@ -9,12 +9,28 @@ import UIKit
 
 class MarketDetailViewController: ViewController {
     override var rootView: AnyView? {
-        return AnyView(MarketDetailView(viewModel: viewModel))
+        return AnyView(MarketDetailView(model: model))
     }
 
-    var viewModel = HomeViewModel()
+    var model = MarketModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+}
+
+extension MarketDetailViewController {
+    override func initUI() {
+        super.initUI()
+        setupGradientBackground()
+    }
+
+    private func setupGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [UIColor.red.withAlphaComponent(0.6).cgColor, UIColor.white.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
+        view.layer.insertSublayer(gradientLayer, at: 0)
     }
 }
