@@ -28,7 +28,6 @@ struct AccountLoginView: View {
 
             HStack {
                 CustomTextField(text: $password, placeholder: "请输入密码", isSecure: !showPassword)
-                    .padding(10)
 
                 Button {
                     showPassword.toggle()
@@ -38,7 +37,7 @@ struct AccountLoginView: View {
                 }
             }
             .frame(height: 45)
-            .padding(.horizontal, 15)
+            .padding(.horizontal, 10)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.gray.opacity(0.5), lineWidth: 1)
@@ -70,12 +69,12 @@ struct AccountLoginView: View {
         }
 
         HUD.showLoading()
-        APIProvider.shared.request(.login(credential: password, identifier: account, type: AccountType.account.rawValue), model: LoginModel.self) { result in
+        APIProvider.shared.request(.login(credential: EncryptUtil.encrypt(password), identifier: account, type: AccountType.account.rawValue), model: LoginModel.self) { result in
             HUD.hideNow()
             switch result {
             case let .success(model):
                 model.userType = .user
-                
+
                 LoginManager.shared.info = model
 
                 DBaseManager.share.updateToDb(table: S.Table.loginInfo,

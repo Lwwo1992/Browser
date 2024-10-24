@@ -8,8 +8,10 @@
 import UIKit
 
 class LoginViewController: ViewController {
+    private var viewModel = LoginViewModel()
+    
     override var rootView: AnyView? {
-        return AnyView(LoginView())
+        return AnyView(LoginView(viewModel: viewModel))
     }
 
     override func viewDidLoad() {

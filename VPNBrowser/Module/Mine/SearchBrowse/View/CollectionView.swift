@@ -105,16 +105,11 @@ struct CollectionItemView: View {
                 Text(model.address ?? "")
                     .font(.system(size: 12))
                     .opacity(0.5)
-
-                Spacer()
-
-                Text(Util.formattedTime(from: model.timestamp))
-                    .font(.system(size: 12))
-                    .opacity(0.5)
             }
             .font(.system(size: 14, weight: .medium))
             .opacity(0.6)
             .frame(height: 30)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             Divider()
         }

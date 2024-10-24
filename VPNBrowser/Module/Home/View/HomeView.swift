@@ -5,6 +5,7 @@
 //  Created by xyxy on 2024/10/12.
 //
 
+import SDWebImageSwiftUI
 import SwiftUI
 
 struct HomeView: View {
@@ -32,7 +33,7 @@ struct HomeView: View {
             .padding(.top, 5)
 
         VStack(spacing: 5) {
-            Text("\(viewModel.marketModel.template?.template?.getDay ?? 0)天")
+            Text("\(viewModel.marketModel.template.details.getDay)天")
                 .font(.system(size: 30))
                 .foregroundColor(.white)
 
@@ -41,7 +42,7 @@ struct HomeView: View {
                 .foregroundColor(.white)
                 .padding(.top, 5)
 
-            Text("在邀请\(viewModel.marketModel.template?.template?.shareUserCount ?? 0)人,直接免费拿")
+            Text("在邀请\(viewModel.marketModel.template.details.shareUserCount)人,直接免费拿")
                 .font(.system(size: 12))
                 .padding(.top, 5)
         }
@@ -54,15 +55,35 @@ struct HomeView: View {
         }
 
         HStack(spacing: 10) {
-            ForEach(0 ..< (viewModel.marketModel.template?.template?.shareUserCount ?? 0), id: \.self) { _ in
-                Image("convite")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
+            ForEach(0 ..< viewModel.visitorImages.count, id: \.self) { index in
+                WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                } placeholder: {
+                    Image("convite")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .onTapGesture {
+                            viewModel.showShareBottomSheet.toggle()
+                        }
+                }
             }
         }
         .padding(.top, 30)
         .padding(.bottom, 20)
+        .onReceive(viewModel.$marketModel, perform: { model in
+            let shareUserCount = model.template.details.shareUserCount
+            viewModel.visitorImages = Array(repeating: "convite", count: shareUserCount)
+
+            if let doInfo = model.doInfo {
+                for (index, id) in doInfo.hasShareUserIds.prefix(shareUserCount).enumerated() {
+                    viewModel.visitorAccess(id: id, index: index)
+                }
+            }
+        })
     }
 
     @ViewBuilder
@@ -74,7 +95,7 @@ struct HomeView: View {
                         VStack(alignment: .leading, spacing: 6) {
                             Text(model.name)
                                 .font(.system(size: 16))
-                            Text("邀好友赚\(model.template?.template?.getDay ?? 0)天VPN福利(0/\(model.template?.template?.shareUserCount ?? 0))")
+                            Text("邀好友赚\(model.template.details.getDay)天VPN福利(\(model.doInfo?.hasShareUserIds.count ?? 0)/\(model.template.details.shareUserCount))")
                                 .font(.system(size: 14))
                                 .opacity(0.5)
                         }
@@ -85,13 +106,18 @@ struct HomeView: View {
                             if model.userType == [2] && LoginManager.shared.info.userType == .visitor {
                                 Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
                             } else {
-                                let vc = MarketDetailViewController()
-                                vc.title = model.name
-                                vc.model = model
-                                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+                                if let doInfo = model.doInfo, doInfo.hasShareUserIds.count ==
+                                    model.template.details.shareUserCount, !model.hasGet {
+                                    viewModel.getMarketReward(id: model.id)
+                                } else {
+                                    let vc = MarketDetailViewController()
+                                    vc.title = model.name
+                                    vc.model = model
+                                    Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+                                }
                             }
                         } label: {
-                            Text("在邀请\(model.template?.template?.shareUserCount ?? 0)人")
+                            Text(viewModel.inviteStatus(for: model))
                                 .font(.system(size: 14))
                                 .foregroundColor(.white)
                                 .frame(width: 80, height: 30)

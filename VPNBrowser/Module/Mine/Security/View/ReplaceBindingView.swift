@@ -73,7 +73,7 @@ struct ReplaceBindingView: View {
 
     private func nextButtonAction() {
         if type == .mailbox {
-            if Util.isValidEmail(mailbox) && !mailbox.isEmpty {
+            if Util.isValidEmail(mailbox) && mailbox.isEmpty {
                 HUD.showTipMessage("格式错误")
                 return
             }
@@ -94,7 +94,7 @@ struct ReplaceBindingView: View {
             }
 
         } else if type == .mobile {
-            if Util.isValidPhoneNumber(mailbox) && !mailbox.isEmpty {
+            if Util.isValidPhoneNumber(mailbox) && mailbox.isEmpty {
                 HUD.showTipMessage("格式错误")
                 return
             }

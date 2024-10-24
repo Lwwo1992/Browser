@@ -36,6 +36,11 @@ struct ChangePasswordView: View {
             }
             .padding(.top, 20)
 
+            Text("密码必须是8-16位英文字母、数字、字符、组合(不能是纯数字)")
+                .font(.system(size: 14))
+                .opacity(0.5)
+                .padding(.top, 10)
+
             Button {
                 showingActionSheet.toggle()
             } label: {
@@ -87,12 +92,12 @@ struct ChangePasswordView: View {
             return
         }
 
-        if !Util.isPasswordValid(newPassword) {
+        if !Util.isValidPassword(newPassword) {
             return
         }
 
         HUD.showLoading()
-        APIProvider.shared.request(.updatePassword(new: newPassword, old: oldPassword)) { result in
+        APIProvider.shared.request(.updatePassword(new: EncryptUtil.encrypt(newPassword), old: EncryptUtil.encrypt(oldPassword))) { result in
             HUD.hideNow()
             switch result {
             case .success:
@@ -109,6 +114,11 @@ struct ChangePasswordView: View {
     }
 
     private func sendSmsode() {
+        if !Util.isValidPassword(newPassword) {
+            HUD.showInfoMsg("密码不合法")
+            return
+        }
+
         HUD.showLoading()
         APIProvider.shared.request(.sendSmsCode(mobile: LoginManager.shared.info.mobile, nation: "+86")) { result in
             HUD.hideNow()
@@ -152,7 +162,6 @@ struct PasswordEntryView: View {
     var body: some View {
         HStack {
             CustomTextField(text: $password, placeholder: placeholder, isSecure: !showPassword)
-                .padding(10)
 
             Button {
                 showPassword.toggle()

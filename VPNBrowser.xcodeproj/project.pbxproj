@@ -23,6 +23,8 @@
 		440F93372CBD1DBB00D94AD0 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93362CBD1DBB00D94AD0 /* HistoryView.swift */; };
 		4413A62E2CC8A1580042C019 /* VipViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4413A62D2CC8A1580042C019 /* VipViewModel.swift */; };
 		4413A6302CC8C6030042C019 /* VipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4413A62F2CC8C6030042C019 /* VipModel.swift */; };
+		4413A6322CC8FB700042C019 /* AgreedBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4413A6312CC8FB700042C019 /* AgreedBottomSheet.swift */; };
+		4413A6352CC9048B0042C019 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4413A6342CC9048B0042C019 /* LoginViewModel.swift */; };
 		442118CF2CC7BCCB0025A40B /* CountdownTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442118CE2CC7BCCB0025A40B /* CountdownTimer.swift */; };
 		442118D22CC7C1A50025A40B /* VipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442118D12CC7C1A50025A40B /* VipViewController.swift */; };
 		442118D42CC7C52C0025A40B /* VipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442118D32CC7C52C0025A40B /* VipView.swift */; };
@@ -127,10 +129,11 @@
 		44DA8E332CB6853C003B1C34 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E322CB6853C003B1C34 /* AboutViewController.swift */; };
 		44DA8E362CB68565003B1C34 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E352CB68565003B1C34 /* AboutView.swift */; };
 		44DA8E382CB68750003B1C34 /* OptionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DA8E372CB68750003B1C34 /* OptionListView.swift */; };
+		44DD0C652CC9ED9900A4964A /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DD0C642CC9ED9900A4964A /* UserInfoModel.swift */; };
 		8CEB24542CBD3750006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24532CBD3750006F8485 /* WTool */; };
 		8CEB24572CBD3820006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24562CBD3820006F8485 /* WTool */; };
 		8CEB245A2CBD3884006F8485 /* WTool in Frameworks */ = {isa = PBXBuildFile; productRef = 8CEB24592CBD3884006F8485 /* WTool */; };
-		8CEB245C2CBD3B35006F8485 /* BroAESCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */; };
+		8CEB245C2CBD3B35006F8485 /* EncryptUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB245B2CBD3B35006F8485 /* EncryptUtil.swift */; };
 		8CEB245E2CBD530B006F8485 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB245D2CBD530B006F8485 /* ImagePicker.swift */; };
 		DE8B2B128D60F18FC7D311F0 /* Pods_VPNBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF06C905EEE0A78EDEA5A9AB /* Pods_VPNBrowser.framework */; };
 /* End PBXBuildFile section */
@@ -151,6 +154,8 @@
 		440F93362CBD1DBB00D94AD0 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		4413A62D2CC8A1580042C019 /* VipViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipViewModel.swift; sourceTree = "<group>"; };
 		4413A62F2CC8C6030042C019 /* VipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipModel.swift; sourceTree = "<group>"; };
+		4413A6312CC8FB700042C019 /* AgreedBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreedBottomSheet.swift; sourceTree = "<group>"; };
+		4413A6342CC9048B0042C019 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		442118CE2CC7BCCB0025A40B /* CountdownTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTimer.swift; sourceTree = "<group>"; };
 		442118D12CC7C1A50025A40B /* VipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipViewController.swift; sourceTree = "<group>"; };
 		442118D32CC7C52C0025A40B /* VipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipView.swift; sourceTree = "<group>"; };
@@ -260,8 +265,9 @@
 		44DA8E322CB6853C003B1C34 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		44DA8E352CB68565003B1C34 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		44DA8E372CB68750003B1C34 /* OptionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionListView.swift; sourceTree = "<group>"; };
+		44DD0C642CC9ED9900A4964A /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 		724979C7A2BC482E06F3B646 /* Pods-VPNBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNBrowser.release.xcconfig"; path = "Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser.release.xcconfig"; sourceTree = "<group>"; };
-		8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroAESCipher.swift; sourceTree = "<group>"; };
+		8CEB245B2CBD3B35006F8485 /* EncryptUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptUtil.swift; sourceTree = "<group>"; };
 		8CEB245D2CBD530B006F8485 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BAC52216964DC1709C01EEF9 /* Pods-VPNBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VPNBrowser.debug.xcconfig"; path = "Target Support Files/Pods-VPNBrowser/Pods-VPNBrowser.debug.xcconfig"; sourceTree = "<group>"; };
 		BF06C905EEE0A78EDEA5A9AB /* Pods_VPNBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VPNBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -310,6 +316,7 @@
 		4409D42D2CB7CED400C81871 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				4413A6332CC904720042C019 /* ViewModel */,
 				4409D4302CB7CEF500C81871 /* View */,
 				4409D42E2CB7CEE200C81871 /* LoginViewController.swift */,
 				44CF20BA2CB942C300772B9C /* AccountLoginViewController.swift */,
@@ -324,6 +331,7 @@
 				4409D4312CB7CF0B00C81871 /* LoginView.swift */,
 				44CF20BC2CB942D800772B9C /* AccountLoginView.swift */,
 				446009D32CBA0D5B0085DC74 /* VerificationCodeView.swift */,
+				4413A6312CC8FB700042C019 /* AgreedBottomSheet.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -335,6 +343,14 @@
 				4413A62D2CC8A1580042C019 /* VipViewModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		4413A6332CC904720042C019 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4413A6342CC9048B0042C019 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		442118D02CC7C1910025A40B /* VIP */ = {
@@ -429,7 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				446009DC2CBA1CE70085DC74 /* MHVerifyCodeView.swift */,
-				8CEB245B2CBD3B35006F8485 /* BroAESCipher.swift */,
+				8CEB245B2CBD3B35006F8485 /* EncryptUtil.swift */,
 				8CEB245D2CBD530B006F8485 /* ImagePicker.swift */,
 				442118CE2CC7BCCB0025A40B /* CountdownTimer.swift */,
 				44984F162CBFC22000158380 /* TFPopup */,
@@ -622,6 +638,7 @@
 				44984FDB2CBFD2B700158380 /* DownloadModel.swift */,
 				44D3C2AD2CC23C3600E41BEC /* FolderModel.swift */,
 				44444AF82CC747EC002E204B /* MarketModel.swift */,
+				44DD0C642CC9ED9900A4964A /* UserInfoModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -879,7 +896,7 @@
 				44D3C2A82CC1FE5500E41BEC /* SetupPasswordViewController.swift in Sources */,
 				44D3C2AE2CC23C3600E41BEC /* FolderModel.swift in Sources */,
 				446009E52CBA6D790085DC74 /* LoginManager.swift in Sources */,
-				8CEB245C2CBD3B35006F8485 /* BroAESCipher.swift in Sources */,
+				8CEB245C2CBD3B35006F8485 /* EncryptUtil.swift in Sources */,
 				444C93642CB4D8F50092FECB /* AppDelegate.swift in Sources */,
 				440F932A2CBCC5BB00D94AD0 /* BrowserWebView.swift in Sources */,
 				44984FFC2CC12A0800158380 /* AccountView.swift in Sources */,
@@ -890,6 +907,7 @@
 				44D3C2AA2CC1FEE500E41BEC /* SetupPasswordView.swift in Sources */,
 				44984FFE2CC12B5D00158380 /* ChangePasswordViewController.swift in Sources */,
 				4486C9042CBE98840024381A /* MoreGuideViewController.swift in Sources */,
+				44DD0C652CC9ED9900A4964A /* UserInfoModel.swift in Sources */,
 				44984E482CBF575100158380 /* DownloadViewController.swift in Sources */,
 				440F93242CBCABFD00D94AD0 /* ReplaceBindingViewController.swift in Sources */,
 				44CD45FB2CBE2BAA003A415E /* ViewModel.swift in Sources */,
@@ -912,6 +930,7 @@
 				44AA50932CB50D37005EBC36 /* SecurityViewController.swift in Sources */,
 				4409D42F2CB7CEE200C81871 /* LoginViewController.swift in Sources */,
 				44984E4D2CBF651800158380 /* UserGuideView.swift in Sources */,
+				4413A6322CC8FB700042C019 /* AgreedBottomSheet.swift in Sources */,
 				44984E4F2CBF687F00158380 /* UserGuideModel.swift in Sources */,
 				443A817C2CBD55140093BC22 /* TabsViewController.swift in Sources */,
 				446009D42CBA0D5B0085DC74 /* VerificationCodeView.swift in Sources */,
@@ -920,6 +939,7 @@
 				44444AFF2CC7928E002E204B /* CustomShareItem.swift in Sources */,
 				446009DA2CBA1AF60085DC74 /* HomeView.swift in Sources */,
 				44984FF42CC0E7E300158380 /* MineBottomView.swift in Sources */,
+				4413A6352CC9048B0042C019 /* LoginViewModel.swift in Sources */,
 				44D3C2B42CC274C200E41BEC /* BookmarkViewController.swift in Sources */,
 				44984FF52CC0E7E300158380 /* MineTopView.swift in Sources */,
 				44984FF62CC0E7E300158380 /* MineView.swift in Sources */,
@@ -1016,7 +1036,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 5M9F5F4GS2;
+				DEVELOPMENT_TEAM = 7PMYNKHAJW;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
@@ -1062,7 +1082,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = 5M9F5F4GS2;
+				DEVELOPMENT_TEAM = 7PMYNKHAJW;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;

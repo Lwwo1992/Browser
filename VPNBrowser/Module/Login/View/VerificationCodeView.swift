@@ -24,6 +24,8 @@ struct VerificationCodeView: View {
 
     @State private var verifyCode = ""
 
+    @StateObject var countdownTimer = CountdownTimer()
+
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text("请输入验证码")
@@ -32,17 +34,32 @@ struct VerificationCodeView: View {
             Text("验证码已发送至 \(accountNum)")
                 .font(.system(size: 14))
 
-            HStack {
-                Spacer()
-                VStack {
-                    VerifyCodeView { code in
-                        verifyCode = code
-                    }
-                    .frame(height: 45)
-                    .frame(width: 45 * 6 + 10 * 5)
+            VStack {
+                VerifyCodeView { code in
+                    verifyCode = code
                 }
-                Spacer()
+                .frame(height: 45)
+
+                Button {
+                    if countdownTimer.remainingTime == 0 {
+                        countdownTimer.resetCountdown(to: 60)
+                        sendCode()
+                    }
+                } label: {
+                    Group {
+                        if countdownTimer.remainingTime != 0 {
+                            Text("\(Util.formatSeconds(countdownTimer.remainingTime))s")
+                        } else {
+                            Text("重新发送")
+                        }
+                    }
+                    .font(.system(size: 14))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 10)
             }
+            .frame(width: 45 * 6 + 10 * 5)
+            .frame(maxWidth: .infinity, alignment: .center)
 
             Spacer()
 
@@ -65,10 +82,17 @@ struct VerificationCodeView: View {
         }
         .padding(.top, 30)
         .padding(.horizontal, 16)
+        .onAppear {
+            countdownTimer.resetCountdown(to: 60)
+            countdownTimer.startCountdown()
+        }
+        .onDisappear {
+            countdownTimer.stopTimer()
+        }
     }
 
     private func verfy(of code: String) {
-        let AecCode = BroAESCipher.encrypt(code) ?? ""
+        let AecCode = EncryptUtil.encrypt(code)
         switch verificationCodeType {
         case .login:
             login(AecCode)
@@ -131,9 +155,9 @@ struct VerificationCodeView: View {
             HUD.hideNow()
             switch result {
             case .success:
-                
+
                 LoginManager.shared.fetchUserInfo()
-                
+
                 if let navigationController = Util.topViewController().navigationController {
                     if let securityVC = navigationController.viewControllers.first(where: { $0 is SecurityViewController }) {
                         navigationController.popToViewController(securityVC, animated: true)
@@ -142,6 +166,32 @@ struct VerificationCodeView: View {
 
             case let .failure(error):
                 print("Request failed with error: \(error)")
+            }
+        }
+    }
+
+    private func sendCode() {
+        if accountType == .mobile {
+            HUD.showLoading()
+            APIProvider.shared.request(.sendSmsCode(mobile: accountNum, nation: "+86")) { result in
+                HUD.hideNow()
+                switch result {
+                case .success:
+                    break
+                case let .failure(error):
+                    print("Request failed with error: \(error)")
+                }
+            }
+        } else {
+            HUD.showLoading()
+            APIProvider.shared.request(.sendEmailCode(mailbox: accountNum)) { result in
+                HUD.hideNow()
+                switch result {
+                case .success:
+                    break
+                case let .failure(error):
+                    print("Request failed with error: \(error)")
+                }
             }
         }
     }

@@ -11,6 +11,10 @@ import Moya
 
 private let channelCode = "tomato"
 
+import Alamofire
+import Moya
+import UIKit
+
 class APIProvider {
     private let requestTimeout: TimeInterval = 30
     private let session: Session
@@ -27,7 +31,17 @@ class APIProvider {
     }
 
     private func createProvider() -> MoyaProvider<APITarget> {
-        return MoyaProvider<APITarget>(session: session)
+        return MoyaProvider<APITarget>(session: session, plugins: [NetworkLoggerPlugin()])
+    }
+
+    func handleRequestError(_ error: MoyaError) {
+        if let urlError = error.errorUserInfo[NSUnderlyingErrorKey] as? URLError, urlError.code == .timedOut {
+            DispatchQueue.main.async {
+                HUD.showTipMessage("请求超时")
+            }
+        } else {
+            print("Request failed with error: \(error.localizedDescription)")
+        }
     }
 }
 
@@ -138,16 +152,9 @@ enum APITarget {
 
 extension APITarget: TargetType {
     var baseURL: URL {
-        switch self {
-        case .guideLabelPage, .guideAppPage:
-            // "http://guide-h5.saas-xy.com:89" //正式环境
-            // "http://guide-api.saas-xy.com:86" //测试环境
-            return URL(string: "http://guide-api.saas-xy.com:86")!
-        default:
-//            return URL(string: "https://browser-api.xiwshijieheping.com")!
-//            return URL(string: "http://merge-api.saas-xy.com:86")!
-            return URL(string: "http://browser-dev-api.saas-xy.com:81")!
-        }
+//        return URL(string: "https://browser-api.xiwshijieheping.com")!
+        return URL(string: "http://merge-api.saas-xy.com:86")!
+//        return URL(string: "http://browser-dev-api.saas-xy.com:81")!
     }
 
     var path: String {
@@ -349,9 +356,10 @@ extension MoyaProvider {
         request(target) { result in
             switch result {
             case let .success(response):
-                if response.statusCode == 502 {
-                    HUD.showTipMessage("Error 502: \(response.debugDescription)")
-                    print("Error 502: Bad Gateway")
+                if response.statusCode == 404 || response.statusCode == 502 {
+                    HUD.hideNow()
+                    HUD.showTipMessage("Error \(response.statusCode): \(response.debugDescription)")
+                    print("Error \(response.statusCode): \(HTTPURLResponse.localizedString(forStatusCode: response.statusCode))")
                     return
                 }
 
@@ -391,9 +399,10 @@ extension MoyaProvider {
         request(target) { result in
             switch result {
             case let .success(response):
-                if response.statusCode == 502 {
-                    HUD.showTipMessage("Error 502: \(response.debugDescription)")
-                    print("Error 502: Bad Gateway")
+                if response.statusCode == 404 || response.statusCode == 502 {
+                    HUD.hideNow()
+                    HUD.showTipMessage("Error \(response.statusCode): \(response.debugDescription)")
+                    print("Error \(response.statusCode): \(HTTPURLResponse.localizedString(forStatusCode: response.statusCode))")
                     return
                 }
 

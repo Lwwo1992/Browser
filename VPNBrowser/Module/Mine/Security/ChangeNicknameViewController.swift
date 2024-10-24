@@ -24,6 +24,7 @@ class ChangeNicknameViewController: ViewController {
     }
 
     private lazy var textField = TextField().then {
+        $0.maxLength = 20
         $0.placeholder = "用户昵称"
         $0.text = LoginManager.shared.info.name
         $0.backgroundColor = UIColor.white

@@ -14,7 +14,7 @@ struct CustomTextField: UIViewRepresentable {
     var keyboardType: UIKeyboardType = .default
 
     func makeUIView(context: Context) -> UITextField {
-        let textField = UITextField()
+        let textField = TextField()
         textField.placeholder = placeholder
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.isSecureTextEntry = isSecure
@@ -44,5 +44,6 @@ struct CustomTextField: UIViewRepresentable {
         @objc func textFieldDidChange(_ textField: UITextField) {
             parent.text = textField.text ?? ""
         }
+        
     }
 }

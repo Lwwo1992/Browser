@@ -8,7 +8,7 @@
 import Foundation
 
 class CountdownTimer: ObservableObject {
-    @Published var remainingTime: TimeInterval = 0
+    @Published var remainingTime: TimeInterval = 60
     private var timer: Timer?
     private var originalTimeInterval: TimeInterval = 0
 

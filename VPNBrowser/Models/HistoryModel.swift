@@ -128,6 +128,11 @@ class HistoryViewModel: ObservableObject {
 
     /// 同步数据
     func syncBookmark() {
+        if LoginManager.shared.info.userType == .visitor {
+            Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+            return
+        }
+
         let parameters: [[String: Any]] = createRequestData(folderData: folderData, recordData: recordData)
         HUD.showLoading()
         APIProvider.shared.request(.syncBookmark(data: parameters)) { [weak self] result in

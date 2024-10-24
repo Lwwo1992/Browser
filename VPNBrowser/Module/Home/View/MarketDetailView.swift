@@ -5,6 +5,7 @@
 //  Created by xyxy on 2024/10/22.
 //
 
+import SDWebImageSwiftUI
 import SwiftUI
 
 struct MarketDetailView: View {
@@ -15,12 +16,12 @@ struct MarketDetailView: View {
     var body: some View {
         VStack {
             topView()
-            Spacer()
             bottomView()
+            Spacer()
         }
         .padding(.horizontal, 16)
         .onAppear {
-            if let limitTime = model.template?.limitTime, model.doInfo != nil {
+            if let limitTime = model.template.limitTime, model.doInfo != nil {
                 countdownTimer.resetCountdown(to: 60 * 60 * Double(limitTime))
                 countdownTimer.startCountdown()
             }
@@ -39,7 +40,7 @@ struct MarketDetailView: View {
                 .padding(.top, 5)
 
             VStack(spacing: 5) {
-                Text("\(model.template?.template?.getDay ?? 0)天")
+                Text("\(model.template.details.getDay)天")
                     .font(.system(size: 30))
                     .foregroundColor(.white)
 
@@ -48,29 +49,46 @@ struct MarketDetailView: View {
                     .foregroundColor(.white)
                     .padding(.top, 5)
 
-                Text("在邀请\(model.template?.template?.shareUserCount ?? 0)人,直接免费拿")
+                Text("在邀请\(model.template.details.shareUserCount)人,直接免费拿")
                     .font(.system(size: 12))
                     .padding(.top, 5)
 
-                if model.template?.limitTime != nil && model.doInfo != nil {
-                    Text(formatTime(countdownTimer.remainingTime))
+                if model.template.limitTime != nil && model.doInfo != nil {
+                    Text(Util.formatTime(countdownTimer.remainingTime))
                         .font(.system(size: 14))
                 }
             }
             .padding(.top, 20)
 
             HStack(spacing: 10) {
-                ForEach(0 ..< (model.template?.template?.shareUserCount ?? 0), id: \.self) { _ in
-                    Image("convite")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
+                ForEach(0 ..< viewModel.visitorImages.count, id: \.self) { index in
+                    WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                    } placeholder: {
+                        Image("convite")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                    }
                 }
             }
             .padding(.top, 30)
             .padding(.bottom, 20)
         }
         .padding(.top, 10)
+        .onAppear {
+            let shareUserCount = model.template.details.shareUserCount
+            viewModel.visitorImages = Array(repeating: "convite", count: shareUserCount)
+
+            if let doInfo = model.doInfo {
+                for (index, id) in doInfo.hasShareUserIds.prefix(shareUserCount).enumerated() {
+                    viewModel.visitorAccess(id: id, index: index)
+                }
+            }
+        }
     }
 
     @ViewBuilder
@@ -94,7 +112,7 @@ struct MarketDetailView: View {
 
                 Button {
                     viewModel.generaShareUrl(for: model.id) { _ in
-                        shareAction()
+                        viewModel.shareAction()
                     }
                 } label: {
                     Text("分享链接")
@@ -102,79 +120,11 @@ struct MarketDetailView: View {
                 }
             }
             .font(.system(size: 14))
-            .foregroundColor(.white)
+            .foregroundColor(.black)
             .padding(.vertical, 15)
-            .background(Color.blue)
+            .background(Color.white)
             .cornerRadius(25)
         }
-        .padding(.bottom, 20)
-    }
-
-    private func shareAction() {
-        DispatchQueue.global().async {
-            guard let shareURL = URL(string: viewModel.shareUrl) else {
-                return
-            }
-
-            var activityItems: [Any]
-            if #available(iOS 17, *) {
-                activityItems = [shareURL as Any]
-            } else {
-                activityItems = [CustomShareItem(shareURL: shareURL, shareText: Util.appName(), shareImage: UIImage.icon ?? .init()) as Any]
-            }
-            DispatchQueue.main.async {
-                let vc = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-                vc.modalPresentationStyle = .fullScreen
-                if let popoverController = vc.popoverPresentationController {
-                    popoverController.sourceView = Util.topViewController().view
-                    popoverController.sourceRect = CGRect(x: Util.topViewController().view.bounds.midX, y: Util.topViewController().view.bounds.midY, width: 0, height: 0)
-                    popoverController.permittedArrowDirections = []
-                }
-                Util.topViewController().present(vc, animated: true, completion: nil)
-
-                vc.completionWithItemsHandler = { _, _, _, _ in }
-            }
-        }
-    }
-}
-
-extension MarketDetailView {
-    private func formatTime(_ timeInterval: TimeInterval) -> String {
-        let days = Int(timeInterval) / 86400
-        let hours = (Int(timeInterval) % 86400) / 3600
-        let minutes = (Int(timeInterval) % 3600) / 60
-        let seconds = Int(timeInterval) % 60
-
-        if days > 0 {
-            return String(format: "%02d天 %02d:%02d:%02d", days, hours, minutes, seconds)
-        } else if hours > 0 {
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        } else {
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
-    }
-}
-
-struct GridImageView: View {
-    var itemCount: Int
-    var imageName: String
-    var imageSize: CGFloat = 30
-    var spacing: CGFloat = 10
-
-    var body: some View {
-        GeometryReader { geometry in
-            let totalWidth = geometry.size.width
-            let columnsCount = Int((totalWidth + spacing) / (imageSize + spacing))
-
-            LazyVGrid(columns: Array(repeating: GridItem(.fixed(imageSize), spacing: spacing), count: columnsCount), spacing: spacing) {
-                ForEach(0 ..< itemCount, id: \.self) { _ in
-                    Image(imageName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: imageSize, height: imageSize)
-                }
-            }
-        }
-        .frame(height: 100)
+        .padding(.top, 20)
     }
 }

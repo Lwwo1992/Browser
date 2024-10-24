@@ -5,6 +5,7 @@
 //  Created by xyxy on 2024/10/22.
 //
 
+import Combine
 import Moya
 import UIKit
 
@@ -13,6 +14,85 @@ class HomeViewModel: ObservableObject {
     @Published var marketData: [MarketModel] = []
     /// 分享的地址
     @Published var shareUrl: String = ""
+
+    @Published var visitorImages: [String] = []
+
+    @Published var showShareBottomSheet = false
+
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        $showShareBottomSheet
+            .dropFirst()
+            .sink { [weak self] value in
+                guard let self else { return }
+                if value {
+                    Util.topViewController().popup.bottomSheet {
+                        let v = UIView(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 260))
+                        v.backgroundColor = .white
+                        let leftButton = Button().then {
+                            $0.title("扫码分享")
+                            $0.backgroundColor(.red)
+                            $0.cornerRadius(25)
+                            $0.titleFont(.systemFont(ofSize: 16))
+                            $0.titleColor(.white)
+                            $0.tapAction = {
+                                Util.topViewController().dismiss(animated: true)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                                    guard let self else { return }
+                                    generaShareUrl(for: marketModel.id) { url in
+                                        if let url, let image = Util.createQRCodeImage(content: url) {
+                                            Util.topViewController().popup.dialog {
+                                                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+                                                imageView.image = image
+                                                return imageView
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        let rightButton = Button().then {
+                            $0.title("分享链接")
+                            $0.backgroundColor(.red)
+                            $0.cornerRadius(25)
+                            $0.titleFont(.systemFont(ofSize: 16))
+                            $0.titleColor(.white)
+                            $0.tapAction = {
+                                Util.topViewController().dismiss(animated: true)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                                    guard let self else { return }
+                                    shareAction()
+                                }
+                            }
+                        }
+
+                        v.addSubview(leftButton)
+                        v.addSubview(rightButton)
+
+                        let width = (v.width - 52) * 0.5
+
+                        leftButton.snp.makeConstraints { make in
+                            make.left.equalToSuperview().inset(16)
+                            make.height.equalTo(50)
+                            make.width.equalTo(width)
+                            make.centerY.equalToSuperview()
+                        }
+
+                        rightButton.snp.makeConstraints { make in
+                            make.right.equalToSuperview().inset(16)
+                            make.height.equalTo(50)
+                            make.width.equalTo(width)
+                            make.centerY.equalToSuperview()
+                        }
+
+                        return v
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
 
     func fetchMarketList() {
         HUD.showLoading()
@@ -104,11 +184,6 @@ class HomeViewModel: ObservableObject {
     }
 
     func generaShareUrl(for id: String, completion: @escaping (String?) -> Void) {
-        if shareUrl.count > 0 {
-            completion(shareUrl)
-            return
-        }
-
         HUD.showLoading()
         APIProvider.shared.request(.generaBrowserShareUrl(id: id), progress: { _ in }) { [weak self] result in
             HUD.hideNow()
@@ -137,6 +212,80 @@ class HomeViewModel: ObservableObject {
             }
         }
     }
+
+    /// 领取 活动 奖励
+    func getMarketReward(id: String) {
+        HUD.showLoading()
+        APIProvider.shared.request(.getMarketReward(id: id)) { [weak self] result in
+            HUD.hideNow()
+            guard let self else { return }
+            switch result {
+            case .success:
+                self.fetchMarketList()
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+
+    /// 查询用户信息
+    func visitorAccess(id: String, index: Int) {
+        APIProvider.shared.request(.visitorAccess(id: id), model: UserInfoModel.self) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .success(model):
+                if let headPortrait = model.headPortrait {
+                    DispatchQueue.main.async {
+                        if index < self.visitorImages.count {
+                            self.visitorImages[index] = headPortrait
+                        }
+                    }
+                }
+            case let .failure(error):
+                print("Request failed with error: \(error)")
+            }
+        }
+    }
+
+    func inviteStatus(for model: MarketModel) -> String {
+        let shareCount = model.template.details.shareUserCount
+        let invitedCount = model.doInfo?.hasShareUserIds.count ?? 0
+
+        if invitedCount == shareCount {
+            return model.hasGet ? "已领取" : "领取"
+        } else {
+            return "再邀请\(shareCount - invitedCount)人"
+        }
+    }
+
+    func shareAction() {
+        DispatchQueue.global().async { [weak self] in
+            guard let self else { return }
+
+            guard let shareURL = URL(string: shareUrl) else {
+                return
+            }
+
+            var activityItems: [Any]
+            if #available(iOS 17, *) {
+                activityItems = [shareURL as Any]
+            } else {
+                activityItems = [CustomShareItem(shareURL: shareURL, shareText: Util.appName(), shareImage: UIImage.icon ?? .init()) as Any]
+            }
+            DispatchQueue.main.async {
+                let vc = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+                vc.modalPresentationStyle = .fullScreen
+                if let popoverController = vc.popoverPresentationController {
+                    popoverController.sourceView = Util.topViewController().view
+                    popoverController.sourceRect = CGRect(x: Util.topViewController().view.bounds.midX, y: Util.topViewController().view.bounds.midY, width: 0, height: 0)
+                    popoverController.permittedArrowDirections = []
+                }
+                Util.topViewController().present(vc, animated: true, completion: nil)
+
+                vc.completionWithItemsHandler = { _, _, _, _ in }
+            }
+        }
+    }
 }
 
 class ResponseModel<T>: BaseModel {
@@ -145,10 +294,10 @@ class ResponseModel<T>: BaseModel {
 
 class MarketModel: BaseModel {
     var id: String = ""
-    var template: TemplateInfo?
+    var template = TemplateInfo()
     var name: String = ""
     /// 是否领取
-    var hasGet: Bool?
+    var hasGet: Bool = false
     /// 已经参与人数
     var hasJoinCount: Int = 0
     var startTime: Int64?
@@ -170,11 +319,17 @@ class MarketModel: BaseModel {
 }
 
 class TemplateInfo: BaseModel {
-    var template: TemplateDetails?
+    var details = TemplateDetails()
     // 限时时常/h
     var limitTime: Float?
     var rightsType: Int?
     var limitType: Int?
+
+    override func mapping(mapper: HelpingMapper) {
+        super.mapping(mapper: mapper)
+
+        mapper.specify(property: &details, name: "template")
+    }
 }
 
 class TemplateDetails: BaseModel {
@@ -186,7 +341,5 @@ class TemplateDetails: BaseModel {
 
 class DoInfo: BaseModel {
     // 已分享用户ID
-    var hasShareUserIds: [String]?
-    // 限时到期日期
-    var expireTime: String?
+    var hasShareUserIds: [String] = []
 }

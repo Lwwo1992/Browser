@@ -30,7 +30,6 @@ struct SecurityView: View {
     }
 
     @ObservedObject var viewModel = LoginManager.shared
-    @State private var selectedImage: UIImage?
     @State private var isShowingActionSheet = false
     @State private var showingAlert = false
     private let imagePickerManager = ImagePicker()
@@ -94,29 +93,19 @@ struct SecurityView: View {
     }
 
     private var avatarView: some View {
-        Group {
-            if let selectedImage = selectedImage {
-                Image(uiImage: selectedImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-            } else {
-                WebImage(url: URL(string: viewModel.info.headPortrait)) { Image in
-                    Image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                } placeholder: {
-                    Image(systemName: "person.crop.circle.fill")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                        .foregroundColor(.gray)
-                }
-            }
+        WebImage(url: URL(string: viewModel.info.headPortrait)) { Image in
+            Image
+                .resizable()
+                .scaledToFill()
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+        } placeholder: {
+            Image(systemName: "person.crop.circle.fill")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+                .foregroundColor(.gray)
         }
     }
 
@@ -128,7 +117,7 @@ struct SecurityView: View {
         case .nickname:
             Util.topViewController().navigationController?.pushViewController(ChangeNicknameViewController(), animated: true)
         case .phoneNumber:
-            if LoginManager.shared.info.mobile.isEmpty {
+            if viewModel.info.mobile.isEmpty {
                 let vc = ReplaceBindingViewController()
                 vc.acctype = .mobile
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
@@ -138,7 +127,7 @@ struct SecurityView: View {
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }
         case .email:
-            if LoginManager.shared.info.mailbox.isEmpty {
+            if viewModel.info.mailbox.isEmpty {
                 let vc = ReplaceBindingViewController()
                 vc.acctype = .mailbox
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
@@ -199,7 +188,7 @@ struct SecurityView: View {
                                                       ],
                                                       with: model)
 
-                        LoginManager.shared.info = model
+                        viewModel.info = model
 
                         Util.topViewController().navigationController?.popToRootViewController(animated: true)
 
@@ -213,22 +202,61 @@ struct SecurityView: View {
 
             case let .failure(error):
                 print("请求失败: \(error)")
+                HUD.showTipMessage(error.localizedDescription)
             }
         }
     }
 
     private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
-        imagePickerManager.pickImage(sourceType: sourceType, from: Util.topViewController()) { image, urlstring in
-            if let image = image {
-                selectedImage = image
-                // 这里可以添加额外的处理，例如上传头像
-                UpdateImageInfo(urlStr: urlstring ?? "")
+        imagePickerManager.pickImage(sourceType: sourceType, from: Util.topViewController()) { image, _ in
+            guard let selectedImage = image else {
+                print("No image selected")
+                return
+            }
+
+            // 调用保存图片方法并生成本地 URL
+            if let localURL = saveImageToLocalDirectory(image: selectedImage) {
+                // 使用生成的 URL 调用 UpdateImageInfo
+                UpdateImageInfo(urlStr: localURL.path)
+            } else {
+                print("Failed to save image")
             }
         }
     }
 
+    /// 将 UIImage 保存到本地目录并返回文件路径
+    func saveImageToLocalDirectory(image: UIImage) -> URL? {
+        // 获取图片的 JPEG 数据
+        guard let imageData = image.jpegData(compressionQuality: 1.0) else {
+            print("Failed to convert image to JPEG")
+            return nil
+        }
+
+        // 获取本地临时目录 URL
+        let tempDirectory = FileManager.default.temporaryDirectory
+
+        // 创建文件名，使用当前时间戳作为唯一标识
+        let fileName = "image_\(Int(Date().timeIntervalSince1970)).jpg"
+
+        // 构建完整文件路径
+        let fileURL = tempDirectory.appendingPathComponent(fileName)
+
+        do {
+            // 将图片数据写入文件
+            try imageData.write(to: fileURL)
+            print("Image saved at: \(fileURL.absoluteString)")
+            return fileURL
+        } catch {
+            print("Error saving image: \(error)")
+            return nil
+        }
+    }
+
     private func UpdateImageInfo(urlStr: String) {
+        HUD.showLoading()
         APIProvider.shared.request(.uploadConfig, model: UpdateHeadInfo.self) { result in
+            HUD.hideNow()
+
             switch result {
             case let .success(response):
 
@@ -237,11 +265,11 @@ struct SecurityView: View {
 
                 let s3Client = S3ClientUtils(accessKey: m.accessKey, secretKey: m.secretKey, token: m.token, endpoint: m.endpoint)
 
+                HUD.showLoading()
                 s3Client.uploadImageToS3(filePath: urlStr, model: m) { imgUrl, _ in
-
+                    HUD.hideNow()
                     if let imgUrl, !imgUrl.isEmpty {
-                        LoginManager.shared.info.headPortrait = imgUrl
-
+                        viewModel.info.headPortrait = imgUrl
                         updateUserInfo(imgUrl: imgUrl)
                     }
                 }
@@ -269,7 +297,7 @@ struct SecurityView: View {
 
     private func updateUserInfo(imgUrl: String) {
         HUD.showLoading()
-        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "", id: LoginManager.shared.info.id)) {
+        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "", id: viewModel.info.id)) {
             result in
             HUD.hideNow()
             switch result {
@@ -285,7 +313,7 @@ struct SecurityView: View {
                                               with: model
                 )
 
-                LoginManager.shared.fetchUserInfo()
+                viewModel.fetchUserInfo()
 
                 if let navigationController = Util.topViewController().navigationController {
                     if let securityVC = navigationController.viewControllers.first(where: { $0 is SecurityViewController }) {

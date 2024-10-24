@@ -92,23 +92,45 @@ extension Util {
         }
     }
 
-    /// 验证密码正确性
-    static func isPasswordValid(_ password: String) -> Bool {
-        // 确保密码长度大于6位
-        if password.count <= 6 {
-            HUD.showTipMessage("密码必须大于6位")
+    static func isValidPassword(_ password: String) -> Bool {
+        // 检测密码长度是否在 8 到 16 位之间
+        if password.count < 8 || password.count > 16 {
+            HUD.showTipMessage("密码必须是 8 到 16 位")
             return false
         }
 
-        // 只能包含英文字母和数字
-        let allowedCharacters = CharacterSet.alphanumerics
+        // 纯数字检测正则
+        let pureNumberRegex = "^[0-9]{8,16}$"
 
-        // 遍历密码，检查是否每个字符都在 allowedCharacters 中
-        for char in password.unicodeScalars {
-            if !allowedCharacters.contains(char) {
-                HUD.showTipMessage("密码不能包含特殊字符或中文")
-                return false
-            }
+        // 判断是否为纯数字
+        let isPureNumber = NSPredicate(format: "SELF MATCHES %@", pureNumberRegex).evaluate(with: password)
+        if isPureNumber {
+            HUD.showTipMessage("密码不能是纯数字")
+            return false
+        }
+
+        // 检查是否包含字母
+        let containsLetterRegex = ".*[A-Za-z]+.*"
+        let containsLetter = NSPredicate(format: "SELF MATCHES %@", containsLetterRegex).evaluate(with: password)
+        if !containsLetter {
+            HUD.showTipMessage("密码必须包含字母")
+            return false
+        }
+
+        // 检查是否包含数字
+        let containsNumberRegex = ".*\\d+.*"
+        let containsNumber = NSPredicate(format: "SELF MATCHES %@", containsNumberRegex).evaluate(with: password)
+        if !containsNumber {
+            HUD.showTipMessage("密码必须包含数字")
+            return false
+        }
+
+        // 检查是否包含特殊字符
+        let containsSpecialCharRegex = ".*[!@#$%^&*]+.*"
+        let containsSpecialChar = NSPredicate(format: "SELF MATCHES %@", containsSpecialCharRegex).evaluate(with: password)
+        if !containsSpecialChar {
+            HUD.showTipMessage("密码必须包含特殊字符")
+            return false
         }
 
         return true
@@ -146,5 +168,25 @@ extension Util {
             return nil
         }
         return UIImage(ciImage: ciImage)
+    }
+
+    static func formatTime(_ timeInterval: TimeInterval) -> String {
+        let days = Int(timeInterval) / 86400
+        let hours = (Int(timeInterval) % 86400) / 3600
+        let minutes = (Int(timeInterval) % 3600) / 60
+        let seconds = Int(timeInterval) % 60
+
+        if days > 0 {
+            return String(format: "%02d天 %02d:%02d:%02d", days, hours, minutes, seconds)
+        } else if hours > 0 {
+            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            return String(format: "%02d:%02d", minutes, seconds)
+        }
+    }
+
+    static func formatSeconds(_ timeInterval: TimeInterval) -> String {
+        let seconds = Int(timeInterval) % 60
+        return String(format: "%02d", seconds)
     }
 }

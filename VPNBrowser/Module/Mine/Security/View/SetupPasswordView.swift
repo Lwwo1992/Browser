@@ -41,12 +41,12 @@ struct SetupPasswordView: View {
             return
         }
 
-        if !Util.isPasswordValid(newPassword) {
+        if !Util.isValidPassword(newPassword) {
             return
         }
-
+        
         HUD.showLoading()
-        APIProvider.shared.request(.forgetPassword(password: newPassword)) { result in
+        APIProvider.shared.request(.forgetPassword(password: EncryptUtil.encrypt(newPassword))) { result in
             HUD.hideNow()
             switch result {
             case .success:

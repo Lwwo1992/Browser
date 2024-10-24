@@ -35,13 +35,15 @@ struct MineTopView: View {
                     Text(viewModel.info.name ?? "立即登录")
                         .font(.system(size: 18))
                         .font(.system(size: 18))
-                    Text("已经陪伴你\(viewModel.info.createTime.daysFromNow)天")
+                    Text("\(Util.appName())已经陪伴你\(viewModel.info.createTime.daysFromNow)天")
                         .font(.system(size: 12))
                         .foregroundColor(.gray)
                 }
                 .onTapGesture {
                     if LoginManager.shared.info.userType == .visitor {
                         Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                    } else {
+                        Util.topViewController().navigationController?.pushViewController(SecurityViewController(), animated: true)
                     }
                 }
 
