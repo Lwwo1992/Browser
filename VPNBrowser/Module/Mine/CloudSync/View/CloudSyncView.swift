@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CloudSyncView: View {
     @State private var isOn = false
-    
+
     @ObservedObject var viewModel = HistoryViewModel()
 
     var body: some View {
@@ -22,7 +22,7 @@ struct CloudSyncView: View {
                 VStack(alignment: .leading, spacing: 5) {
                     Text("收藏云同步")
                         .font(.system(size: 16))
-                    Text("刚刚同步")
+                    Text(S.Config.lastSyncTimeAgo())
                         .font(.system(size: 12))
                         .foregroundColor(.gray)
                 }
@@ -36,6 +36,9 @@ struct CloudSyncView: View {
             .padding(.horizontal, 16)
             .background(Color.gray.opacity(0.1))
             .cornerRadius(10)
+            .onTapGesture {
+                Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 0), animated: true)
+            }
 
 //            HStack {
 //                Image(systemName: "cursorarrow.click.badge.clock")
@@ -63,6 +66,7 @@ struct CloudSyncView: View {
             Spacer()
 
             Button {
+                S.Config.lastSyncTime = Date()
                 viewModel.syncBookmark()
             } label: {
                 Text("一键同步")

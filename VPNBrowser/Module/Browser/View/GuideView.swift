@@ -12,7 +12,7 @@ struct GuideView: View {
     @ObservedObject var viewModel = GuideViewModel()
 
     // 每排间隔
-    let itemSpacing: CGFloat = 16
+    let itemSpacing: CGFloat = 30
     // 最多展示两排
     let maxVisibleRows = 2
     // 每排展示个数
@@ -22,7 +22,7 @@ struct GuideView: View {
 
     // 动态列数
     var columns: [GridItem] {
-        let totalWidth = UIScreen.main.bounds.width - 32
+        let totalWidth = UIScreen.main.bounds.width - 32 - CGFloat(maxAppNum) * 10
         let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
         return Array(repeating: GridItem(.flexible(minimum: itemWidth), spacing: itemSpacing), count: maxAppNum)
     }
@@ -35,13 +35,13 @@ struct GuideView: View {
                         if let rows = section.data, !rows.isEmpty {
                             VStack(alignment: .leading) {
                                 HStack {
-//                                    WebImage(url: Util.getCompleteImageUrl(from: section.icon)) { image in
-//                                        image
-//                                            .resizable()
-//                                            .scaledToFill()
-//                                            .frame(width: 20, height: 20)
-//                                            .cornerRadius(5)
-//                                    } placeholder: {}
+                                    WebImage(url: Util.getCompleteImageUrl(from: section.appIcon)) { image in
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 20, height: 20)
+                                            .cornerRadius(5)
+                                    } placeholder: {}
                                     Text(section.name ?? "")
                                         .font(.headline)
                                         .padding(.leading, 16)
@@ -82,13 +82,13 @@ struct GuideView: View {
                 image
                     .resizable()
                     .scaledToFill()
-                    .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
+                    .frame(width: itemWidth, height: itemWidth)
                     .cornerRadius(5)
             } placeholder: {
                 Rectangle()
                     .fill(Color.gray.opacity(0.2))
                     .cornerRadius(2)
-                    .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
+                    .frame(width: itemWidth, height: itemWidth)
             }
 
             Text(row.name ?? "")
@@ -97,6 +97,10 @@ struct GuideView: View {
                 .lineLimit(1)
                 .truncationMode(.tail)
         }
+        .padding(.vertical, 5)
+        .padding(.horizontal, 8)
+        .background(Color.white)
+        .cornerRadius(8)
         .onTapGesture {
             Util.guideItemTap(row)
         }
@@ -116,14 +120,19 @@ struct GuideView: View {
                 Image(.more)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
+                    .frame(width: itemWidth, height: itemWidth)
                     .cornerRadius(5)
 
                 Text("更多应用")
                     .font(.system(size: 14))
+                    .lineLimit(1)
                     .foregroundColor(.black)
                     .opacity(0.5)
             }
+            .padding(.vertical, 5)
+            .padding(.horizontal, 8)
+            .background(Color.white)
+            .cornerRadius(8)
         }
     }
 }

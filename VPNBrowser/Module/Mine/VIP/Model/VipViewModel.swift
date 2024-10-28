@@ -25,7 +25,31 @@ class VipViewModel: ObservableObject {
             switch result {
             case let .success(response):
                 if let record = response.record {
-                    self.vipCards = record
+                    let vipCards = record.filter { model in
+
+                        let currentUserType = LoginManager.shared.info.userType
+
+                        let userType = model.userType
+
+                        // 如果 userType 是 [1]，且当前用户不是 visitor，则不展示
+                        if userType == [1] && currentUserType != .visitor {
+                            return false
+                        }
+
+                        if userType == [3] && currentUserType == .vipUser && !LoginManager.shared.info.token.isEmpty {
+                            return true
+                        }
+
+                        // 如果 userType 是 [2]，则 visitor 用户能展示，需要跳转到登录
+                        if userType == [2] && (currentUserType == .visitor || LoginManager.shared.info.token.isEmpty) {
+                            // 跳转到登录页面
+                            return true
+                        }
+
+                        // 如果 userType 包含 1 或者 2 都可以展示
+                        return userType.contains(currentUserType.rawValue + 1)
+                    }
+                    self.vipCards = vipCards
                     if let firstItem = self.vipCards.first {
                         selectedItem = firstItem
                     }
@@ -37,7 +61,7 @@ class VipViewModel: ObservableObject {
     }
 
     func pay() {
-        if LoginManager.shared.info.userType == .visitor {
+        if !selectedItem.userType.contains(1) && LoginManager.shared.info.token.isEmpty {
             Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
         } else {
             HUD.showLoading()
@@ -46,6 +70,7 @@ class VipViewModel: ObservableObject {
                 switch result {
                 case .success:
                     HUD.showTipMessage("购买成功")
+
                     LoginManager.shared.fetchUserInfo()
                 case let .failure(error):
                     print("Request failed with error: \(error)")

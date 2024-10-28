@@ -21,6 +21,7 @@ class LoginModel: BaseModel, TableCodable {
     var mobile = ""
     var mailbox = ""
     var userHead = ""
+    var createTime = ""
     var id = ""
     private var userTypeV: Int = 0
     var userType: UserType {
@@ -35,16 +36,18 @@ class LoginModel: BaseModel, TableCodable {
     /// 查询用户信息
     var bookmarkNum = ""
     var createBy = ""
-    var createTime = ""
     var deviceId = ""
     var gender = ""
     var headPortrait = ""
     var name: String?
-    var state = ""
-    var updateBy = ""
-    var updateTime = ""
-    var vipCardVO: [vipCardVOModel] = []
-    var visitor = ""
+    /// vip购买信息
+    var vipCardVO: [vipCardVOModel]?
+    /// 是否为游客
+    var visitor: Bool = true
+    /// 是否 已经 购买 会员
+    var isVIP: Bool {
+        return vipCardVO?.isEmpty == false
+    }
 
     enum CodingKeys: String, CodingTableKey {
         typealias Root = LoginModel
@@ -62,9 +65,6 @@ class LoginModel: BaseModel, TableCodable {
         case gender
         case headPortrait
         case name
-        case state
-        case updateBy
-        case updateTime
         case visitor
         case userTypeV
         case id
@@ -98,27 +98,21 @@ class vipCardVOModel: BaseModel {
     var discountStartTime = ""
     var discountType = ""
     var name = ""
-    var state = ""
-    var updateBy = ""
-    var updateTime = ""
     var userType = ""
     var validEndTime = ""
     var validStartTime = ""
-    var validType = ""
+    var validType = 0
     var vipExpireTime: TimeInterval?
     var vipRights: vipRightsModel = vipRightsModel() /// 会员卡权益
 }
 
 class vipRightsModel: BaseModel {
     var createBy = ""
-    var createTime = ""
     var des = ""
     var icon = ""
     var name = ""
     var rightsType = ""
     var state = ""
     var template = ""
-    var updateBy = ""
-    var updateTime = ""
     var vipCards = ""
 }

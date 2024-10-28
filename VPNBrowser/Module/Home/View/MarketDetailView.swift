@@ -60,25 +60,56 @@ struct MarketDetailView: View {
             }
             .padding(.top, 20)
 
-            HStack(spacing: 10) {
-                ForEach(0 ..< viewModel.visitorImages.count, id: \.self) { index in
-                    WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                    } placeholder: {
-                        Image("convite")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
+            VStack {
+                LazyVGrid(
+                    columns: Array(
+                        repeating: GridItem(.fixed(30), spacing: 10),
+                        count: viewModel.visitorImages.count < 5 ? viewModel.visitorImages.count : 5
+                    ),
+                    alignment: .center,
+                    spacing: 10
+                ) {
+                    ForEach(0 ..< (viewModel.showAllImages ? viewModel.visitorImages.count : min(viewModel.visitorImages.count, 10)), id: \.self) { index in
+                        WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                        } placeholder: {
+                            Image("convite")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                                .onTapGesture {
+                                    if model.userType == [2] && (LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty) {
+                                        Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                                    } else {
+                                        viewModel.marketModel = model
+                                        viewModel.showShareBottomSheet.toggle()
+                                    }
+                                }
+                        }
+                    }
+                }
+
+                if viewModel.visitorImages.count > 10 {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            viewModel.showAllImages.toggle()
+                        }) {
+                            Text(viewModel.showAllImages ? "收起" : "更多")
+                                .font(.system(size: 14))
+                                .foregroundColor(.black)
+                        }
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 10)
                     }
                 }
             }
-            .padding(.top, 30)
-            .padding(.bottom, 20)
+            .padding(.top, 20)
         }
-        .padding(.top, 10)
+        .padding(.top, 20)
         .onAppear {
             let shareUserCount = model.template.details.shareUserCount
             viewModel.visitorImages = Array(repeating: "convite", count: shareUserCount)
@@ -96,24 +127,34 @@ struct MarketDetailView: View {
         HStack(spacing: 20) {
             Group {
                 Button {
-                    viewModel.generaShareUrl(for: model.id) { url in
-                        if let url, let image = Util.createQRCodeImage(content: url) {
-                            Util.topViewController().popup.dialog {
-                                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
-                                imageView.image = image
-                                return imageView
+                    if model.userType == [2] && (LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty) {
+                        Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                    } else {
+                        viewModel.generaShareUrl(for: model.id) { url in
+                            if let url, let image = Util.createQRCodeImage(content: url) {
+                                Util.topViewController().popup.dialog {
+                                    let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+                                    imageView.image = image
+                                    return imageView
+                                }
                             }
                         }
                     }
+
                 } label: {
                     Text("扫码分享")
                         .frame(maxWidth: .infinity)
                 }
 
                 Button {
-                    viewModel.generaShareUrl(for: model.id) { _ in
-                        viewModel.shareAction()
+                    if model.userType == [2] && (LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty) {
+                        Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                    } else {
+                        viewModel.generaShareUrl(for: model.id) { _ in
+                            viewModel.shareAction()
+                        }
                     }
+
                 } label: {
                     Text("分享链接")
                         .frame(maxWidth: .infinity)

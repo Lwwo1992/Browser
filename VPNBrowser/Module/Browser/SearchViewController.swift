@@ -13,6 +13,8 @@ class RecordStore: ObservableObject {
     @Published var records: [RecordModel] = []
 
     @Published var content: String = ""
+    
+    @Published var selectedEngine = RecordModel()
 }
 
 class SearchViewController: ViewController {
@@ -25,6 +27,8 @@ class SearchViewController: ViewController {
             guard let record = selectedRecord else {
                 return
             }
+            
+            recordStore.selectedEngine = record
 
             let imageUrl = Util.getCompleteImageUrl(from: record.logo)
             (selctedButton.subviews.first as? UIImageView)?.setImage(with: imageUrl)
@@ -41,6 +45,7 @@ class SearchViewController: ViewController {
     private lazy var textField = TextField().then {
         $0.placeholder = "搜索"
         $0.font = .systemFont(ofSize: 14)
+        $0.clearButtonMode = .whileEditing
     }
 
     private lazy var selctedButton = UIView().then { view in
@@ -83,7 +88,7 @@ class SearchViewController: ViewController {
     }()
 
     private lazy var searchBarView = UIView().then { view in
-        view.layer.cornerRadius = 5
+        view.layer.cornerRadius = 17
         view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -92,7 +97,7 @@ class SearchViewController: ViewController {
         }
 
         selctedButton.frame = CGRect(x: 0, y: 0, width: 40, height: 35)
-        textField.frame = CGRect(x: selctedButton.right, y: 0, width: Util.deviceWidth - 120, height: 35)
+        textField.frame = CGRect(x: selctedButton.right, y: 0, width: Util.deviceWidth - 160, height: 35)
     }
 
     private lazy var goToButton = Button().then {
@@ -197,6 +202,10 @@ extension SearchViewController {
     }
 
     private func saveInfo(_ title: String) {
+        if S.Config.openNoTrace {
+            return
+        }
+
         let model = HistoryModel()
         model.title = title
 

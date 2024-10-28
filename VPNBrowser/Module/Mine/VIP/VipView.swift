@@ -25,7 +25,7 @@ struct VipView: View {
 
     @ViewBuilder
     private func topView() -> some View {
-        HStack {
+        HStack(alignment: .top) {
             WebImage(url: URL(string: viewModel.userInfo.headPortrait)) { image in
                 image
                     .resizable()
@@ -38,11 +38,28 @@ struct VipView: View {
             }
 
             VStack(alignment: .leading, spacing: 5) {
-                Text(viewModel.userInfo.name ?? "游客")
-                    .font(.system(size: 16))
+                HStack {
+                    Text(viewModel.userInfo.name ?? "游客")
+                        .font(.system(size: 16))
+                    Group {
+                        if let vipCardVO = viewModel.userInfo.vipCardVO, let model = vipCardVO.first {
+                            Text(model.name)
+                                .font(.system(size: 12))
+                                .padding(.horizontal, 4)
+                                .padding(.vertical, 2)
+                                .background(Color.yellow)
+                                .cornerRadius(6)
+                        }
+                    }
+                }
+
                 Group {
-                    if let model = viewModel.userInfo.vipCardVO.first, let vipExpireTime = model.vipExpireTime {
-                        Text("\(vipExpireTime.formatted)")
+                    if let vipCardVO = viewModel.userInfo.vipCardVO, !vipCardVO.isEmpty {
+                        ForEach(vipCardVO) { model in
+                            if let vipExpireTime = model.vipExpireTime {
+                                Text("\(model.name): \(model.validType == 2 ? "永久会员" : vipExpireTime.formatted)")
+                            }
+                        }
                     } else {
                         Text("开通会员,畅想VPN")
                     }
@@ -50,11 +67,10 @@ struct VipView: View {
                 .font(.system(size: 12))
                 .opacity(0.5)
             }
-
-            Spacer()
         }
         .padding(.horizontal, 10)
-        .frame(height: 80)
+        .padding(.vertical, 15)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.gray.opacity(0.2))
         .cornerRadius(10)
     }
@@ -86,7 +102,7 @@ struct VipView: View {
                                 }
                             }
                             .foregroundColor(Color(hex: 0xDFB348))
-                            Text("有效期\(model.day)天")
+                            Text(model.validType == 2 ? "永久会员" : "有效期\(model.day)天")
                                 .font(.system(size: 12))
                                 .opacity(0.5)
                         }

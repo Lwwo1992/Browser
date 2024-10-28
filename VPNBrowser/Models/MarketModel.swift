@@ -11,13 +11,16 @@ import UIKit
 
 class HomeViewModel: ObservableObject {
     @Published var marketModel = MarketModel()
+
     @Published var marketData: [MarketModel] = []
     /// 分享的地址
     @Published var shareUrl: String = ""
-
+    /// 邀请人员头像
     @Published var visitorImages: [String] = []
-
+    /// 是否展示底部弹框
     @Published var showShareBottomSheet = false
+    /// 显示更多邀请
+    @Published var showAllImages = false
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -115,23 +118,12 @@ class HomeViewModel: ObservableObject {
 
                             let filteredData = marketData.filter { model in
 
-                                let currentUserType = LoginManager.shared.info.userType
-
-                                let userType = model.userType
-
                                 // 如果 userType 是 [1]，且当前用户不是 visitor，则不展示
-                                if userType == [1] && currentUserType != .visitor {
+                                if model.userType == [1] && !LoginManager.shared.info.visitor {
                                     return false
                                 }
 
-                                // 如果 userType 是 [2]，则 visitor 用户能展示，需要跳转到登录
-                                if userType == [2] && currentUserType == .visitor {
-                                    // 跳转到登录页面
-                                    return true
-                                }
-
-                                // 如果 userType 包含 1 或者 2 都可以展示
-                                return userType.contains(currentUserType.rawValue + 1)
+                                return true
                             }
 
                             if let firstModel = filteredData.first {
@@ -196,7 +188,9 @@ class HomeViewModel: ObservableObject {
                         self.shareUrl = shareUrl
                         completion(shareUrl) // 回调返回 shareUrl
                     } else {
-                        HUD.showTipMessage("未能解析 'data' 字段")
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            HUD.showTipMessage("返回数据为空,未能解析")
+                        }
                         print("未能解析 'data' 字段")
                         completion(nil) // 如果解析失败，回调返回 nil
                     }

@@ -30,7 +30,7 @@ class VipTemplate: BaseModel {
 class VipModel: BaseModel {
     var id: String = ""
     /// 有效期会员卡: 1-限时 2-永久
-    var validType: Int?
+    var validType: Int = 0
     /// 原价
     var originalPrice: String = ""
     /// 有效开始时间
@@ -52,7 +52,7 @@ class VipModel: BaseModel {
     /// 折扣类型: 1-不限时折扣 2-限时折扣
     var discountType: Int?
     /// 参加用户 1-游客 2-注册用户 3-vip用户
-    var userType: [Int]?
+    var userType: [Int] = []
     /// 活动时间有效类型: 1-不限时 2-限时(自定义)
     var activityType: Int?
     /// 会员卡天数
@@ -75,7 +75,7 @@ class VipModel: BaseModel {
 
     /// 判断是否有折扣
     var isDiscounted: Bool {
-        let currentTime = Date().timeIntervalSince1970 * 1000 
+        let currentTime = Date().timeIntervalSince1970 * 1000
 
         return discountStartTime != nil && discountEndTime != nil &&
             currentTime >= discountStartTime! && currentTime <= discountEndTime!

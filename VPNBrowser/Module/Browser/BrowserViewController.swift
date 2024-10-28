@@ -29,6 +29,8 @@ class BrowserViewController: ViewController {
                 make.top.equalTo(self.view.safeAreaTop)
             }
             browserHostingController.didMove(toParent: self)
+
+            LoginManager.shared.fetchUserInfo()
         }
     }
 
@@ -49,8 +51,7 @@ extension BrowserViewController {
     }
 
     private func config(completion: (() -> Void)? = nil) {
-        if LoginManager.shared.info.userType == .user {
-            LoginManager.shared.fetchUserInfo()
+        if LoginManager.shared.info.userType != .visitor && !LoginManager.shared.info.token.isEmpty {
             fetchConfigByType {
                 self.fetchAnonymousConfig {
                     completion?()

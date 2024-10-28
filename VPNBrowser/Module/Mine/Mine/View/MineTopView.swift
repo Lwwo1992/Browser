@@ -32,24 +32,27 @@ struct MineTopView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(viewModel.info.name ?? "立即登录")
+                    Text(viewModel.info.name ?? "游客")
                         .font(.system(size: 18))
                         .font(.system(size: 18))
-                    Text("\(Util.appName())已经陪伴你\(viewModel.info.createTime.daysFromNow)天")
+                    Text((LoginManager.shared.info.userType != .visitor && !LoginManager.shared.info.token.isEmpty) ? "\(Util.appName())已经陪伴你\(viewModel.info.createTime.daysFromNow)天" : "登录后书签、收藏自动同步,便捷安全")
                         .font(.system(size: 12))
                         .foregroundColor(.gray)
                 }
                 .onTapGesture {
-                    if LoginManager.shared.info.userType == .visitor {
-                        Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
-                    } else {
+                    if LoginManager.shared.info.userType != .visitor && !LoginManager.shared.info.token.isEmpty {
                         Util.topViewController().navigationController?.pushViewController(SecurityViewController(), animated: true)
+                    } else {
+                        Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
                     }
                 }
 
                 Spacer()
 
                 Button {
+                    if let tabBarController = Util.topViewController().tabBarController {
+                        tabBarController.selectedIndex = 0
+                    }
                 } label: {
                     Text("福利中心")
                         .font(.system(size: 12))
@@ -98,6 +101,9 @@ struct MineTopView: View {
                                    let price = jsonObject["data"] as? String {
                                     self.lowPrice = price
                                 } else {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        HUD.showTipMessage("返回数据为空,未能解析")
+                                    }
                                     print("未能解析 'data' 字段")
                                 }
                             } catch {
@@ -179,7 +185,6 @@ struct MineTopView: View {
             .padding(.horizontal, 24)
             .background(Color.white)
             .cornerRadius(10)
-            .padding(.top, 20)
         }
     }
 }

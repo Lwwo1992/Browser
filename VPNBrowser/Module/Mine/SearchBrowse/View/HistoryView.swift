@@ -10,6 +10,8 @@ import SwiftUI
 
 struct HistoryView: View {
     @EnvironmentObject var viewModel: HistoryViewModel
+    @State private var showingDeleteAlert = false
+    @State private var selctedModel = HistoryModel()
 
     var body: some View {
         Group {
@@ -23,12 +25,22 @@ struct HistoryView: View {
                     .font(.system(size: 16))
             }
         }
-        .alert(isPresented: $viewModel.showingDeleteAlert) {
+        .alert(isPresented: $viewModel.showingAllDeleteAlert) {
             Alert(
                 title: Text("删除记录"),
-                message: Text("您确定要删除所有记录吗？"),
+                message: Text("您确定要删除选择的记录吗？"),
                 primaryButton: .destructive(Text("删除")) {
                     viewModel.deleteRecords()
+                },
+                secondaryButton: .cancel()
+            )
+        }
+        .alert(isPresented: $showingDeleteAlert) {
+            Alert(
+                title: Text("删除记录"),
+                message: Text("您确定要删除此记录吗？"),
+                primaryButton: .destructive(Text("删除")) {
+                    viewModel.deleteRecord(selctedModel)
                 },
                 secondaryButton: .cancel()
             )
@@ -53,19 +65,15 @@ struct HistoryView: View {
                         .background(Color.gray.opacity(0.2))
 
                     ForEach(groupedHistory[date]!, id: \.self) { model in
-                        HistoryItemView(model: model)
+                        historyItemView(for: model)
                     }
                 }
             }
         }
     }
-}
 
-struct HistoryItemView: View {
-    @ObservedObject var model: HistoryModel
-    @EnvironmentObject var viewModel: HistoryViewModel
-
-    var body: some View {
+    @ViewBuilder
+    private func historyItemView(for model: HistoryModel) -> some View {
         VStack {
             HStack(spacing: 10) {
                 if viewModel.isEdit {
@@ -108,10 +116,14 @@ struct HistoryItemView: View {
         }
         .padding(.horizontal, 16)
         .background(Color(hex: 0xF8F5F5))
-            .onTapGesture {
-                let vc = BrowserWebViewController()
-                vc.path = model.address ?? ""
-                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
-            }
+        .onTapGesture {
+            let vc = BrowserWebViewController()
+            vc.path = model.address ?? ""
+            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+        }
+        .onLongPressGesture {
+            selctedModel = model
+            showingDeleteAlert = true
+        }
     }
 }

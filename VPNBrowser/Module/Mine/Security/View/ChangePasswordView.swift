@@ -114,11 +114,6 @@ struct ChangePasswordView: View {
     }
 
     private func sendSmsode() {
-        if !Util.isValidPassword(newPassword) {
-            HUD.showInfoMsg("密码不合法")
-            return
-        }
-
         HUD.showLoading()
         APIProvider.shared.request(.sendSmsCode(mobile: LoginManager.shared.info.mobile, nation: "+86")) { result in
             HUD.hideNow()

@@ -81,5 +81,24 @@ struct S {
                 UserDefaults.standard.set(newValue, forKey: Keys.lastSyncTime)
             }
         }
+
+        static func lastSyncTimeAgo() -> String {
+            guard let lastSyncTime = lastSyncTime else {
+                return ""
+            }
+            let interval = Date().timeIntervalSince(lastSyncTime)
+
+            if interval < 60 {
+                return interval < 5 ? "刚刚" : "\(Int(interval))秒前"
+            } else if interval < 3600 {
+                return "\(Int(interval / 60))分钟前"
+            } else if interval < 86400 {
+                return "\(Int(interval / 3600))小时前"
+            } else if interval < 2592000 {
+                return "\(Int(interval / 86400))天前"
+            } else {
+                return "\(Int(interval / 2592000))个月前"
+            }
+        }
     }
 }

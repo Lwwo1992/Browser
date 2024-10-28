@@ -20,6 +20,7 @@ struct HomeView: View {
         .onAppear {
             viewModel.fetchMarketList()
         }
+        .padding(.top, Util.safeAreaInsets.top + 44)
     }
 
     @ViewBuilder
@@ -54,21 +55,49 @@ struct HomeView: View {
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         }
 
-        HStack(spacing: 10) {
-            ForEach(0 ..< viewModel.visitorImages.count, id: \.self) { index in
-                WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                } placeholder: {
-                    Image("convite")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .onTapGesture {
-                            viewModel.showShareBottomSheet.toggle()
-                        }
+        VStack {
+            LazyVGrid(
+                columns: Array(
+                    repeating: GridItem(.fixed(30), spacing: 10),
+                    count: viewModel.visitorImages.count < 5 ? viewModel.visitorImages.count : 5
+                ),
+                alignment: .center,
+                spacing: 10
+            ) {
+                ForEach(0 ..< (viewModel.showAllImages ? viewModel.visitorImages.count : min(viewModel.visitorImages.count, 10)), id: \.self) { index in
+                    WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                    } placeholder: {
+                        Image("convite")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                            .onTapGesture {
+                                if viewModel.marketModel.userType == [2] && (LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty) {
+                                    Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                                } else {
+                                    viewModel.showShareBottomSheet.toggle()
+                                }
+                            }
+                    }
+                }
+            }
+
+            if viewModel.visitorImages.count > 10 {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        viewModel.showAllImages.toggle()
+                    }) {
+                        Text(viewModel.showAllImages ? "收起" : "更多")
+                            .font(.system(size: 14))
+                            .foregroundColor(.black)
+                    }
+                    .padding(.trailing, 20)
+                    .padding(.bottom, 10)
                 }
             }
         }
@@ -103,18 +132,14 @@ struct HomeView: View {
                         Spacer()
 
                         Button {
-                            if model.userType == [2] && LoginManager.shared.info.userType == .visitor {
-                                Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+                            if let doInfo = model.doInfo, doInfo.hasShareUserIds.count ==
+                                model.template.details.shareUserCount, !model.hasGet {
+                                viewModel.getMarketReward(id: model.id)
                             } else {
-                                if let doInfo = model.doInfo, doInfo.hasShareUserIds.count ==
-                                    model.template.details.shareUserCount, !model.hasGet {
-                                    viewModel.getMarketReward(id: model.id)
-                                } else {
-                                    let vc = MarketDetailViewController()
-                                    vc.title = model.name
-                                    vc.model = model
-                                    Util.topViewController().navigationController?.pushViewController(vc, animated: true)
-                                }
+                                let vc = MarketDetailViewController()
+                                vc.title = model.name
+                                vc.model = model
+                                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
                             }
                         } label: {
                             Text(viewModel.inviteStatus(for: model))

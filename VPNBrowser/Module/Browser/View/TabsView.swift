@@ -12,6 +12,7 @@ import WebKit
 
 struct TabsView: View {
     var bookmarkModel = HistoryModel()
+    var onBookmarkAdded: ((HistoryModel) -> Void)?
 
     @State private var bookmarkes: [HistoryModel] = []
     @State private var showingDeleteAlert = false
@@ -29,8 +30,8 @@ struct TabsView: View {
                         ForEach(bookmarkes, id: \.self) { model in
                             VStack(spacing: 10) {
                                 ZStack(alignment: .topTrailing) {
-                                    if let imageData = try? Data(contentsOf: model.url), let uiImage = UIImage(data: imageData) {
-                                        Image(uiImage: uiImage)
+                                    WebImage(url: model.url) { image in
+                                        image
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: width, height: width * 1.4)
@@ -39,8 +40,9 @@ struct TabsView: View {
                                                 RoundedRectangle(cornerRadius: 8)
                                                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                                             )
-                                    } else {
+                                    } placeholder: {
                                         Rectangle()
+                                            .fill(Color.white)
                                             .frame(width: width, height: width * 1.4)
                                             .cornerRadius(8)
                                             .overlay(
@@ -56,6 +58,9 @@ struct TabsView: View {
                                             .foregroundColor(.gray)
                                             .padding(5)
                                     }
+                                }
+                                .onTapGesture {
+                                    onBookmarkAdded?(model)
                                 }
 
                                 Text(model.title ?? "")
@@ -97,11 +102,10 @@ struct TabsView: View {
                 Spacer()
 
                 Button {
-                    if !bookmarkes.contains(where: { $0.address == bookmarkModel.address }) {
-                        DBaseManager.share.insertToDb(objects: [bookmarkModel], intoTable: S.Table.bookmark)
-                        bookmarkes.insert(bookmarkModel, at: 0)
-                    }
-
+                    let newBookmark = bookmarkModel.copy() as! HistoryModel
+                    DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Table.bookmark)
+                    bookmarkes.insert(newBookmark, at: 0)
+                    Util.topViewController().navigationController?.popToRootViewController(animated: true)
                 } label: {
                     Text("添加")
                 }

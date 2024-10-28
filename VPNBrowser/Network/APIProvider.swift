@@ -336,10 +336,10 @@ extension APITarget: TargetType {
             ]
         default:
             var token = ""
-            if LoginManager.shared.info.userType == .visitor {
-                token = LoginManager.shared.info.vistoken
-            } else {
+            if LoginManager.shared.info.userType != .visitor && !LoginManager.shared.info.token.isEmpty {
                 token = LoginManager.shared.info.token
+            } else {
+                token = LoginManager.shared.info.vistoken
             }
             return [
                 "Content-Type": "application/json",
@@ -421,6 +421,9 @@ extension MoyaProvider {
                             completion(.success(decodedModel))
                         } else {
                             HUD.hideNow()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                HUD.showTipMessage("返回数据为空,未能解析")
+                            }
                             print("未能解析 'data' 字段。")
                         }
                     } else {

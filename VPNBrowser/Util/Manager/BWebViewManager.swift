@@ -23,7 +23,12 @@ class BWebViewManager: NSObject {
     // 检查是否为下载链接
     func isDownloadLink(url: URL) -> Bool {
         let downloadExtensions = ["mp4", "pdf", "txt", "zip", "rar"]
-        return downloadExtensions.contains(url.pathExtension) || url.absoluteString.contains("download")
+        let isDownloadLink = downloadExtensions.contains(url.pathExtension) || url.absoluteString.contains("download")
+
+        let appStoreKeywords = ["apps.apple.com", "itunes.apple.com"]
+        let isAppStoreLink = appStoreKeywords.contains { url.absoluteString.lowercased().contains($0) }
+
+        return isDownloadLink || isAppStoreLink
     }
 
     // 处理下载，并保存到指定路径
@@ -45,6 +50,7 @@ class BWebViewManager: NSObject {
                 self.downloadFile(from: url, mimeType: mimeType, completion: completion)
             } else {
                 print("无效的文件类型，未下载: \(response?.mimeType ?? "未知 MIME 类型")")
+                HUD.showTipMessage("无效的文件类型，未下载: \(response?.mimeType ?? "未知 MIME 类型")")
                 completion(nil, nil, nil) // MIME 类型无效时返回 nil
             }
         }

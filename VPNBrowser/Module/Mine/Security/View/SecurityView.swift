@@ -69,9 +69,9 @@ struct SecurityView: View {
             .padding(.bottom, 20)
             .alert(isPresented: $showingAlert) {
                 Alert(
-                    title: Text("提示"),
-                    message: Text("注销账号,将无法恢复"),
-                    primaryButton: .destructive(Text("删除")) {
+                    title: Text("注销账户"),
+                    message: Text("注销庄户后、书签、收藏的资料将全部删除,确认要注销账户?"),
+                    primaryButton: .destructive(Text("确认注销")) {
                         cancelAccount()
                     },
                     secondaryButton: .cancel()
@@ -161,6 +161,11 @@ struct SecurityView: View {
     }
 
     private func fetchVisitorToken() {
+        /// 清空数据
+        LoginManager.shared.info = LoginModel()
+        LoginManager.shared.userInfo = LoginModel()
+        DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+
         APIProvider.shared.request(.generateVisitorToken, progress: { _ in
 
         }) { result in
@@ -180,15 +185,13 @@ struct SecurityView: View {
                         model.userType = .visitor
                         model.vistoken = token
 
-                        DBaseManager.share.updateToDb(table: S.Table.loginInfo,
-                                                      on: [
-                                                          LoginModel.Properties.id,
-                                                          LoginModel.Properties.vistoken,
-                                                          LoginModel.Properties.userTypeV,
-                                                      ],
-                                                      with: model)
+                        DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.loginInfo)
 
-                        viewModel.info = model
+                        if let array = DBaseManager.share.qureyFromDb(fromTable: S.Table.loginInfo, cls: LoginModel.self), let model = array.first {
+                            LoginManager.shared.info = model
+                        }
+
+                        LoginManager.shared.fetchUserInfo()
 
                         Util.topViewController().navigationController?.popToRootViewController(animated: true)
 
@@ -342,6 +345,6 @@ struct SecurityView: View {
     }
 }
 
-#Preview {
-    SecurityView()
-}
+// #Preview {
+//    SecurityView()
+// }

@@ -47,11 +47,11 @@ struct OperateBottomView: View {
 
         Button("删除") {
             if !viewModel.selectedArray.isEmpty || !viewModel.selectedFolderArray.isEmpty {
-                viewModel.showingDeleteAlert.toggle()
+                viewModel.showingAllDeleteAlert.toggle()
             }
         }
         .frame(maxWidth: .infinity)
-        .alert(isPresented: $viewModel.showingDeleteAlert) {
+        .alert(isPresented: $viewModel.showingAllDeleteAlert) {
             Alert(
                 title: Text("删除"),
                 message: Text("您确定要删除选中的吗？"),
@@ -85,18 +85,22 @@ struct OperateBottomView: View {
                 .frame(maxWidth: .infinity)
 
                 if !viewModel.recordData.isEmpty || !viewModel.folderData.isEmpty {
-                    VStack {
+                    HStack(spacing: 2) {
                         Button("立即同步") {
+                            S.Config.lastSyncTime = Date()
                             viewModel.syncBookmark()
                         }
-                        .frame(maxWidth: .infinity)
+                        Text("(\(S.Config.lastSyncTimeAgo()))")
+                            .font(.system(size: 10))
+                            .opacity(0.5)
                     }
+                    .frame(maxWidth: .infinity)
                 }
             }
 
         } else {
             Button("清理记录") {
-                viewModel.showingDeleteAlert.toggle()
+                viewModel.showingAllDeleteAlert.toggle()
             }
             .frame(maxWidth: .infinity)
         }

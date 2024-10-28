@@ -126,7 +126,7 @@ extension Util {
         }
 
         // 检查是否包含特殊字符
-        let containsSpecialCharRegex = ".*[!@#$%^&*]+.*"
+        let containsSpecialCharRegex = ".*[!@#$%^&*.,]+.*"
         let containsSpecialChar = NSPredicate(format: "SELF MATCHES %@", containsSpecialCharRegex).evaluate(with: password)
         if !containsSpecialChar {
             HUD.showTipMessage("密码必须包含特殊字符")
@@ -138,23 +138,15 @@ extension Util {
 
     /// 根据路径 计算 数据大小
     static func getFileSize(dbPath: String) -> Int64? {
-        let fileManager = FileManager.default
+        // 查询两个表的数据
+        let searchHistoryArray = DBaseManager.share.qureyFromDb(fromTable: S.Table.searchHistory, cls: HistoryModel.self) ?? []
+        let browseHistoryArray = DBaseManager.share.qureyFromDb(fromTable: S.Table.browseHistory, cls: HistoryModel.self) ?? []
 
-        // 检查文件是否存在
-        if fileManager.fileExists(atPath: dbPath) {
-            do {
-                // 获取文件属性
-                let attributes = try fileManager.attributesOfItem(atPath: dbPath)
+        // 累加两个数组的总大小
+        let totalSize = searchHistoryArray.reduce(0) { $0 + $1.estimatedSize() } +
+            browseHistoryArray.reduce(0) { $0 + $1.estimatedSize() }
 
-                // 获取文件大小
-                if let fileSize = attributes[.size] as? Int64 {
-                    return fileSize
-                }
-            } catch {
-                print("Error while getting file size: \(error)")
-            }
-        }
-        return nil
+        return totalSize
     }
 
     static func createQRCodeImage(content: String) -> UIImage? {

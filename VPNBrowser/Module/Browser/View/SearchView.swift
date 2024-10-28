@@ -99,15 +99,30 @@ struct SearchView: View {
                             }
                     }
 
-                    FlowLayout(items: historise) { item in
-                        HStack {
-                            Text(item.title ?? "")
-                                .font(.system(size: 14))
-                                .onTapGesture {
-                                    recordStore.content = item.title ?? ""
-                                }
+                    if !S.Config.openNoTrace {
+                        FlowLayout(items: historise) { item in
+                            HStack {
+                                Text(item.title ?? "")
+                                    .font(.system(size: 14))
+                                    .onTapGesture {
+                                        if let address = recordStore.selectedEngine.address,
+                                           let keyword = recordStore.selectedEngine.keyword,
+                                           let value = item.title {
+                                            recordStore.content = value
+
+                                            let vc = BrowserWebViewController()
+                                            vc.path = address + "/" + keyword + value
+                                            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+                                        }
+                                    }
+                            }
+                            .frame(minWidth: 20)
                         }
-                        .frame(minWidth: 20)
+                    } else {
+                        Text("无痕浏览时,浏览器不会保存你访问过的页面和搜索历史")
+                            .font(.system(size: 12))
+                            .opacity(0.5)
+                            .padding(.all, 10)
                     }
                 }
                 .padding(.top, 10)
@@ -154,8 +169,15 @@ struct SearchView: View {
                             .opacity(0.6)
                             .padding(.vertical, 8)
                             .onTapGesture {
-                                let vc = BrowserWebViewController()
-                                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+                                if let address = recordStore.selectedEngine.address,
+                                   let keyword = recordStore.selectedEngine.keyword,
+                                   let value = model.keyword {
+                                    recordStore.content = value
+
+                                    let vc = BrowserWebViewController()
+                                    vc.path = address + "/" + keyword + value
+                                    Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+                                }
                             }
 
                             Divider()
@@ -177,4 +199,3 @@ extension SearchView {
         DBaseManager.share.deleteFromDb(fromTable: S.Table.searchHistory)
     }
 }
-

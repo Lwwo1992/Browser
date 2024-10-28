@@ -7,7 +7,13 @@
 
 import Combine
 import SwiftUI
-import WebKit
+@preconcurrency import WebKit
+
+enum WebViewAction {
+    case goBack
+    case goForward
+    case none
+}
 
 class WebViewViewModel: ObservableObject {
     @Published var urlString: String = ""
@@ -16,21 +22,29 @@ class WebViewViewModel: ObservableObject {
     @Published var shouldSaveHistory: Bool = false
     @Published var showBottomSheet: Bool = false
     @Published var currentModel = HistoryModel()
+    @Published var action: WebViewAction = .none
+    @Published var canGoBack: Bool = false
 }
 
-struct WebView: UIViewRepresentable {
+struct WebViewWrapper: UIViewRepresentable {
     var urlString: String? = nil
     @ObservedObject var viewModel = WebViewViewModel()
-    var onSaveInfo: ((HistoryModel) -> Void)? = nil // 闭包，用于保存历史记录
+    // 闭包，用于保存历史记录
+    var onSaveInfo: ((HistoryModel) -> Void)? = nil
 
     class Coordinator: NSObject, WKUIDelegate, WKNavigationDelegate {
-        var parent: WebView
-        var webView: WKWebView!
+        var parent: WebViewWrapper
+        var webView: WKWebView! {
+            didSet {
+                webView.addObserver(self, forKeyPath: "canGoBack", options: [.new, .old], context: nil)
+                webView.addObserver(self, forKeyPath: "canGoForward", options: [.new, .old], context: nil)
+            }
+        }
 
         private var cancellables = Set<AnyCancellable>()
         private var mode = WKWebpagePreferences.ContentMode.mobile
 
-        init(_ parent: WebView) {
+        init(_ parent: WebViewWrapper) {
             self.parent = parent
             super.init()
 
@@ -44,6 +58,26 @@ struct WebView: UIViewRepresentable {
                     }
                 }
                 .store(in: &cancellables)
+
+            parent.viewModel.$action
+                .dropFirst()
+                .sink { [weak self] action in
+                    guard let self else { return }
+                    if action == .goBack {
+                        goBack()
+                    }
+                }
+                .store(in: &cancellables)
+        }
+
+        override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+//            if (object as? WKWebView) == webView {
+//                if keyPath == "canGoBack" {
+//                    parent.viewModel.canGoBack = webView.canGoBack
+//                }
+//            } else {
+//                super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+//            }
         }
 
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
@@ -53,9 +87,9 @@ struct WebView: UIViewRepresentable {
 
         // 页面加载完成时保存书签
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            withAnimation {
-                parent.viewModel.refresh = false
-            }
+//            withAnimation {
+//                parent.viewModel.refresh = false
+//            }
 
             // 创建历史记录模型
             let model = HistoryModel()
@@ -87,8 +121,9 @@ struct WebView: UIViewRepresentable {
             // 检查是否是下载链接
             if BWebViewManager.share.isDownloadLink(url: url) {
                 BWebViewManager.share.handleDownload(url: url) { [self] url1, name, size in
-
-                    self.saveDownInfo(url: url1?.absoluteString ?? "", name: name ?? "", size: size ?? 0)
+                    if let url1 {
+                        self.saveDownInfo(url: url1.absoluteString, name: name ?? "", size: size ?? 0)
+                    }
                 }
                 decisionHandler(.cancel)
             } else {
@@ -99,9 +134,10 @@ struct WebView: UIViewRepresentable {
         // 加载失败
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
             print("Failed to load webpage: \(error.localizedDescription)")
-            withAnimation {
-                parent.viewModel.refresh = false
-            }
+            HUD.showTipMessage("加载失败\(error.localizedDescription)")
+//            withAnimation {
+//                parent.viewModel.refresh = false
+//            }
         }
 
         private func takeSnapshot(completion: @escaping (String?) -> Void) {
@@ -167,6 +203,14 @@ struct WebView: UIViewRepresentable {
             DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.download)
             HUD.showTipMessage("下载成功")
         }
+
+        func goBack() {
+            if webView.canGoBack {
+                webView.goBack()
+            } else {
+                Util.topViewController().navigationController?.popViewController(animated: true)
+            }
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -186,7 +230,6 @@ struct WebView: UIViewRepresentable {
         webView.uiDelegate = context.coordinator
         webView.navigationDelegate = context.coordinator
         webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.customUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Mobile/15E148 Safari/604.1"
 
         if let url = URL(string: urlString ?? viewModel.urlString) {
             let request = URLRequest(url: url)
@@ -197,5 +240,9 @@ struct WebView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
+        if let url = URL(string: urlString ?? viewModel.urlString) {
+            let request = URLRequest(url: url)
+            uiView.load(request)
+        }
     }
 }

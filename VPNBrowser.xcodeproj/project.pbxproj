@@ -46,7 +46,7 @@
 		446009DA2CBA1AF60085DC74 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009D92CBA1AF60085DC74 /* HomeView.swift */; };
 		446009DD2CBA1CE70085DC74 /* MHVerifyCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009DC2CBA1CE70085DC74 /* MHVerifyCodeView.swift */; };
 		446009DF2CBA251F0085DC74 /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009DE2CBA251F0085DC74 /* BaseModel.swift */; };
-		446009E12CBA4F8E0085DC74 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009E02CBA4F8E0085DC74 /* WebView.swift */; };
+		446009E12CBA4F8E0085DC74 /* WebViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009E02CBA4F8E0085DC74 /* WebViewWrapper.swift */; };
 		446009E32CBA53E50085DC74 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009E22CBA53E50085DC74 /* LoginModel.swift */; };
 		446009E52CBA6D790085DC74 /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009E42CBA6D790085DC74 /* LoginManager.swift */; };
 		446009E72CBA73060085DC74 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009E62CBA73060085DC74 /* CustomTextField.swift */; };
@@ -179,7 +179,7 @@
 		446009D92CBA1AF60085DC74 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		446009DC2CBA1CE70085DC74 /* MHVerifyCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MHVerifyCodeView.swift; sourceTree = "<group>"; };
 		446009DE2CBA251F0085DC74 /* BaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
-		446009E02CBA4F8E0085DC74 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		446009E02CBA4F8E0085DC74 /* WebViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewWrapper.swift; sourceTree = "<group>"; };
 		446009E22CBA53E50085DC74 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		446009E42CBA6D790085DC74 /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		446009E62CBA73060085DC74 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -667,7 +667,7 @@
 			isa = PBXGroup;
 			children = (
 				44DA8E372CB68750003B1C34 /* OptionListView.swift */,
-				446009E02CBA4F8E0085DC74 /* WebView.swift */,
+				446009E02CBA4F8E0085DC74 /* WebViewWrapper.swift */,
 				446009E62CBA73060085DC74 /* CustomTextField.swift */,
 				446009F62CBAA39B0085DC74 /* FlowLayout.swift */,
 				44444AFE2CC7928E002E204B /* CustomShareItem.swift */,
@@ -912,7 +912,7 @@
 				440F93242CBCABFD00D94AD0 /* ReplaceBindingViewController.swift in Sources */,
 				44CD45FB2CBE2BAA003A415E /* ViewModel.swift in Sources */,
 				44984E4A2CBF64D100158380 /* UserGuideViewController.swift in Sources */,
-				446009E12CBA4F8E0085DC74 /* WebView.swift in Sources */,
+				446009E12CBA4F8E0085DC74 /* WebViewWrapper.swift in Sources */,
 				446009F92CBAAA530085DC74 /* BindingView.swift in Sources */,
 				44AA50852CB4E007005EBC36 /* BrowserViewController.swift in Sources */,
 				44AA50A62CB537E3005EBC36 /* SearchBrowseView.swift in Sources */,

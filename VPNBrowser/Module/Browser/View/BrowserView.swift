@@ -33,7 +33,7 @@ struct BrowserView: View {
 
     @ViewBuilder
     private func webView() -> some View {
-        WebView(urlString: S.Config.defalutUrl, viewModel: webViewModel, onSaveInfo: { model in
+        WebViewWrapper(urlString: S.Config.defalutUrl, viewModel: webViewModel, onSaveInfo: { model in
             self.bookmarkModel = model
         })
         .frame(maxHeight: .infinity)
@@ -81,6 +81,9 @@ struct BrowserView: View {
             .onTapGesture {
                 let vc = TabsViewController()
                 vc.model = bookmarkModel
+                vc.onBookmarkAdded = { model in
+                    webViewModel.urlString = model.address ?? ""
+                }
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }
             .onAppear {

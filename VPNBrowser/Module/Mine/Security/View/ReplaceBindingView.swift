@@ -73,7 +73,7 @@ struct ReplaceBindingView: View {
 
     private func nextButtonAction() {
         if type == .mailbox {
-            if Util.isValidEmail(mailbox) && mailbox.isEmpty {
+            if !Util.isValidEmail(mailbox) {
                 HUD.showTipMessage("格式错误")
                 return
             }

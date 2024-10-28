@@ -27,6 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        /// 生成 游客token
+        /// 为分享活动生效
+        if LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty {
+            APIProvider.shared.request(.generateVisitorToken) { _ in }
+        }
+    }
 }
 
 extension AppDelegate {

@@ -29,6 +29,10 @@ struct GeneralView: View {
 
     @ObservedObject var viewModel = ViewModel.shared
 
+    @State private var showingDeleteAlert = false
+
+    @State private var fileSize = ""
+
     var body: some View {
         OptionListView(
             sections: GeneralOption.sections,
@@ -37,7 +41,7 @@ struct GeneralView: View {
                 case .recommendedMode:
                     return viewModel.selectedModel.rawValue
                 case .clearCache:
-                    return Util.formatFileSize(Util.getFileSize(dbPath: DataBasePath().dbPath) ?? 0)
+                    return fileSize
                 case .defaultDownloadDir:
                     let downloadsURL = URL(fileURLWithPath: Util.documentsPath).appendingPathComponent("Downloads")
                     let documentsURL = URL(fileURLWithPath: Util.documentsPath)
@@ -49,7 +53,7 @@ struct GeneralView: View {
             },
             rightViewProvider: { option in
                 switch option {
-                case .clearCache, .defaultDownloadDir:
+                case .defaultDownloadDir:
                     return AnyView(EmptyView())
                 default:
                     return nil
@@ -58,6 +62,21 @@ struct GeneralView: View {
             onTap: handleTap(for:)
         )
         .padding(.horizontal, 16)
+        .alert(isPresented: $showingDeleteAlert) {
+            Alert(
+                title: Text("删除记录"),
+                message: Text("您确定要删除此记录吗？"),
+                primaryButton: .destructive(Text("删除")) {
+                    DBaseManager.share.deleteFromDb(fromTable: S.Table.browseHistory)
+                    DBaseManager.share.deleteFromDb(fromTable: S.Table.searchHistory)
+                    fileSize = Util.formatFileSize(Util.getFileSize(dbPath: DataBasePath().dbPath) ?? 0)
+                },
+                secondaryButton: .cancel()
+            )
+        }
+        .onAppear {
+            fileSize = Util.formatFileSize(Util.getFileSize(dbPath: DataBasePath().dbPath) ?? 0)
+        }
     }
 
     private func handleTap(for item: GeneralOption) {
@@ -67,6 +86,8 @@ struct GeneralView: View {
             vc = RecommendedModeViewController()
             vc.title = item.rawValue
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+        case .clearCache:
+            showingDeleteAlert.toggle()
         default:
             break
         }

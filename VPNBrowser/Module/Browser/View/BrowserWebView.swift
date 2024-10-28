@@ -9,15 +9,15 @@ import JFPopup
 import SwiftUI
 
 struct BrowserWebView: View {
-    @State private var isSheetPresented = false
     @State private var isCollect = false
+    @State private var bookmarNum = "0"
     @ObservedObject var viewModel: WebViewViewModel
 
     var body: some View {
         VStack {
             searchBar()
 
-            WebView(viewModel: viewModel) { model in
+            WebViewWrapper(viewModel: viewModel) { model in
                 viewModel.currentModel = model
                 if !S.Config.openNoTrace {
                     DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.browseHistory)
@@ -31,6 +31,11 @@ struct BrowserWebView: View {
                 isCollect = true
             }
         }
+        .onAppear {
+            if let bookmarkes = DBaseManager.share.qureyFromDb(fromTable: S.Table.bookmark, cls: HistoryModel.self) {
+                self.bookmarNum = "\(bookmarkes.count)"
+            }
+        }
     }
 
     @ViewBuilder
@@ -42,6 +47,7 @@ struct BrowserWebView: View {
             Text(verbatim: viewModel.urlString)
                 .font(.system(size: 14))
                 .foregroundColor(.black)
+                .lineLimit(1)
                 .opacity(0.5)
                 .onTapGesture {
                     Util.topViewController().navigationController?.popViewController(animated: true)
@@ -56,11 +62,11 @@ struct BrowserWebView: View {
                     handleCollectAction()
                 }
         }
-        .frame(height: 40)
+        .frame(height: 35)
         .padding(.horizontal, 10)
-        .cornerRadius(20)
+        .cornerRadius(17)
         .overlay(
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 17)
                 .stroke(Color.gray.opacity(0.5), lineWidth: 1)
         )
         .padding(.horizontal, 16)
@@ -69,30 +75,63 @@ struct BrowserWebView: View {
     @ViewBuilder
     private func bottomView() -> some View {
         HStack {
-            Text("返回")
+            Image(systemName: "chevron.left")
+                .font(.system(size: 20))
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
-                    Util.topViewController().navigationController?.popViewController(animated: true)
+                    viewModel.action = .goBack
                 }
 
-            Spacer()
-
-            Text("刷新")
+            Image(systemName: "arrow.clockwise")
+                .font(.system(size: 20))
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
-                    viewModel.refresh = true
+                    withAnimation {
+                        withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
+                            viewModel.refresh = true
+                        }
+                    }
                 }
 
-            Spacer()
+            RoundedRectangle(cornerRadius: 2)
+                .fill(Color.clear)
+                .frame(width: 18, height: 18)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 2)
+                        .stroke(Color.black, lineWidth: 1.5)
+                )
+                .overlay(
+                    Text(bookmarNum)
+                        .font(.system(size: 12, weight: .medium))
+                )
+                .frame(maxWidth: .infinity)
+                .onTapGesture {
+                    let vc = TabsViewController()
+                    vc.model = viewModel.currentModel
+                    vc.onBookmarkAdded = { bookmark in
+                        if let address = bookmark.address {
+                            viewModel.urlString = address
+                        }
+                    }
+                    Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+                }
 
-            Text("更多")
+            Image(systemName: "ellipsis")
+                .font(.system(size: 20))
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
                     viewModel.showBottomSheet.toggle()
                 }
+
+            Image(systemName: "house")
+                .font(.system(size: 20))
+                .frame(maxWidth: .infinity)
+                .onTapGesture {
+                    Util.topViewController().navigationController?.popToRootViewController(animated: false)
+                }
         }
         .font(.system(size: 14))
-        .padding(.vertical, 10)
+        .frame(height: 50)
         .background(Color.gray.opacity(0.1))
     }
 }
@@ -108,17 +147,21 @@ extension BrowserWebView {
 
     // 弹出文件夹选择对话框
     private func presentFolderDialog(with folders: [FolderModel]) {
-        Util.topViewController().popup.dialog {
-            let folderDialog = FolderDialogView(frame: CGRect(x: 0, y: 0, width: 240, height: 260))
-            folderDialog.array = folders
-            folderDialog.onFolderSelected = { folder in
-                guard let folder else {
-                    return
-                }
+        if !isCollect {
+            Util.topViewController().popup.dialog {
+                let folderDialog = FolderDialogView(frame: CGRect(x: 0, y: 0, width: 240, height: 260))
+                folderDialog.array = folders
+                folderDialog.onFolderSelected = { folder in
+                    guard let folder else {
+                        return
+                    }
 
-                updateDatabase(for: folder)
+                    updateDatabase(for: folder)
+                }
+                return folderDialog
             }
-            return folderDialog
+        } else {
+            updateDatabase()
         }
     }
 

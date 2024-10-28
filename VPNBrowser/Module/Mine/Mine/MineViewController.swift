@@ -19,25 +19,12 @@ class MineViewController: ViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if LoginManager.shared.info.userType == .user {
-            APIProvider.shared.request(.browserAccount(userId: LoginManager.shared.info.id), model: LoginModel.self) { result in
-                switch result {
-                case let .success(model):
-                    DBaseManager.share.updateToDb(table: S.Table.loginInfo,
-                                                  on: [
-                                                    LoginModel.Properties.name,
-                                                    LoginModel.Properties.account,
-                                                    LoginModel.Properties.mailbox,
-                                                    LoginModel.Properties.mobile,
-                                                    LoginModel.Properties.createTime,
-                                                  ],
-                                                  with: model)
-                    
-                case let .failure(error):
-                    print("Request failed with error: \(error)")
-                }
-            }
-        }
+        navigationController?.navigationBar.isHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
     }
 }
 

@@ -15,7 +15,7 @@ class HistoryViewModel: ObservableObject {
     /// 文件夹数据
     @Published var folderData: [FolderModel] = []
     @Published var selectedFolderArray: [FolderModel] = []
-    @Published var showingDeleteAlert = false
+    @Published var showingAllDeleteAlert = false
     @Published var showingTextFieldAlert = false
     @Published var isEdit = false
 
@@ -58,6 +58,16 @@ class HistoryViewModel: ObservableObject {
     func deleteRecords() {
         recordData.removeAll()
         DBaseManager.share.deleteFromDb(fromTable: selectedSegmentIndex == 0 ? S.Table.collect : S.Table.browseHistory)
+    }
+
+    func deleteRecord(_ model: HistoryModel) {
+        if let index = recordData.firstIndex(where: { $0.id == model.id }) {
+            recordData.remove(at: index)
+            DBaseManager.share.deleteFromDb(
+                fromTable: S.Table.browseHistory,
+                where: HistoryModel.Properties.id == model.id
+            )
+        }
     }
 
     func updateSelectedArray(for model: HistoryModel) {
@@ -128,7 +138,7 @@ class HistoryViewModel: ObservableObject {
 
     /// 同步数据
     func syncBookmark() {
-        if LoginManager.shared.info.userType == .visitor {
+        if LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty {
             Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
             return
         }
@@ -265,7 +275,7 @@ class HistoryViewModel: ObservableObject {
     }
 }
 
-class HistoryModel: BaseModel, TableCodable, ObservableObject {
+class HistoryModel: BaseModel, TableCodable, ObservableObject, NSCopying {
     var id = UUID().uuidString
     var parentId = ""
     var name = ""
@@ -298,5 +308,34 @@ class HistoryModel: BaseModel, TableCodable, ObservableObject {
         case timestamp
         case parentId
         case name
+    }
+
+    func copy(with zone: NSZone? = nil) -> Any {
+        let copy = HistoryModel()
+        copy.parentId = parentId
+        copy.name = name
+        copy.address = address
+        copy.title = title
+        copy.pageLogo = pageLogo
+        copy.imagePath = imagePath
+        copy.timestamp = timestamp
+        return copy
+    }
+}
+
+extension HistoryModel {
+    func estimatedSize() -> Int64 {
+        // 计算各个属性的大小
+        let idSize = Int64(id.utf8.count) // UUID字符串的大小
+        let parentIdSize = Int64(parentId.utf8.count) // parentId的大小
+        let nameSize = Int64(name.utf8.count) // name的大小
+        let addressSize = address != nil ? Int64(address!.utf8.count) : 0 // address的大小
+        let titleSize = title != nil ? Int64(title!.utf8.count) : 0 // title的大小
+        let pageLogoSize = pageLogo != nil ? Int64(pageLogo!.utf8.count) : 0 // pageLogo的大小
+        let imagePathSize = imagePath != nil ? Int64(imagePath!.utf8.count) : 0 // imagePath的大小
+        let timestampSize = Int64(MemoryLayout<TimeInterval>.size) // timestamp的大小
+
+        // 返回总大小
+        return idSize + parentIdSize + nameSize + addressSize + titleSize + pageLogoSize + imagePathSize + timestampSize
     }
 }

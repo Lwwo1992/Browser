@@ -12,7 +12,7 @@ struct MoreGuideView: View {
     var guideResponse = GuideResponse()
 
     // 每排间隔
-    let itemSpacing: CGFloat = 16
+    let itemSpacing: CGFloat = 30
     // 最多展示两排
     let maxVisibleRows = 2
     // 每排展示个数
@@ -20,7 +20,7 @@ struct MoreGuideView: View {
 
     // 动态列数
     var columns: [GridItem] {
-        let totalWidth = UIScreen.main.bounds.width - 32
+        let totalWidth = UIScreen.main.bounds.width - 32 - CGFloat(maxAppNum) * 10
         let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
         return Array(repeating: GridItem(.flexible(minimum: itemWidth), spacing: itemSpacing), count: maxAppNum)
     }
@@ -37,13 +37,13 @@ struct MoreGuideView: View {
                             Image
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
+                                .frame(width: itemWidth, height: itemWidth)
                                 .cornerRadius(5)
                         } placeholder: {
                             Rectangle()
                                 .fill(Color.gray)
                                 .cornerRadius(5)
-                                .frame(width: itemWidth * 0.4, height: itemWidth * 0.4)
+                                .frame(width: itemWidth, height: itemWidth)
                         }
 
                         Text(row.name ?? "")
@@ -52,6 +52,10 @@ struct MoreGuideView: View {
                             .lineLimit(1)
                             .truncationMode(.tail)
                     }
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 8)
+                    .background(Color.white)
+                    .cornerRadius(8)
                     .onTapGesture {
                         Util.guideItemTap(row)
                     }
