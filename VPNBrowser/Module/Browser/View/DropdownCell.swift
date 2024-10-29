@@ -47,7 +47,7 @@ class DropdownCell: UITableViewCell {
     func configure(with record: RecordModel) {
         titleLabel.text = record.name
         
-        let imageUrl = Util.getCompleteImageUrl(from: record.logo)
+        let imageUrl = Util.getImageUrl(from: record.logo)
         iconImageView.setImage(with: imageUrl)
     }
 }

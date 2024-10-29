@@ -84,7 +84,7 @@ struct MarketDetailView: View {
                                     }
                                 }
                         } else {
-                            WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
+                            WebImage(url: Util.getImageUrl(from: viewModel.visitorImages[index])) { image in
                                 image
                                     .resizable()
                                     .scaledToFit()

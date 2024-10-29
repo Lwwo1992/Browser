@@ -11,7 +11,23 @@ class GuideViewModel: ObservableObject {
     @Published var guideSections: [GuideResponse] = []
 
     init() {
-        loadGuideLabels()
+        guideConfig()
+    }
+
+    private func guideConfig() {
+        APIProvider.shared.request(.guideConfig, model: AnonymousConfigModel.self) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(model):
+                S.Config.guideAnonymous = model
+
+                loadGuideLabels()
+
+            case let .failure(error):
+                print("请求失败: \(error)")
+                HUD.showTipMessage(error.localizedDescription)
+            }
+        }
     }
 
     private func loadGuideLabels() {
@@ -21,6 +37,9 @@ class GuideViewModel: ObservableObject {
             guard let self else { return }
             switch result {
             case let .success(response):
+                let jsonString = String(data: response.data, encoding: .utf8) ?? ""
+                print("Response JSON: \(jsonString)")
+
                 if let responseLabels = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
                     if let labels = responseLabels.data {
                         self.fetchApps(for: labels)
@@ -44,12 +63,17 @@ class GuideViewModel: ObservableObject {
             APIProvider.shared.request(.guideAppPage(labelID: id), progress: { _ in }) { result in
                 switch result {
                 case let .success(response):
+                    let jsonString = String(data: response.data, encoding: .utf8) ?? ""
+                    print("Response JSON: \(jsonString)")
+
                     if let responseApps = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
                         let apps = responseApps.data ?? []
 
                         let section = GuideResponse()
-                        section.name = label.name
                         section.data = apps
+                        section.name = label.name
+                        section.icon = label.icon
+                        section.appIcon = label.appIcon
                         sections.append(section)
 
                     } else {
@@ -74,6 +98,7 @@ class GuideItem: BaseModel {
     var id: String?
     var name: String?
     var icon: String?
+    var appIcon: String?
     var downloadUrl: String?
     var type: String?
 }

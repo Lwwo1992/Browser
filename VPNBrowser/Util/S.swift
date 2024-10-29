@@ -48,6 +48,7 @@ struct S {
         static var defalutUrl = ""
         static var loginType: [LoginType]?
         static var anonymous: AnonymousConfigModel?
+        static var guideAnonymous: AnonymousConfigModel?
 
         private enum Keys {
             static let openNoTrace = "openNoTrace" // 无痕浏览的键值

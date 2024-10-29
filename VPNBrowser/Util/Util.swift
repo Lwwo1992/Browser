@@ -8,7 +8,31 @@
 import Foundation
 
 extension Util {
-    static func getCompleteImageUrl(from path: String?) -> URL? {
+    static func getImageUrl(from path: String?) -> URL? {
+        guard let path = path else {
+            print("Invalid path.")
+            return nil
+        }
+
+        let components = path.split(separator: "/")
+        guard let firstComponent = components.first else {
+            print("Invalid path components.")
+            return nil
+        }
+
+        if let guideBucketInfo = S.Config.guideAnonymous?.bucketMap?[String(firstComponent)],
+           let imageUrl = guideBucketInfo.imageUrl {
+            let modifiedUrl = imageUrl.replacingOccurrences(of: "/\(firstComponent)", with: "")
+            let urlString = modifiedUrl + path
+
+            return URL(string: urlString)
+        } else {
+            print("No corresponding guide found in bucketMap or image URL is missing.")
+            return nil
+        }
+    }
+    
+    static func getGuideImageUrl(from path: String?) -> URL? {
         guard let path = path else {
             print("Invalid path.")
             return nil

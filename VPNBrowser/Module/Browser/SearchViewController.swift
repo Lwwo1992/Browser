@@ -30,7 +30,7 @@ class SearchViewController: ViewController {
             
             recordStore.selectedEngine = record
 
-            let imageUrl = Util.getCompleteImageUrl(from: record.logo)
+            let imageUrl = Util.getImageUrl(from: record.logo)
             (selctedButton.subviews.first as? UIImageView)?.setImage(with: imageUrl)
         }
     }

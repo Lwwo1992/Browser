@@ -184,7 +184,7 @@ struct VipView: View {
             LazyVStack {
                 ForEach(vipRights) { model in
                     HStack {
-                        WebImage(url: Util.getCompleteImageUrl(from: model.icon)) { image in
+                        WebImage(url: Util.getImageUrl(from: model.icon)) { image in
                             image
                                 .resizable()
                                 .scaledToFill()

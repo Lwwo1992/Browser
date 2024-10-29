@@ -35,7 +35,7 @@ struct GuideView: View {
                         if let rows = section.data, !rows.isEmpty {
                             VStack(alignment: .leading) {
                                 HStack {
-                                    WebImage(url: Util.getCompleteImageUrl(from: section.appIcon)) { image in
+                                    WebImage(url: Util.getGuideImageUrl(from: section.appIcon)) { image in
                                         image
                                             .resizable()
                                             .scaledToFill()
@@ -78,7 +78,7 @@ struct GuideView: View {
         let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
 
         VStack(spacing: 5) {
-            WebImage(url: Util.getCompleteImageUrl(from: row.icon)) { image in
+            WebImage(url: Util.getGuideImageUrl(from: row.icon)) { image in
                 image
                     .resizable()
                     .scaledToFill()

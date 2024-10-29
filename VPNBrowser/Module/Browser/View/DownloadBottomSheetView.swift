@@ -15,7 +15,7 @@ class DownloadBottomSheetView: UIView {
             }
 
             titleLabel.text = model.name
-            imageView.setImage(with: Util.getCompleteImageUrl(from: model.icon))
+            imageView.setImage(with: Util.getImageUrl(from: model.icon))
 
             if let url = model.downloadUrl {
                 getFileSize(from: url) { [weak self] size, error in

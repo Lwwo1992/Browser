@@ -45,7 +45,7 @@ struct SearchView: View {
     private func topView() -> some View {
         FlowLayout(items: recordStore.records) { record in
             HStack(spacing: 2) {
-                WebImage(url: Util.getCompleteImageUrl(from: record.logo)) { image in
+                WebImage(url: Util.getImageUrl(from: record.logo)) { image in
                     image
                         .resizable()
                         .scaledToFit()

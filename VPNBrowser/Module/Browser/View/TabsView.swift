@@ -103,8 +103,19 @@ struct TabsView: View {
 
                 Button {
                     let newBookmark = bookmarkModel.copy() as! HistoryModel
-                    DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Config.mode == .web ? S.Table.bookmark : S.Table.guideBookmark)
-                    bookmarkes.insert(newBookmark, at: 0)
+                    if let viewControllers = Util.topViewController().navigationController?.viewControllers {
+                        if viewControllers.count > 1 {
+                            let previousViewController = viewControllers[viewControllers.count - 2]
+                            if previousViewController is BrowserWebViewController || S.Config.mode == .web {
+                                DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Table.bookmark)
+                                bookmarkes.insert(newBookmark, at: 0)
+                            } else {
+                                DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Table.guideBookmark)
+                                bookmarkes.insert(newBookmark, at: 0)
+                            }
+                        }
+                    }
+
                     Util.topViewController().navigationController?.popViewController(animated: true)
                 } label: {
                     Text("添加")

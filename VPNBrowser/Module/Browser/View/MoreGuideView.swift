@@ -33,7 +33,7 @@ struct MoreGuideView: View {
             LazyVGrid(columns: columns, spacing: 20) {
                 ForEach(guideResponse.data!, id: \.id) { row in
                     VStack(spacing: 5) {
-                        WebImage(url: Util.getCompleteImageUrl(from: row.icon)) { Image in
+                        WebImage(url: Util.getGuideImageUrl(from: row.icon)) { Image in
                             Image
                                 .resizable()
                                 .scaledToFill()

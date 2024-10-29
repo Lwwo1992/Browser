@@ -32,7 +32,7 @@ struct UserGuideView: View {
                                     let itemWidth = (Util.deviceWidth - (itemSpacing * CGFloat(columnsCount + 1)) - 32) / CGFloat(columnsCount)
 
                                     VStack {
-                                        KFImage(Util.getCompleteImageUrl(from: model.icon))
+                                        KFImage(Util.getImageUrl(from: model.icon))
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: itemWidth * 0.5, height: itemWidth * 0.5)

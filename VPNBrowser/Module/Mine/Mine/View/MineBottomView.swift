@@ -75,6 +75,11 @@ struct MineBottomView: View {
             vc.title = item.rawValue
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         }
+
+        if LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty {
+            vc.title = nil
+            vc = LoginViewController()
+        }
     }
 }
 
