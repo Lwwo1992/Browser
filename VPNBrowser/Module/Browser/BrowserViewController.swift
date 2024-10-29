@@ -8,8 +8,10 @@
 import UIKit
 
 class BrowserViewController: ViewController {
+    private var viewModel = WebViewViewModel()
+
     private lazy var browserHostingController: UIHostingController = {
-        let rootView = BrowserView()
+        let rootView = BrowserView(webViewModel: self.viewModel)
         let hosting = UIHostingController(rootView: rootView)
         hosting.view.backgroundColor = .clear
         return hosting
@@ -42,6 +44,15 @@ class BrowserViewController: ViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
+
+        if S.Config.mode == .guide {
+            if let snapshotImage = takeSnapshot() {
+                let model = HistoryModel()
+                model.title = "应用"
+                model.imagePath = saveImage(image: snapshotImage)
+                viewModel.guideBookmark = model
+            }
+        }
     }
 }
 
@@ -145,5 +156,31 @@ extension BrowserViewController {
                 print("Request failed with error: \(error)")
             }
         }
+    }
+}
+
+extension BrowserViewController {
+    private func takeSnapshot() -> UIImage? {
+        UIGraphicsBeginImageContext(view.size)
+        view.drawHierarchy(in: view.bounds, afterScreenUpdates: false)
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
+
+    private func saveImage(image: UIImage) -> String {
+        let fileName = UUID().uuidString + ".png"
+        let fileURL = S.Files.imageURL.appendingPathComponent(fileName)
+
+        if let data = image.pngData() {
+            do {
+                try data.write(to: fileURL)
+                return fileName
+            } catch {
+                print("Failed to save image: \(error)")
+                return ""
+            }
+        }
+        return ""
     }
 }

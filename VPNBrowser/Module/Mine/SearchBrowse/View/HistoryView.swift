@@ -18,22 +18,12 @@ struct HistoryView: View {
             if !viewModel.recordData.isEmpty {
                 VStack {
                     contentView()
-                    OperateBottomView(viewModel: viewModel)
+                    OperateBottomView()
                 }
             } else {
                 Text("暂无数据")
                     .font(.system(size: 16))
             }
-        }
-        .alert(isPresented: $viewModel.showingAllDeleteAlert) {
-            Alert(
-                title: Text("删除记录"),
-                message: Text("您确定要删除选择的记录吗？"),
-                primaryButton: .destructive(Text("删除")) {
-                    viewModel.deleteRecords()
-                },
-                secondaryButton: .cancel()
-            )
         }
         .alert(isPresented: $showingDeleteAlert) {
             Alert(
@@ -124,6 +114,7 @@ struct HistoryView: View {
         .onLongPressGesture {
             selctedModel = model
             showingDeleteAlert = true
+            debugPrint("-----")
         }
     }
 }

@@ -34,8 +34,9 @@ class AgreedBottomSheet: UIView {
                 .titleColor(.gray)
                 .cornerRadius(5)
                 .borderWidth(1, color: .gray)
-                .tapAction = {
-                    Util.topViewController().dismiss(animated: true)
+                .tapAction = { [weak self] in
+                    guard let self else { return }
+                    self.tf_hide()
                 }
         }
 
@@ -47,7 +48,7 @@ class AgreedBottomSheet: UIView {
                 .backgroundColor(.blue)
                 .tapAction = { [weak self] in
                     guard let self else { return }
-                    Util.topViewController().dismiss(animated: true)
+                    self.tf_hide()
                     onAgreed?()
                 }
         }
@@ -130,6 +131,8 @@ extension AgreedBottomSheet {
     }
 
     private func fetchAgreementContent(requestData: Int, titleText: String) {
+        tf_hide()
+        
         HUD.showLoading()
         APIProvider.shared.request(.getConfigByType(data: requestData), model: ConfigByTypeModel.self) { result in
             HUD.hideNow()

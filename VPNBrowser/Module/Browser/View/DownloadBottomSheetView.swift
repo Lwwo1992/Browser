@@ -26,6 +26,7 @@ class DownloadBottomSheetView: UIView {
                         print("获取文件大小失败: \(error)")
                     }
                 }
+                addressLabel.text(url)
             }
         }
     }
@@ -46,7 +47,7 @@ class DownloadBottomSheetView: UIView {
     }
 
     private lazy var addressLabel = Label().then {
-        $0.text("badui.com")
+        $0.text("未知")
             .font(.systemFont(ofSize: 14))
     }
 

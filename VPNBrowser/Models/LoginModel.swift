@@ -8,7 +8,7 @@
 import UIKit
 
 enum UserType: Int, HandyJSONEnum {
-    case visitor = 0
+    case visitor = 1
     case user
     case vipUser
 }

@@ -24,7 +24,7 @@ struct BookmarkView: View {
                         }
                         .padding(.horizontal, 16)
                     }
-                    OperateBottomView(viewModel: viewModel, showFolder: false)
+                    OperateBottomView(showFolder: false)
                 }
             } else {
                 Spacer()

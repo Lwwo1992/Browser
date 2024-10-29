@@ -78,6 +78,8 @@ enum APITarget {
 
     case anonymousConfig
 
+    case guideConfig
+
     /// 修改邮箱-手机
     /// credential: 密码/验证码
     /// identifier: 账号/手机/邮箱
@@ -148,6 +150,9 @@ enum APITarget {
 
     /// 用户购买vip
     case userBuyVip(id: String)
+
+    /// 根据ID列表查询用户
+    case getUserListByIds(ids: [String])
 }
 
 extension APITarget: TargetType {
@@ -159,6 +164,8 @@ extension APITarget: TargetType {
 
     var path: String {
         switch self {
+        case .guideConfig:
+            return "guide/h5/upload/config"
         case .guideLabelPage:
             return "/guide/h5/label/page"
         case .guideAppPage:
@@ -221,12 +228,14 @@ extension APITarget: TargetType {
             return "/browser/app/visitorAccess/page"
         case .userBuyVip:
             return "/browser/app/visitorAccess/userBuyVip"
+        case .getUserListByIds:
+            return "/browser/app/browserAccount/getUserListByIds"
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage, .accountDelete, .browserVipCardPage, .marketList, .marketDetail, .generaBrowserShareUrl, .getMarketReward, .getVipLowPrice, .visitorAccessPage, .userBuyVip:
+        case .getConfigByType, .sendSmsCode, .checkValidCode, .sendEmailCode, .enginePage, .login, .logout, .anonymousConfig, .updateEmailOrMobile, .rankingPage, .editUserInfo, .uploadConfig, .guideAppPage, .guideLabelPage, .generateVisitorToken, .userGuidePage, .forgetPassword, .updatePassword, .syncBookmark, .bookmarkPage, .accountDelete, .browserVipCardPage, .marketList, .marketDetail, .generaBrowserShareUrl, .getMarketReward, .getVipLowPrice, .visitorAccessPage, .userBuyVip, .guideConfig, .getUserListByIds:
             return .post
 
         case .browserAccount, .visitorAccess:
@@ -317,7 +326,10 @@ extension APITarget: TargetType {
 
             parameters = ["data": id]
 
-        case .logout, .anonymousConfig, .uploadConfig, .marketList, .getVipLowPrice:
+        case let .getUserListByIds(ids):
+            parameters = ["data": ids]
+
+        case .logout, .anonymousConfig, .uploadConfig, .marketList, .getVipLowPrice, .guideConfig:
             break
 
         case .browserAccount, .visitorAccess:

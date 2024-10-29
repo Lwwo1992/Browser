@@ -19,12 +19,12 @@ struct FootprintView: View {
             }
         }
         .padding(.top, 8)
+        .environmentObject(viewModel)
         .onAppear {
             viewModel.loadFolderData()
         }
         .onChange(of: viewModel.selectedSegmentIndex) { _ in
             viewModel.loadFolderData()
         }
-        .environmentObject(viewModel)
     }
 }

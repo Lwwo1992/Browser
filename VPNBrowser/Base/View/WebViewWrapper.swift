@@ -21,16 +21,22 @@ class WebViewViewModel: ObservableObject {
     // 控制是否保存历史记录
     @Published var shouldSaveHistory: Bool = false
     @Published var showBottomSheet: Bool = false
-    @Published var currentModel = HistoryModel()
     @Published var action: WebViewAction = .none
     @Published var canGoBack: Bool = false
+    @Published var guideBookmark = HistoryModel()
+    @Published var bookmark = HistoryModel() {
+        didSet {
+            if !S.Config.openNoTrace {
+                DBaseManager.share.insertToDb(objects: [bookmark], intoTable: S.Table.browseHistory)
+            }
+        }
+    }
+
+    var shouldUpdate: Bool = true
 }
 
 struct WebViewWrapper: UIViewRepresentable {
-    var urlString: String? = nil
-    @ObservedObject var viewModel = WebViewViewModel()
-    // 闭包，用于保存历史记录
-    var onSaveInfo: ((HistoryModel) -> Void)? = nil
+    @ObservedObject var viewModel: WebViewViewModel
 
     class Coordinator: NSObject, WKUIDelegate, WKNavigationDelegate {
         var parent: WebViewWrapper
@@ -71,13 +77,13 @@ struct WebViewWrapper: UIViewRepresentable {
         }
 
         override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-//            if (object as? WKWebView) == webView {
-//                if keyPath == "canGoBack" {
-//                    parent.viewModel.canGoBack = webView.canGoBack
-//                }
-//            } else {
-//                super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//            }
+            if (object as? WKWebView) == webView {
+                if keyPath == "canGoBack" {
+                    parent.viewModel.canGoBack = webView.canGoBack
+                }
+            } else {
+                super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            }
         }
 
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
@@ -104,10 +110,10 @@ struct WebViewWrapper: UIViewRepresentable {
                     print("Failed to get logo: \(String(describing: error?.localizedDescription))")
                 }
 
-                self.takeSnapshot { imagePath in
+                self.takeSnapshot { [weak self] imagePath in
+                    guard let self else { return }
                     model.imagePath = imagePath
-
-                    self.parent.onSaveInfo?(model)
+                    parent.viewModel.bookmark = model
                 }
             }
         }
@@ -231,18 +237,14 @@ struct WebViewWrapper: UIViewRepresentable {
         webView.navigationDelegate = context.coordinator
         webView.translatesAutoresizingMaskIntoConstraints = false
 
-        if let url = URL(string: urlString ?? viewModel.urlString) {
-            let request = URLRequest(url: url)
-            webView.load(request)
-        }
-
         return webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        if let url = URL(string: urlString ?? viewModel.urlString) {
+        if viewModel.shouldUpdate, let url = URL(string: viewModel.urlString) {
             let request = URLRequest(url: url)
             uiView.load(request)
+            viewModel.shouldUpdate = false
         }
     }
 }

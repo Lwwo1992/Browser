@@ -41,7 +41,7 @@ struct OptionListView<Option: RawRepresentable & CaseIterable & Hashable>: View 
 
                                     if let additionalText = additionalTextProvider?(item) {
                                         Text(additionalText)
-                                            .opacity(0.5)
+//                                            .opacity(0.5)
                                     }
 
                                     if let rightView = rightViewProvider?(item) {

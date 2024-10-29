@@ -49,7 +49,7 @@ struct MarketDetailView: View {
                     .foregroundColor(.white)
                     .padding(.top, 5)
 
-                Text("在邀请\(model.template.details.shareUserCount)人,直接免费拿")
+                Text("在邀请\(viewModel.remainingInviteCount(for: model))人,直接免费拿")
                     .font(.system(size: 12))
                     .padding(.top, 5)
 
@@ -70,12 +70,7 @@ struct MarketDetailView: View {
                     spacing: 10
                 ) {
                     ForEach(0 ..< (viewModel.showAllImages ? viewModel.visitorImages.count : min(viewModel.visitorImages.count, 10)), id: \.self) { index in
-                        WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
-                        } placeholder: {
+                        if viewModel.visitorImages[index] == "convite" {
                             Image("convite")
                                 .resizable()
                                 .scaledToFit()
@@ -88,6 +83,16 @@ struct MarketDetailView: View {
                                         viewModel.showShareBottomSheet.toggle()
                                     }
                                 }
+                        } else {
+                            WebImage(url: Util.getCompleteImageUrl(from: viewModel.visitorImages[index])) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                            } placeholder: {
+                                Image(systemName: "person.crop.circle.fill")
+                                    .font(.system(size: 30))
+                            }
                         }
                     }
                 }

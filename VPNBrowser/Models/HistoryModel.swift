@@ -16,6 +16,7 @@ class HistoryViewModel: ObservableObject {
     @Published var folderData: [FolderModel] = []
     @Published var selectedFolderArray: [FolderModel] = []
     @Published var showingAllDeleteAlert = false
+    @Published var showingDeleteAlert = false
     @Published var showingTextFieldAlert = false
     @Published var isEdit = false
 
@@ -291,6 +292,19 @@ class HistoryModel: BaseModel, TableCodable, ObservableObject, NSCopying {
             return S.Files.imageURL
         }
         return S.Files.imageURL.appendingPathComponent(imagePath)
+    }
+
+    func checkImageExists(at url: URL) -> Bool {
+        guard FileManager.default.fileExists(atPath: url.path) else {
+            return false
+        }
+
+        // 尝试初始化 UIImage，如果成功则说明是图片
+        if let _ = UIImage(contentsOfFile: url.path) {
+            return true
+        } else {
+            return false
+        }
     }
 
     static func == (lhs: HistoryModel, rhs: HistoryModel) -> Bool {

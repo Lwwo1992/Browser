@@ -8,6 +8,8 @@
 import Foundation
 
 struct S {
+    static var bookmark = HistoryModel()
+
     struct Table {
         /// 系统配置
         static let configInfo = "configTable"
@@ -23,6 +25,8 @@ struct S {
         static let folder = "folderTable"
         /// 书签
         static let bookmark = "bookmarkTable"
+        /// 导航页书签
+        static let guideBookmark = "guideBookmarkTable"
         /// 下载
         static let download = "downloadTable"
     }

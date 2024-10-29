@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OperateBottomView: View {
-    @ObservedObject var viewModel: HistoryViewModel
+    @EnvironmentObject var viewModel: HistoryViewModel
     /// 判断需要 '新建文件夹'
     var showFolder: Bool = true
 
@@ -47,23 +47,10 @@ struct OperateBottomView: View {
 
         Button("删除") {
             if !viewModel.selectedArray.isEmpty || !viewModel.selectedFolderArray.isEmpty {
-                viewModel.showingAllDeleteAlert.toggle()
+                viewModel.showingDeleteAlert.toggle()
             }
         }
         .frame(maxWidth: .infinity)
-        .alert(isPresented: $viewModel.showingAllDeleteAlert) {
-            Alert(
-                title: Text("删除"),
-                message: Text("您确定要删除选中的吗？"),
-                primaryButton: .destructive(Text("删除")) {
-                    if viewModel.selectedSegmentIndex == 0 {
-                        viewModel.deleteSelectedFolderItems()
-                    }
-                    viewModel.deleteSelectedItems()
-                },
-                secondaryButton: .cancel(Text("取消"))
-            )
-        }
 
         Button("完成") {
             viewModel.isEdit.toggle()
@@ -90,9 +77,11 @@ struct OperateBottomView: View {
                             S.Config.lastSyncTime = Date()
                             viewModel.syncBookmark()
                         }
-                        Text("(\(S.Config.lastSyncTimeAgo()))")
-                            .font(.system(size: 10))
-                            .opacity(0.5)
+                        if S.Config.lastSyncTimeAgo().count > 0 {
+                            Text("(\(S.Config.lastSyncTimeAgo()))")
+                                .font(.system(size: 10))
+                                .opacity(0.5)
+                        }
                     }
                     .frame(maxWidth: .infinity)
                 }

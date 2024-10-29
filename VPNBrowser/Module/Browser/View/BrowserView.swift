@@ -9,9 +9,8 @@ import Kingfisher
 import SwiftUI
 
 struct BrowserView: View {
-    @StateObject private var webViewModel = WebViewViewModel()
+    @StateObject var webViewModel = WebViewViewModel()
     @StateObject private var viewModel = ViewModel.shared
-    @State private var bookmarkModel = HistoryModel()
     @State private var bookmarNum = "0"
 
     var body: some View {
@@ -29,14 +28,15 @@ struct BrowserView: View {
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .onAppear {
+            webViewModel.urlString = S.Config.defalutUrl
+        }
     }
 
     @ViewBuilder
     private func webView() -> some View {
-        WebViewWrapper(urlString: S.Config.defalutUrl, viewModel: webViewModel, onSaveInfo: { model in
-            self.bookmarkModel = model
-        })
-        .frame(maxHeight: .infinity)
+        WebViewWrapper(viewModel: webViewModel)
+            .frame(maxHeight: .infinity)
     }
 
     private var searchBar: some View {
@@ -80,20 +80,17 @@ struct BrowserView: View {
             )
             .onTapGesture {
                 let vc = TabsViewController()
-                vc.model = bookmarkModel
+                vc.model = webViewModel.guideBookmark
                 vc.onBookmarkAdded = { model in
+                    webViewModel.shouldUpdate = true
                     webViewModel.urlString = model.address ?? ""
                 }
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }
             .onAppear {
-                if let bookmarkes = DBaseManager.share.qureyFromDb(fromTable: S.Table.bookmark, cls: HistoryModel.self) {
+                if let bookmarkes = DBaseManager.share.qureyFromDb(fromTable: S.Config.mode == .web ? S.Table.bookmark : S.Table.guideBookmark, cls: HistoryModel.self) {
                     self.bookmarNum = "\(bookmarkes.count)"
                 }
             }
     }
-}
-
-#Preview {
-    BrowserView()
 }

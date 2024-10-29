@@ -33,7 +33,7 @@ struct TabsView: View {
                                     WebImage(url: model.url) { image in
                                         image
                                             .resizable()
-                                            .scaledToFill()
+                                            .scaledToFit()
                                             .frame(width: width, height: width * 1.4)
                                             .cornerRadius(8)
                                             .overlay(
@@ -103,9 +103,9 @@ struct TabsView: View {
 
                 Button {
                     let newBookmark = bookmarkModel.copy() as! HistoryModel
-                    DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Table.bookmark)
+                    DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Config.mode == .web ? S.Table.bookmark : S.Table.guideBookmark)
                     bookmarkes.insert(newBookmark, at: 0)
-                    Util.topViewController().navigationController?.popToRootViewController(animated: true)
+                    Util.topViewController().navigationController?.popViewController(animated: true)
                 } label: {
                     Text("添加")
                 }
@@ -121,25 +121,56 @@ struct TabsView: View {
     }
 
     private func fetchRecords() {
-        if let bookmarkes = DBaseManager.share.qureyFromDb(fromTable: S.Table.bookmark, cls: HistoryModel.self) {
-            self.bookmarkes = bookmarkes.reversed()
+        if let viewControllers = Util.topViewController().navigationController?.viewControllers {
+            if viewControllers.count > 1 {
+                let previousViewController = viewControllers[viewControllers.count - 2]
+                if previousViewController is BrowserWebViewController || S.Config.mode == .web {
+                    if let bookmarkes = DBaseManager.share.qureyFromDb(fromTable: S.Table.bookmark, cls: HistoryModel.self) {
+                        self.bookmarkes = bookmarkes.reversed()
+                    }
+                } else {
+                    if let bookmarkes = DBaseManager.share.qureyFromDb(fromTable: S.Table.guideBookmark, cls: HistoryModel.self) {
+                        self.bookmarkes = bookmarkes.reversed()
+                    }
+                }
+            }
         }
     }
 
     private func deleteAllBookmarkes() {
         bookmarkes.removeAll()
-        DBaseManager.share.deleteFromDb(fromTable: S.Table.bookmark)
+        if let viewControllers = Util.topViewController().navigationController?.viewControllers {
+            if viewControllers.count > 1 {
+                let previousViewController = viewControllers[viewControllers.count - 2]
+                if previousViewController is BrowserWebViewController || S.Config.mode == .web {
+                    DBaseManager.share.deleteFromDb(fromTable: S.Table.bookmark)
+                } else {
+                    DBaseManager.share.deleteFromDb(fromTable: S.Table.guideBookmark)
+                }
+            }
+        }
     }
 
     private func delete(_ bookmark: HistoryModel) {
         // 从 bookmarkes 数组中删除对应的 bookmark
         bookmarkes.removeAll { $0.id == bookmark.id }
 
-        // 从数据库中删除对应的记录
-        DBaseManager.share.deleteFromDb(
-            fromTable: S.Table.bookmark,
-            where: HistoryModel.Properties.id == bookmark.id
-        )
+        if let viewControllers = Util.topViewController().navigationController?.viewControllers {
+            if viewControllers.count > 1 {
+                let previousViewController = viewControllers[viewControllers.count - 2]
+                if previousViewController is BrowserWebViewController || S.Config.mode == .web {
+                    DBaseManager.share.deleteFromDb(
+                        fromTable: S.Table.bookmark,
+                        where: HistoryModel.Properties.id == bookmark.id
+                    )
+                } else {
+                    DBaseManager.share.deleteFromDb(
+                        fromTable: S.Table.guideBookmark,
+                        where: HistoryModel.Properties.id == bookmark.id
+                    )
+                }
+            }
+        }
     }
 }
 

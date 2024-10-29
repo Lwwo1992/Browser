@@ -17,6 +17,7 @@ class GuideViewModel: ObservableObject {
     private func loadGuideLabels() {
         HUD.showLoading()
         APIProvider.shared.request(.guideLabelPage, progress: { _ in }) { [weak self] result in
+            HUD.hideNow()
             guard let self else { return }
             switch result {
             case let .success(response):

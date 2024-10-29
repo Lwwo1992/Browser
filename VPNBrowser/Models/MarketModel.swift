@@ -228,11 +228,9 @@ class HomeViewModel: ObservableObject {
             guard let self = self else { return }
             switch result {
             case let .success(model):
-                if let headPortrait = model.headPortrait {
-                    DispatchQueue.main.async {
-                        if index < self.visitorImages.count {
-                            self.visitorImages[index] = headPortrait
-                        }
+                DispatchQueue.main.async {
+                    if index < self.visitorImages.count {
+                        self.visitorImages[index] = model.headPortrait ?? ""
                     }
                 }
             case let .failure(error):
@@ -241,16 +239,22 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func inviteStatus(for model: MarketModel) -> String {
+    func remainingInviteCount(for model: MarketModel) -> Int {
         let shareCount = model.template.details.shareUserCount
         let invitedCount = model.doInfo?.hasShareUserIds.count ?? 0
+        return shareCount - invitedCount
+    }
 
-        if invitedCount == shareCount {
+    func inviteStatus(for model: MarketModel) -> String {
+        let remainingCount = remainingInviteCount(for: model)
+        
+        if remainingCount == 0 {
             return model.hasGet ? "已领取" : "领取"
         } else {
-            return "再邀请\(shareCount - invitedCount)人"
+            return "再邀请\(remainingCount)人"
         }
     }
+
 
     func shareAction() {
         DispatchQueue.global().async { [weak self] in

@@ -31,8 +31,9 @@ struct CollectionView: View {
                     .font(.system(size: 16))
                 Spacer()
             }
-            OperateBottomView(viewModel: viewModel)
-        }.environmentObject(viewModel)
+            OperateBottomView()
+        }
+        .environmentObject(viewModel)
     }
 }
 

@@ -17,12 +17,7 @@ struct BrowserWebView: View {
         VStack {
             searchBar()
 
-            WebViewWrapper(viewModel: viewModel) { model in
-                viewModel.currentModel = model
-                if !S.Config.openNoTrace {
-                    DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.browseHistory)
-                }
-            }
+            WebViewWrapper(viewModel: viewModel)
 
             bottomView()
         }
@@ -107,9 +102,10 @@ struct BrowserWebView: View {
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
                     let vc = TabsViewController()
-                    vc.model = viewModel.currentModel
+                    vc.model = viewModel.bookmark
                     vc.onBookmarkAdded = { bookmark in
                         if let address = bookmark.address {
+                            viewModel.shouldUpdate = true
                             viewModel.urlString = address
                         }
                     }
@@ -171,7 +167,7 @@ extension BrowserWebView {
 
         let model = HistoryModel()
         model.parentId = folder.id
-        model.name = viewModel.currentModel.title ?? "未知"
+        model.name = viewModel.bookmark.title ?? "未知"
         model.address = viewModel.urlString
 
         if isCollect {

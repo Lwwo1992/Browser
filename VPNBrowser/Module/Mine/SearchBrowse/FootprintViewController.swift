@@ -31,6 +31,34 @@ class FootprintViewController: ViewController {
                 self.showAlertWithTextField()
             }
             .store(in: &cancellables)
+
+        viewModel.$showingDeleteAlert
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                showDeleteAlert { [weak self] in
+                    guard let self else { return }
+                    if viewModel.selectedSegmentIndex == 0 {
+                        viewModel.deleteSelectedFolderItems()
+                    }
+                    viewModel.deleteSelectedItems()
+                }
+            }
+            .store(in: &cancellables)
+
+        viewModel.$showingAllDeleteAlert
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                showDeleteAlert(
+                    title: "删除记录",
+                    message: "您确定要删除选择的记录吗？"
+                ) { [weak self] in
+                    guard let self else { return }
+                    viewModel.deleteRecords()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     convenience init(selectedSegmentIndex: Int) {
@@ -72,6 +100,29 @@ extension FootprintViewController {
         let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
 
         alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func showDeleteAlert(
+        title: String = "删除",
+        message: String = "您确定要删除选中的吗?",
+        deleteHandler: @escaping () -> Void
+    ) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+
+        let deleteAction = UIAlertAction(title: "删除", style: .destructive) { _ in
+            deleteHandler()
+        }
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+
+        alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
 
         present(alertController, animated: true, completion: nil)

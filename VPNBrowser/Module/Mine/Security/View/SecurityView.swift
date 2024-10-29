@@ -32,6 +32,7 @@ struct SecurityView: View {
     @ObservedObject var viewModel = LoginManager.shared
     @State private var isShowingActionSheet = false
     @State private var showingAlert = false
+    @State private var showingLoginAlert = false
     private let imagePickerManager = ImagePicker()
 
     var body: some View {
@@ -70,9 +71,19 @@ struct SecurityView: View {
             .alert(isPresented: $showingAlert) {
                 Alert(
                     title: Text("注销账户"),
-                    message: Text("注销庄户后、书签、收藏的资料将全部删除,确认要注销账户?"),
+                    message: Text("注销账户后、书签、收藏的资料将全部删除,确认要注销账户?"),
                     primaryButton: .destructive(Text("确认注销")) {
                         cancelAccount()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+            .alert(isPresented: $showingLoginAlert) {
+                Alert(
+                    title: Text("退出登录"),
+                    message: Text("退出登录后、书签、收藏无法实现同步,存在丢失风险,确认要退出嘛?"),
+                    primaryButton: .destructive(Text("确认退出")) {
+                        logout()
                     },
                     secondaryButton: .cancel()
                 )
@@ -137,7 +148,7 @@ struct SecurityView: View {
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }
         case .logout:
-            logout()
+            showingLoginAlert.toggle()
         case .account:
             let vc = AccountViewController()
             vc.title = item.rawValue
