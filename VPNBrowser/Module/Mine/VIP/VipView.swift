@@ -26,7 +26,7 @@ struct VipView: View {
     @ViewBuilder
     private func topView() -> some View {
         HStack(alignment: .top) {
-            WebImage(url: URL(string: viewModel.userInfo.headPortrait)) { image in
+            WebImage(url: Util.getImageUrl(from: viewModel.userInfo.headPortrait)) { image in
                 image
                     .resizable()
                     .scaledToFill()

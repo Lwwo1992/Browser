@@ -16,11 +16,11 @@ struct MineTopView: View {
     @State private var collectNumber: String = "0"
     @State private var downloadNumber: String = "0"
     @State private var lowPrice: String = "0"
-
+    
     var body: some View {
         VStack {
             HStack {
-                WebImage(url: URL(string: viewModel.info.headPortrait)) { image in
+                WebImage(url: Util.getImageUrl(from: viewModel.userInfo.headPortrait)) { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -185,6 +185,7 @@ struct MineTopView: View {
             .padding(.horizontal, 24)
             .background(Color.white)
             .cornerRadius(10)
+            .padding(.top, 10)
         }
     }
 }

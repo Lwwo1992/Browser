@@ -11,7 +11,7 @@ struct MineView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             MineTopView()
-                .padding(.top, Util.safeAreaInsets.top + 44)
+                .padding(.top, Util.safeAreaInsets.top)
             MineBottomView()
         }
         .padding(.horizontal, 16)

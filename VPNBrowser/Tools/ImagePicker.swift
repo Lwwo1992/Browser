@@ -167,7 +167,7 @@ class S3ClientUtils {
         }
 
         // 构建图片的 URL
-        let imgUrl = "\(model.endpoint)/\(model.bucket)/\(key)"
+        let address = "/\(model.bucket)/\(key)"
 
         // 上传文件
         transferManager.upload(uploadRequest).continueWith { task -> AnyObject? in
@@ -180,9 +180,9 @@ class S3ClientUtils {
                     completion(nil, error) // 上传失败时回调错误
                 }
             } else {
-                print("上传成功！图片的访问地址为: \(imgUrl)")
+                print("上传成功！图片的访问地址为: \(address)")
                 DispatchQueue.main.async {
-                    completion(imgUrl, nil) // 上传成功时回调图片 URL
+                    completion(address, nil) // 上传成功时回调图片 URL
                 }
             }
             return nil

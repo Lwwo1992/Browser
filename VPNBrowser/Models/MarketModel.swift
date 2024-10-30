@@ -98,9 +98,9 @@ class HomeViewModel: ObservableObject {
     }
 
     func fetchMarketList() {
-        HUD.showLoading()
+//        HUD.showLoading()
         APIProvider.shared.request(.marketList, progress: { _ in }) { [weak self] result in
-            HUD.hideNow()
+//            HUD.hideNow()
             guard let self = self else { return }
             switch result {
             case let .success(response):

@@ -15,7 +15,7 @@ struct AboutView: View {
 
         static var sections: [[AboutOption]] {
             [
-                [.checkForUpdates],
+//                [.checkForUpdates],
                 [.privacyPolicy, .termsOfService],
             ]
         }

@@ -29,7 +29,7 @@ struct BrowserView: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .onAppear {
-//            webViewModel.shouldUpdate = true
+            webViewModel.shouldUpdate = viewModel.updateWeb
             webViewModel.urlString = S.Config.defalutUrl
         }
     }

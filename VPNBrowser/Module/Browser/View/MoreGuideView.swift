@@ -47,7 +47,7 @@ struct MoreGuideView: View {
                         }
 
                         Text(row.name ?? "")
-                            .font(.system(size: 14))
+                            .font(.system(size: 12))
                             .opacity(0.5)
                             .lineLimit(1)
                             .truncationMode(.tail)

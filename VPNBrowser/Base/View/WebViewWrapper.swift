@@ -232,6 +232,7 @@ struct WebViewWrapper: UIViewRepresentable {
             let request = URLRequest(url: url)
             uiView.load(request)
             viewModel.shouldUpdate = false
+            ViewModel.shared.updateWeb = false
         }
     }
 }

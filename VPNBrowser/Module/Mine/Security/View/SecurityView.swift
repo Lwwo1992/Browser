@@ -104,7 +104,7 @@ struct SecurityView: View {
     }
 
     private var avatarView: some View {
-        WebImage(url: URL(string: viewModel.info.headPortrait)) { Image in
+        WebImage(url: Util.getImageUrl(from: viewModel.userInfo.headPortrait)) { Image in
             Image
                 .resizable()
                 .scaledToFill()
@@ -280,11 +280,11 @@ struct SecurityView: View {
                 let s3Client = S3ClientUtils(accessKey: m.accessKey, secretKey: m.secretKey, token: m.token, endpoint: m.endpoint)
 
                 HUD.showLoading()
-                s3Client.uploadImageToS3(filePath: urlStr, model: m) { imgUrl, _ in
+                s3Client.uploadImageToS3(filePath: urlStr, model: m) { address, _ in
                     HUD.hideNow()
-                    if let imgUrl, !imgUrl.isEmpty {
-                        viewModel.info.headPortrait = imgUrl
-                        updateUserInfo(imgUrl: imgUrl)
+                    if let address, !address.isEmpty {
+                        viewModel.info.headPortrait = address
+                        updateUserInfo(address)
                     }
                 }
 
@@ -309,9 +309,9 @@ struct SecurityView: View {
         }
     }
 
-    private func updateUserInfo(imgUrl: String) {
+    private func updateUserInfo(_ address: String) {
         HUD.showLoading()
-        APIProvider.shared.request(.editUserInfo(headPortrait: imgUrl, name: "", id: viewModel.info.id)) {
+        APIProvider.shared.request(.editUserInfo(headPortrait: address, name: "", id: viewModel.info.id)) {
             result in
             HUD.hideNow()
             switch result {
@@ -320,7 +320,7 @@ struct SecurityView: View {
                 HUD.showTipMessage("修改成功")
 
                 let model = LoginModel()
-                model.headPortrait = imgUrl
+                model.headPortrait = address
 
                 DBaseManager.share.updateToDb(table: S.Table.loginInfo,
                                               on: [LoginModel.Properties.headPortrait],

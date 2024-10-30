@@ -1040,7 +1040,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Brower;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tomato Browser";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "app需要您的允许才能上传头像或动态";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "app需要您的允许才能上传头像或动态";
@@ -1086,7 +1086,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VPNBrowser/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Brower;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tomato Browser";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "app需要您的允许才能上传头像或动态";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "app需要您的允许才能上传头像或动态";

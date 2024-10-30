@@ -34,7 +34,7 @@ struct GuideView: View {
                     ForEach(viewModel.guideSections, id: \.id) { section in
                         if let rows = section.data, !rows.isEmpty {
                             VStack(alignment: .leading) {
-                                HStack {
+                                HStack(spacing: 5) {
                                     WebImage(url: Util.getGuideImageUrl(from: section.appIcon)) { image in
                                         image
                                             .resizable()
@@ -43,8 +43,7 @@ struct GuideView: View {
                                             .cornerRadius(5)
                                     } placeholder: {}
                                     Text(section.name ?? "")
-                                        .font(.headline)
-                                        .padding(.leading, 16)
+                                        .font(.system(size: 14))
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -82,25 +81,21 @@ struct GuideView: View {
                 image
                     .resizable()
                     .scaledToFill()
-                    .frame(width: itemWidth, height: itemWidth)
+                    .frame(width: itemWidth * 0.8, height: itemWidth * 0.8)
                     .cornerRadius(5)
             } placeholder: {
                 Rectangle()
                     .fill(Color.gray.opacity(0.2))
                     .cornerRadius(2)
-                    .frame(width: itemWidth, height: itemWidth)
+                    .frame(width: itemWidth * 0.8, height: itemWidth * 0.8)
             }
 
             Text(row.name ?? "")
-                .font(.system(size: 14))
+                .font(.system(size: 12))
                 .opacity(0.5)
                 .lineLimit(1)
                 .truncationMode(.tail)
         }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 8)
-        .background(Color.white)
-        .cornerRadius(8)
         .onTapGesture {
             Util.guideItemTap(row)
         }
@@ -120,7 +115,7 @@ struct GuideView: View {
                 Image(.more)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: itemWidth, height: itemWidth)
+                    .frame(width: itemWidth * 0.8, height: itemWidth * 0.8)
                     .cornerRadius(5)
 
                 Text("更多应用")
@@ -129,9 +124,6 @@ struct GuideView: View {
                     .foregroundColor(.black)
                     .opacity(0.5)
             }
-            .padding(.vertical, 5)
-            .padding(.horizontal, 8)
-            .background(Color.white)
             .cornerRadius(8)
         }
     }

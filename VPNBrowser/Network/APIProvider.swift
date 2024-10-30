@@ -9,7 +9,8 @@ import Alamofire
 import HandyJSON
 import Moya
 
-private let channelCode = "tomato"
+//private let channelCode = "tomato" // 测试环境
+private let channelCode = "browser" // 正式环境
 
 import Alamofire
 import Moya
@@ -157,14 +158,14 @@ enum APITarget {
 
 extension APITarget: TargetType {
     var baseURL: URL {
-        return URL(string: "http://merge-api.saas-xy.com:86")!
-//        return URL(string: "http://oa-api.saas-xy.com:89/#/")!
+//        return URL(string: "http://merge-api.saas-xy.com:86")!
+        return URL(string: "http://oa-api.saas-xy.com:89")!
     }
 
     var path: String {
         switch self {
         case .guideConfig:
-            return "guide/h5/upload/config"
+            return "/guide/h5/upload/config"
         case .guideLabelPage:
             return "/guide/h5/label/page"
         case .guideAppPage:
@@ -340,7 +341,7 @@ extension APITarget: TargetType {
 
     var headers: [String: String]? {
         switch self {
-        case .guideAppPage, .guideLabelPage:
+        case .guideAppPage, .guideLabelPage, .guideConfig:
             return [
                 "Content-Type": "application/json",
                 "ClientAuthorization": TokenGenerator.generateTokenGuide(),
