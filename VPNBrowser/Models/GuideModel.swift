@@ -54,9 +54,9 @@ class GuideViewModel: ObservableObject {
 
     private func fetchApps(for labels: [GuideItem]) {
         let group = DispatchGroup()
-        var sections: [GuideResponse] = []
+        var sections = Array(repeating: GuideResponse(), count: labels.count) 
 
-        for label in labels {
+        for (index, label) in labels.enumerated() {
             guard let id = label.id else { continue }
             group.enter()
 
@@ -66,7 +66,7 @@ class GuideViewModel: ObservableObject {
                     let jsonString = String(data: response.data, encoding: .utf8) ?? ""
                     print("Response JSON: \(jsonString)")
 
-                    if let responseApps = GuideResponse.deserialize(from: String(data: response.data, encoding: .utf8)) {
+                    if let responseApps = GuideResponse.deserialize(from: jsonString) {
                         let apps = responseApps.data ?? []
 
                         let section = GuideResponse()
@@ -74,8 +74,9 @@ class GuideViewModel: ObservableObject {
                         section.name = label.name
                         section.icon = label.icon
                         section.appIcon = label.appIcon
-                        sections.append(section)
 
+                        // 根据 label 原始顺序插入
+                        sections[index] = section
                     } else {
                         print("Error decoding apps.")
                     }

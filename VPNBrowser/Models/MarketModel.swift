@@ -338,6 +338,7 @@ class TemplateDetails: BaseModel {
 }
 
 class DoInfo: BaseModel {
+    var expireTime: Double?
     // 已分享用户ID
     var hasShareUserIds: [String] = []
 }

@@ -67,21 +67,21 @@ struct LoginView: View {
                 }
             }
 
+            Button {
+                viewModel.nextButtonAction()
+            } label: {
+                Text("下一步")
+                    .font(.system(size: 14))
+                    .foregroundColor(.white)
+                    .frame(width: 200)
+                    .frame(height: 50)
+                    .background(Color.blue)
+                    .cornerRadius(25)
+            }
+
             // 判断是否展示 "或"
             if let accountType = S.Config.loginType?.first(where: { $0.key == "account" }), accountType.value == true,
                (S.Config.loginType?.contains(where: { $0.value == true })) ?? false {
-                Button {
-                    viewModel.nextButtonAction()
-                } label: {
-                    Text("下一步")
-                        .font(.system(size: 14))
-                        .foregroundColor(.white)
-                        .frame(width: 200)
-                        .frame(height: 50)
-                        .background(Color.blue)
-                        .cornerRadius(25)
-                }
-
                 Text("或")
                     .font(.system(size: 14))
                     .foregroundColor(.gray)

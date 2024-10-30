@@ -54,7 +54,6 @@ struct WebViewWrapper: UIViewRepresentable {
             self.parent = parent
             super.init()
 
-            // 监听刷新操作
             parent.viewModel.$refresh
                 .dropFirst()
                 .sink { [weak self] isRefreshing in
@@ -91,18 +90,11 @@ struct WebViewWrapper: UIViewRepresentable {
             print("网页开始加载")
         }
 
-        // 页面加载完成时保存书签
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-//            withAnimation {
-//                parent.viewModel.refresh = false
-//            }
-
-            // 创建历史记录模型
             let model = HistoryModel()
             model.title = webView.title
             model.address = parent.viewModel.urlString
 
-            // 获取页面 logo（书签图标）
             webView.evaluateJavaScript("document.querySelector('link[rel*=\"icon\"]').href") { result, error in
                 if let logo = result as? String {
                     model.pageLogo = logo
@@ -124,7 +116,6 @@ struct WebViewWrapper: UIViewRepresentable {
                 return
             }
 
-            // 检查是否是下载链接
             if BWebViewManager.share.isDownloadLink(url: url) {
                 BWebViewManager.share.handleDownload(url: url) { [self] url1, name, size in
                     if let url1 {
@@ -137,13 +128,9 @@ struct WebViewWrapper: UIViewRepresentable {
             }
         }
 
-        // 加载失败
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
             print("Failed to load webpage: \(error.localizedDescription)")
             HUD.showTipMessage("加载失败\(error.localizedDescription)")
-//            withAnimation {
-//                parent.viewModel.refresh = false
-//            }
         }
 
         private func takeSnapshot(completion: @escaping (String?) -> Void) {

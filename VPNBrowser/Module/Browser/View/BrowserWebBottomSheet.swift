@@ -8,6 +8,8 @@
 import UIKit
 
 class BrowserWebBottomSheet: UIView {
+    var shareAction: (() -> Void)?
+    
     let items = [
 //        ("书签", "bookmark.fill"),
         ("历史", "clock.fill"),
@@ -76,6 +78,8 @@ extension BrowserWebBottomSheet: UICollectionViewDelegate, UICollectionViewDataS
             Util.topViewController().navigationController?.pushViewController(FootprintViewController(selectedSegmentIndex: 0), animated: true)
         case "下载":
             Util.topViewController().navigationController?.pushViewController(DownloadViewController(), animated: true)
+        case "分享":
+            shareAction?()
         default:
             break
         }

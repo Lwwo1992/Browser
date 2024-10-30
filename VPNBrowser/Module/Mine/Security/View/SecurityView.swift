@@ -56,11 +56,21 @@ struct SecurityView: View {
                 },
                 onTap: handleTap(for:)
             )
+            .alert(isPresented: $showingLoginAlert) {
+                Alert(
+                    title: Text("退出登录"),
+                    message: Text("退出登录后、书签、收藏无法实现同步,存在丢失风险,确认要退出嘛?"),
+                    primaryButton: .destructive(Text("确认退出")) {
+                        logout()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
 
             Spacer()
 
             Button {
-                showingAlert.toggle()
+                showingAlert = true
             } label: {
                 Text("注销账号")
                     .font(.system(size: 14))
@@ -74,16 +84,6 @@ struct SecurityView: View {
                     message: Text("注销账户后、书签、收藏的资料将全部删除,确认要注销账户?"),
                     primaryButton: .destructive(Text("确认注销")) {
                         cancelAccount()
-                    },
-                    secondaryButton: .cancel()
-                )
-            }
-            .alert(isPresented: $showingLoginAlert) {
-                Alert(
-                    title: Text("退出登录"),
-                    message: Text("退出登录后、书签、收藏无法实现同步,存在丢失风险,确认要退出嘛?"),
-                    primaryButton: .destructive(Text("确认退出")) {
-                        logout()
                     },
                     secondaryButton: .cancel()
                 )
@@ -148,7 +148,7 @@ struct SecurityView: View {
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }
         case .logout:
-            showingLoginAlert.toggle()
+            showingLoginAlert = true
         case .account:
             let vc = AccountViewController()
             vc.title = item.rawValue

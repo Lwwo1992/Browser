@@ -157,9 +157,8 @@ enum APITarget {
 
 extension APITarget: TargetType {
     var baseURL: URL {
-//        return URL(string: "https://browser-api.xiwshijieheping.com")!
         return URL(string: "http://merge-api.saas-xy.com:86")!
-//        return URL(string: "http://browser-dev-api.saas-xy.com:81")!
+//        return URL(string: "http://oa-api.saas-xy.com:89/#/")!
     }
 
     var path: String {

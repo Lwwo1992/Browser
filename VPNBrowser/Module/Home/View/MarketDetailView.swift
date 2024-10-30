@@ -21,9 +21,12 @@ struct MarketDetailView: View {
         }
         .padding(.horizontal, 16)
         .onAppear {
-            if let limitTime = model.template.limitTime, model.doInfo != nil {
-                countdownTimer.resetCountdown(to: 60 * 60 * Double(limitTime))
-                countdownTimer.startCountdown()
+            if let doInfo = model.doInfo, let expireTime = doInfo.expireTime {
+                let currentRemainingTime = expireTime - Date().timeIntervalSince1970 * 1000
+                if currentRemainingTime > 0 {
+                    countdownTimer.resetCountdown(to: currentRemainingTime / 1000)
+                    countdownTimer.startCountdown()
+                }
             }
         }
         .onDisappear {
@@ -53,9 +56,12 @@ struct MarketDetailView: View {
                     .font(.system(size: 12))
                     .padding(.top, 5)
 
-                if model.template.limitTime != nil && model.doInfo != nil {
-                    Text(Util.formatTime(countdownTimer.remainingTime))
-                        .font(.system(size: 14))
+                if let doInfo = model.doInfo, let expireTime = doInfo.expireTime {
+                    let currentRemainingTime = expireTime - Date().timeIntervalSince1970 * 1000
+                    if currentRemainingTime > 0 {
+                        Text(Util.formatTime(countdownTimer.remainingTime))
+                            .font(.system(size: 14))
+                    }
                 }
             }
             .padding(.top, 20)

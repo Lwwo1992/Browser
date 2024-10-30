@@ -31,7 +31,7 @@ extension Util {
             return nil
         }
     }
-    
+
     static func getGuideImageUrl(from path: String?) -> URL? {
         guard let path = path else {
             print("Invalid path.")
@@ -187,18 +187,11 @@ extension Util {
     }
 
     static func formatTime(_ timeInterval: TimeInterval) -> String {
-        let days = Int(timeInterval) / 86400
         let hours = (Int(timeInterval) % 86400) / 3600
         let minutes = (Int(timeInterval) % 3600) / 60
         let seconds = Int(timeInterval) % 60
 
-        if days > 0 {
-            return String(format: "%02d天 %02d:%02d:%02d", days, hours, minutes, seconds)
-        } else if hours > 0 {
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        } else {
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
+        return String(format: "%02d:%02d:%02d 到期", hours, minutes, seconds)
     }
 
     static func formatSeconds(_ timeInterval: TimeInterval) -> String {

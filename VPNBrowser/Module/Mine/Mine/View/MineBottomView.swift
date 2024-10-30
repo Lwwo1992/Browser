@@ -49,37 +49,21 @@ struct MineBottomView: View {
     }
 
     private func handleTap(for item: MineBottomOption) {
-        var vc = ViewController()
-        switch item {
-        case .accountSecurity:
-            if LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty {
-                vc = LoginViewController()
-            } else {
-                vc = SecurityViewController()
-            }
-        case .searchBrowse:
-            vc = SearchBrowseViewController()
-        case .cloudSync:
-            vc = CloudSyncViewController()
-        case .general:
-            vc = GeneralViewController()
-        case .about:
-            vc = AboutViewController()
-        case .userGuide:
-            vc = UserGuideViewController()
-        default:
-            break
-        }
+        let viewControllerMap: [MineBottomOption: (UIViewController.Type, String?)] = [
+            .accountSecurity: (LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty) ? (LoginViewController.self, nil) : (SecurityViewController.self, item.rawValue),
+            .searchBrowse: (SearchBrowseViewController.self, item.rawValue),
+            .cloudSync: (CloudSyncViewController.self, item.rawValue),
+            .general: (GeneralViewController.self, item.rawValue),
+            .about: (AboutViewController.self, item.rawValue),
+            .userGuide: (UserGuideViewController.self, item.rawValue),
+        ]
 
-        if item != .incognito {
-            vc.title = item.rawValue
-            Util.topViewController().navigationController?.pushViewController(vc, animated: true)
-        }
+        guard item != .incognito, let (vcType, title) = viewControllerMap[item] else { return }
 
-        if LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty {
-            vc.title = nil
-            vc = LoginViewController()
-        }
+        let vc = vcType.init()
+        vc.title = title
+
+        Util.topViewController().navigationController?.pushViewController(vc, animated: true)
     }
 }
 
