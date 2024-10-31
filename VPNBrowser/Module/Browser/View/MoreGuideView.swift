@@ -11,23 +11,17 @@ import SwiftUI
 struct MoreGuideView: View {
     var guideResponse = GuideResponse()
 
-    // 每排间隔
-    let itemSpacing: CGFloat = 30
-    // 最多展示两排
-    let maxVisibleRows = 2
-    // 每排展示个数
-    let maxAppNum = S.Config.maxAppNum
+    let imageWidth: CGFloat = 40
 
-    // 动态列数
+    var maxAppNum: Int {
+        return S.Config.maxAppNum
+    }
+
     var columns: [GridItem] {
-        let totalWidth = UIScreen.main.bounds.width - 32 - CGFloat(maxAppNum) * 10
-        let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
-        return Array(repeating: GridItem(.flexible(minimum: itemWidth), spacing: itemSpacing), count: maxAppNum)
+        return Array(repeating: GridItem(.flexible(minimum: 50), spacing: 10), count: 5)
     }
 
     var body: some View {
-        let totalWidth = UIScreen.main.bounds.width - 32
-        let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
 
         ScrollView {
             LazyVGrid(columns: columns, spacing: 20) {
@@ -37,13 +31,13 @@ struct MoreGuideView: View {
                             Image
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: itemWidth, height: itemWidth)
+                                .frame(width: imageWidth, height: imageWidth)
                                 .cornerRadius(5)
                         } placeholder: {
                             Rectangle()
                                 .fill(Color.gray)
                                 .cornerRadius(5)
-                                .frame(width: itemWidth, height: itemWidth)
+                                .frame(width: imageWidth, height: imageWidth)
                         }
 
                         Text(row.name ?? "")
@@ -52,10 +46,6 @@ struct MoreGuideView: View {
                             .lineLimit(1)
                             .truncationMode(.tail)
                     }
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 8)
-                    .background(Color.white)
-                    .cornerRadius(8)
                     .onTapGesture {
                         Util.guideItemTap(row)
                     }
@@ -64,8 +54,4 @@ struct MoreGuideView: View {
             .padding(.horizontal, 16)
         }
     }
-}
-
-#Preview {
-    MoreGuideView()
 }

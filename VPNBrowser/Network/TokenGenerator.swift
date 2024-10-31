@@ -9,8 +9,8 @@ import Foundation
 import SwiftJWT
 
 class TokenGenerator {
-//    private static let GRANT_CODE = "wkryw7roteux" // 测试环境
-    private static let GRANT_CODE = "kiueQf44NtLu" // 正式环境
+    private static let GRANT_CODE = "wkryw7roteux" // 测试环境
+//    private static let GRANT_CODE = "kiueQf44NtLu" // 正式环境
     private static let SECRET_KEY = "clientAccess_xysfkhdfw"
     private static let CLIENT_CODE = "browser"
     private static let outTime: TimeInterval = 60 * 60 * 100 // 过期时间，单位为秒

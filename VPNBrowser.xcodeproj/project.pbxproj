@@ -363,6 +363,14 @@
 			path = VIP;
 			sourceTree = "<group>";
 		};
+		44248FDE2CD3304100B8741D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				44444AF82CC747EC002E204B /* MarketModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		444C93332CB4D89D0092FECB = {
 			isa = PBXGroup;
 			children = (
@@ -514,6 +522,7 @@
 		44AA50882CB50160005EBC36 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				44248FDE2CD3304100B8741D /* Model */,
 				44CD45F92CBE292F003A415E /* View */,
 				44AA50822CB4DFC3005EBC36 /* HomeViewController.swift */,
 				44444AFA2CC75553002E204B /* MarketDetailViewController.swift */,
@@ -637,7 +646,6 @@
 				44984E4E2CBF687F00158380 /* UserGuideModel.swift */,
 				44984FDB2CBFD2B700158380 /* DownloadModel.swift */,
 				44D3C2AD2CC23C3600E41BEC /* FolderModel.swift */,
-				44444AF82CC747EC002E204B /* MarketModel.swift */,
 				44DD0C642CC9ED9900A4964A /* UserInfoModel.swift */,
 			);
 			path = Models;

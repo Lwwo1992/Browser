@@ -19,6 +19,3 @@ struct MineView: View {
     }
 }
 
-#Preview {
-    MineView()
-}

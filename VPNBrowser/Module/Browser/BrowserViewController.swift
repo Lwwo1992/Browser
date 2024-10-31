@@ -20,20 +20,7 @@ class BrowserViewController: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        HUD.showLoading()
-        config { [weak self] in
-            guard let self else { return }
-            HUD.hideNow()
-            addChild(browserHostingController)
-            view.addSubview(browserHostingController.view)
-            browserHostingController.view.snp.makeConstraints { make in
-                make.left.right.bottom.equalToSuperview()
-                make.top.equalTo(self.view.safeAreaTop)
-            }
-            browserHostingController.didMove(toParent: self)
-
-            LoginManager.shared.fetchUserInfo()
-        }
+        requestData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,11 +41,45 @@ class BrowserViewController: ViewController {
             }
         }
     }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension BrowserViewController {
     override func initUI() {
         super.initUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(remakeToken), name: .jumpToLogin, object: nil)
+    }
+
+    @objc private func remakeToken(notification: Notification) {
+        LoginManager.shared.info = LoginModel()
+        LoginManager.shared.userInfo = LoginModel()
+        DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+
+        requestData { 
+            Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
+        }
+    }
+
+    private func requestData(completion: (() -> Void)? = nil) {
+        HUD.showLoading()
+        config { [weak self] in
+            guard let self else { return }
+            HUD.hideNow()
+            addChild(browserHostingController)
+            view.addSubview(browserHostingController.view)
+            browserHostingController.view.snp.makeConstraints { make in
+                make.left.right.bottom.equalToSuperview()
+                make.top.equalTo(self.view.safeAreaTop)
+            }
+            browserHostingController.didMove(toParent: self)
+
+            LoginManager.shared.fetchUserInfo()
+
+            completion?()
+        }
     }
 
     private func config(completion: (() -> Void)? = nil) {

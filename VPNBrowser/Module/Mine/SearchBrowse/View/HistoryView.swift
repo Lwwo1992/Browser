@@ -99,7 +99,6 @@ struct HistoryView: View {
                     .opacity(0.5)
             }
             .font(.system(size: 14, weight: .medium))
-            .opacity(0.6)
             .frame(height: 50)
 
             Divider()
@@ -114,7 +113,6 @@ struct HistoryView: View {
         .onLongPressGesture {
             selctedModel = model
             showingDeleteAlert = true
-            debugPrint("-----")
         }
     }
 }

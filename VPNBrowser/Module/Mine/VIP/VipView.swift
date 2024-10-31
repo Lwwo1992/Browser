@@ -215,7 +215,7 @@ struct VipView: View {
         }
     }
 }
-
-#Preview {
-    VipView()
-}
+//
+//#Preview {
+//    VipView()
+//}

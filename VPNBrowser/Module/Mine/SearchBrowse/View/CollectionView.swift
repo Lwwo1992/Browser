@@ -108,7 +108,6 @@ struct CollectionItemView: View {
                     .opacity(0.5)
             }
             .font(.system(size: 14, weight: .medium))
-            .opacity(0.6)
             .frame(height: 30)
             .frame(maxWidth: .infinity, alignment: .leading)
 

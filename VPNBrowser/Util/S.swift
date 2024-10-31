@@ -107,3 +107,7 @@ struct S {
         }
     }
 }
+
+extension Notification.Name {
+    static let jumpToLogin = Notification.Name("jumpToLogin")
+}

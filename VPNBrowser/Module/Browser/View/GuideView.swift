@@ -11,29 +11,23 @@ import SwiftUI
 struct GuideView: View {
     @ObservedObject var viewModel = GuideViewModel()
 
-    // 每排间隔
-    let itemSpacing: CGFloat = 30
-    // 最多展示两排
-    let maxVisibleRows = 2
-    // 每排展示个数
+    let imageWidth: CGFloat = 40
+
     var maxAppNum: Int {
         return S.Config.maxAppNum
     }
 
-    // 动态列数
     var columns: [GridItem] {
-        let totalWidth = UIScreen.main.bounds.width - 32 - CGFloat(maxAppNum) * 10
-        let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
-        return Array(repeating: GridItem(.flexible(minimum: itemWidth), spacing: itemSpacing), count: maxAppNum)
+        return Array(repeating: GridItem(.flexible(minimum: 50), spacing: 10), count: 5)
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     ForEach(viewModel.guideSections, id: \.id) { section in
                         if let rows = section.data, !rows.isEmpty {
-                            VStack(alignment: .leading) {
+                            VStack(alignment: .leading, spacing: 16) {
                                 HStack(spacing: 5) {
                                     WebImage(url: Util.getGuideImageUrl(from: section.appIcon)) { image in
                                         image
@@ -47,14 +41,18 @@ struct GuideView: View {
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                                LazyVGrid(columns: columns, spacing: itemSpacing) {
-                                    let displayedRows = min(rows.count, maxVisibleRows * columns.count)
-
-                                    ForEach(0 ..< displayedRows, id: \.self) { index in
-                                        if isMoreAppsButton(index: index, total: displayedRows, rows: rows) {
-                                            moreAppsButton(data: section)
-                                        } else {
+                                LazyVGrid(columns: columns) {
+                                    let displayedRows = min(rows.count, maxAppNum)
+                                    if displayedRows < 3 {
+                                        ForEach(0 ..< displayedRows, id: \.self) { index in
                                             appCell(for: rows[index])
+                                        }
+                                    } else {
+                                        ForEach(0 ..< displayedRows - 1, id: \.self) { index in
+                                            appCell(for: rows[index])
+                                        }
+                                        if displayedRows == maxAppNum {
+                                            moreAppsButton(data: section)
                                         }
                                     }
                                 }
@@ -65,29 +63,23 @@ struct GuideView: View {
                 .padding(.horizontal, 16)
             }
         }
-    }
-
-    private func isMoreAppsButton(index: Int, total: Int, rows: [GuideItem]) -> Bool {
-        return index == (columns.count * maxVisibleRows - 1) && total < rows.count
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     @ViewBuilder
     private func appCell(for row: GuideItem) -> some View {
-        let totalWidth = UIScreen.main.bounds.width - 32
-        let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
-
         VStack(spacing: 5) {
             WebImage(url: Util.getGuideImageUrl(from: row.icon)) { image in
                 image
                     .resizable()
                     .scaledToFill()
-                    .frame(width: itemWidth * 0.8, height: itemWidth * 0.8)
+                    .frame(width: imageWidth, height: imageWidth)
                     .cornerRadius(5)
             } placeholder: {
                 Rectangle()
                     .fill(Color.gray.opacity(0.2))
                     .cornerRadius(2)
-                    .frame(width: itemWidth * 0.8, height: itemWidth * 0.8)
+                    .frame(width: imageWidth, height: imageWidth)
             }
 
             Text(row.name ?? "")
@@ -103,20 +95,15 @@ struct GuideView: View {
 
     @ViewBuilder
     private func moreAppsButton(data: GuideResponse) -> some View {
-        let totalWidth = UIScreen.main.bounds.width - 32
-        let itemWidth = (totalWidth - CGFloat(maxAppNum - 1) * itemSpacing) / CGFloat(maxAppNum)
-
         Button {
             let vc = MoreGuideViewController()
             vc.guideResponse = data
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         } label: {
             VStack(spacing: 5) {
-                Image(.more)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: itemWidth * 0.8, height: itemWidth * 0.8)
-                    .cornerRadius(5)
+                Image(systemName: "square.grid.2x2")
+                    .font(.system(size: imageWidth - 10))
+                    .foregroundColor(.black)
 
                 Text("更多应用")
                     .font(.system(size: 14))

@@ -11,7 +11,7 @@ import SwiftUI
 struct AccountView: View {
     var body: some View {
         VStack(spacing: 10) {
-            WebImage(url: URL(string: LoginManager.shared.info.headPortrait)) { image in
+            WebImage(url: Util.getImageUrl(from: LoginManager.shared.userInfo.headPortrait)) { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -44,6 +44,3 @@ struct AccountView: View {
     }
 }
 
-#Preview {
-    AccountView()
-}

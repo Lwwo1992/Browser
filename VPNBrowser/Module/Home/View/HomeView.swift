@@ -10,6 +10,7 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
+    @StateObject var countdownTimer = CountdownTimer()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,6 +20,18 @@ struct HomeView: View {
         .frame(maxHeight: .infinity, alignment: .top)
         .onAppear {
             viewModel.fetchMarketList()
+        }
+        .onAppear {
+            if let doInfo = viewModel.marketModel.doInfo, let expireTime = doInfo.expireTime {
+                let currentRemainingTime = expireTime - Date().timeIntervalSince1970 * 1000
+                if currentRemainingTime > 0 {
+                    countdownTimer.resetCountdown(to: currentRemainingTime / 1000)
+                    countdownTimer.startCountdown()
+                }
+            }
+        }
+        .onDisappear {
+            countdownTimer.stopTimer()
         }
         .padding(.top, Util.safeAreaInsets.top + 44)
     }
@@ -46,6 +59,17 @@ struct HomeView: View {
             Text("在邀请\(viewModel.marketModel.template.details.shareUserCount)人,直接免费拿")
                 .font(.system(size: 12))
                 .padding(.top, 5)
+            
+            if let doInfo = viewModel.marketModel.doInfo, let expireTime = doInfo.expireTime {
+                let currentRemainingTime = expireTime - Date().timeIntervalSince1970 * 1000
+                if currentRemainingTime > 0 {
+                    Text(Util.formatTime(countdownTimer.remainingTime))
+                        .font(.system(size: 14))
+                } else {
+                    Text("限时活动已结束")
+                        .font(.system(size: 14))
+                }
+            }
         }
         .padding(.top, 20)
         .onTapGesture {

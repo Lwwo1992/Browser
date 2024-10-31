@@ -66,7 +66,3 @@ struct MineBottomView: View {
         Util.topViewController().navigationController?.pushViewController(vc, animated: true)
     }
 }
-
-#Preview {
-    MineBottomView()
-}

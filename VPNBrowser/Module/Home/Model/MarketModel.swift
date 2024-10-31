@@ -30,6 +30,14 @@ class HomeViewModel: ObservableObject {
             .sink { [weak self] value in
                 guard let self else { return }
                 if value {
+                    if let doInfo = marketModel.doInfo, let expireTime = doInfo.expireTime {
+                        let currentRemainingTime = expireTime - Date().timeIntervalSince1970 * 1000
+                        if currentRemainingTime <= 0 {
+                            HUD.showTipMessage("限时活动已结束,无法参加该活动")
+                            return
+                        }
+                    }
+                    
                     Util.topViewController().popup.bottomSheet {
                         let v = UIView(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 260))
                         v.backgroundColor = .white
@@ -104,6 +112,10 @@ class HomeViewModel: ObservableObject {
             guard let self = self else { return }
             switch result {
             case let .success(response):
+                if response.statusCode == 401 {
+                    NotificationCenter.default.post(name: .jumpToLogin, object: nil)
+                    return
+                }
                 if !(200 ... 299).contains(response.statusCode) {
                     HUD.showTipMessage("Server Error: \(response.statusCode)")
                     print("Server Error: Status code \(response.statusCode), response body: \(String(describing: try? response.mapString()))")

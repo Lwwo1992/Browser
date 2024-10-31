@@ -84,10 +84,10 @@ class VipViewModel: ObservableObject {
     }
 
     func pay() {
-        if !LoginManager.shared.info.token.isEmpty && LoginManager.shared.info.userType == .vipUser
+        if LoginManager.shared.info.token.isEmpty && LoginManager.shared.info.userType == .vipUser
             && selectedItem.userType.contains(3) {
             goPay()
-        } else if LoginManager.shared.info.token.isEmpty && selectedItem.userType.contains(1) {
+        } else if LoginManager.shared.info.token.isEmpty && !selectedItem.userType.contains(1) {
             Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
         } else {
             goPay()

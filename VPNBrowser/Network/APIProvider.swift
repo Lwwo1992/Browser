@@ -9,8 +9,8 @@ import Alamofire
 import HandyJSON
 import Moya
 
-//private let channelCode = "tomato" // 测试环境
-private let channelCode = "browser" // 正式环境
+private let channelCode = "tomato" // 测试环境
+// private let channelCode = "browser" // 正式环境
 
 import Alamofire
 import Moya
@@ -158,8 +158,8 @@ enum APITarget {
 
 extension APITarget: TargetType {
     var baseURL: URL {
-//        return URL(string: "http://merge-api.saas-xy.com:86")!
-        return URL(string: "http://oa-api.saas-xy.com:89")!
+        return URL(string: "http://merge-api.saas-xy.com:86")!
+//        return URL(string: "http://oa-api.saas-xy.com:89")!
     }
 
     var path: String {
@@ -373,6 +373,9 @@ extension MoyaProvider {
                     HUD.showTipMessage("Error \(response.statusCode): \(response.debugDescription)")
                     print("Error \(response.statusCode): \(HTTPURLResponse.localizedString(forStatusCode: response.statusCode))")
                     return
+                } else if response.statusCode == 401 {
+                    NotificationCenter.default.post(name: .jumpToLogin, object: nil)
+                    return
                 }
 
                 guard let jsonString = String(data: response.data, encoding: .utf8) else {
@@ -415,6 +418,9 @@ extension MoyaProvider {
                     HUD.hideNow()
                     HUD.showTipMessage("Error \(response.statusCode): \(response.debugDescription)")
                     print("Error \(response.statusCode): \(HTTPURLResponse.localizedString(forStatusCode: response.statusCode))")
+                    return
+                } else if response.statusCode == 401 {
+                    NotificationCenter.default.post(name: .jumpToLogin, object: nil)
                     return
                 }
 

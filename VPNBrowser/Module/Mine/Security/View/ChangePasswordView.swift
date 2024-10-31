@@ -102,11 +102,13 @@ struct ChangePasswordView: View {
             switch result {
             case .success:
                 HUD.showTipMessage("设置成功")
-                if let navigationController = Util.topViewController().navigationController {
-                    if let securityVC = navigationController.viewControllers.first(where: { $0 is SecurityViewController }) {
-                        navigationController.popToViewController(securityVC, animated: true)
-                    }
-                }
+
+                LoginManager.shared.info = LoginModel()
+                LoginManager.shared.userInfo = LoginModel()
+                DBaseManager.share.deleteFromDb(fromTable: S.Table.loginInfo)
+
+                Util.topViewController().navigationController?.popToRootViewController(animated: false)
+
             case let .failure(error):
                 print("Request failed with error: \(error)")
             }

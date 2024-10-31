@@ -61,6 +61,9 @@ struct MarketDetailView: View {
                     if currentRemainingTime > 0 {
                         Text(Util.formatTime(countdownTimer.remainingTime))
                             .font(.system(size: 14))
+                    } else {
+                        Text("限时活动已结束")
+                            .font(.system(size: 14))
                     }
                 }
             }
@@ -85,6 +88,14 @@ struct MarketDetailView: View {
                                     if model.userType == [2] && (LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty) {
                                         Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
                                     } else {
+                                        if let doInfo = model.doInfo, let expireTime = doInfo.expireTime {
+                                            let currentRemainingTime = expireTime - Date().timeIntervalSince1970 * 1000
+                                            if currentRemainingTime <= 0 {
+                                                HUD.showTipMessage("限时活动已结束,无法参加该活动")
+                                                return
+                                            }
+                                        }
+
                                         viewModel.marketModel = model
                                         viewModel.showShareBottomSheet.toggle()
                                     }
@@ -141,6 +152,14 @@ struct MarketDetailView: View {
                     if model.userType == [2] && (LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty) {
                         Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
                     } else {
+                        if let doInfo = model.doInfo, let expireTime = doInfo.expireTime {
+                            let currentRemainingTime = expireTime - Date().timeIntervalSince1970 * 1000
+                            if currentRemainingTime <= 0 {
+                                HUD.showTipMessage("限时活动已结束,无法参加该活动")
+                                return
+                            }
+                        }
+
                         viewModel.generaShareUrl(for: model.id) { url in
                             if let url, let image = Util.createQRCodeImage(content: url) {
                                 Util.topViewController().popup.dialog {
@@ -161,6 +180,14 @@ struct MarketDetailView: View {
                     if model.userType == [2] && (LoginManager.shared.info.userType == .visitor || LoginManager.shared.info.token.isEmpty) {
                         Util.topViewController().navigationController?.pushViewController(LoginViewController(), animated: true)
                     } else {
+                        if let doInfo = model.doInfo, let expireTime = doInfo.expireTime {
+                            let currentRemainingTime = expireTime - Date().timeIntervalSince1970 * 1000
+                            if currentRemainingTime <= 0 {
+                                HUD.showTipMessage("限时活动已结束,无法参加该活动")
+                                return
+                            }
+                        }
+
                         viewModel.generaShareUrl(for: model.id) { _ in
                             viewModel.shareAction()
                         }

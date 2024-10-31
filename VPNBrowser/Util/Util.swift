@@ -20,7 +20,7 @@ extension Util {
             return nil
         }
 
-        if let guideBucketInfo = S.Config.guideAnonymous?.bucketMap?[String(firstComponent)],
+        if let guideBucketInfo = S.Config.anonymous?.bucketMap?[String(firstComponent)],
            let imageUrl = guideBucketInfo.imageUrl {
             let modifiedUrl = imageUrl.replacingOccurrences(of: "/\(firstComponent)", with: "")
             let urlString = modifiedUrl + path
@@ -44,7 +44,7 @@ extension Util {
             return nil
         }
 
-        if let guideBucketInfo = S.Config.anonymous?.bucketMap?[String(firstComponent)],
+        if let guideBucketInfo = S.Config.guideAnonymous?.bucketMap?[String(firstComponent)],
            let imageUrl = guideBucketInfo.imageUrl {
             let modifiedUrl = imageUrl.replacingOccurrences(of: "/\(firstComponent)", with: "")
             let urlString = modifiedUrl + path
