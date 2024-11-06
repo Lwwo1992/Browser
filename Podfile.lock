@@ -15,12 +15,52 @@ PODS:
   - BlueECC (1.2.5)
   - BlueRSA (1.0.200)
   - HandyJSON (5.0.4-beta)
-  - IQKeyboardManagerSwift (7.1.1)
+  - IQKeyboardCore (1.0.5)
+  - IQKeyboardManagerSwift (7.2.0):
+    - IQKeyboardManagerSwift/Appearance (= 7.2.0)
+    - IQKeyboardManagerSwift/Core (= 7.2.0)
+    - IQKeyboardManagerSwift/IQKeyboardReturnKeyHandler (= 7.2.0)
+    - IQKeyboardManagerSwift/IQKeyboardToolbarManager (= 7.2.0)
+    - IQKeyboardManagerSwift/IQTextView (= 7.2.0)
+    - IQKeyboardManagerSwift/Resign (= 7.2.0)
+    - IQKeyboardNotification (= 1.0.3)
+    - IQTextInputViewNotification (= 1.0.5)
+  - IQKeyboardManagerSwift/Appearance (7.2.0):
+    - IQKeyboardManagerSwift/Core
+    - IQKeyboardNotification (= 1.0.3)
+    - IQTextInputViewNotification (= 1.0.5)
+  - IQKeyboardManagerSwift/Core (7.2.0):
+    - IQKeyboardNotification (= 1.0.3)
+    - IQTextInputViewNotification (= 1.0.5)
+  - IQKeyboardManagerSwift/IQKeyboardReturnKeyHandler (7.2.0):
+    - IQKeyboardNotification (= 1.0.3)
+    - IQTextInputViewNotification (= 1.0.5)
+  - IQKeyboardManagerSwift/IQKeyboardToolbarManager (7.2.0):
+    - IQKeyboardManagerSwift/Core
+    - IQKeyboardManagerSwift/IQKeyboardToolbarManager/IQKeyboardToolbar (= 7.2.0)
+    - IQKeyboardNotification (= 1.0.3)
+    - IQTextInputViewNotification (= 1.0.5)
+  - IQKeyboardManagerSwift/IQKeyboardToolbarManager/IQKeyboardToolbar (7.2.0):
+    - IQKeyboardManagerSwift/Core
+    - IQKeyboardNotification (= 1.0.3)
+    - IQTextInputViewNotification (= 1.0.5)
+  - IQKeyboardManagerSwift/IQTextView (7.2.0):
+    - IQKeyboardManagerSwift/IQKeyboardToolbarManager/IQKeyboardToolbar
+    - IQKeyboardNotification (= 1.0.3)
+    - IQTextInputViewNotification (= 1.0.5)
+  - IQKeyboardManagerSwift/Resign (7.2.0):
+    - IQKeyboardManagerSwift/Core
+    - IQKeyboardNotification (= 1.0.3)
+    - IQTextInputViewNotification (= 1.0.5)
+  - IQKeyboardNotification (1.0.3)
+  - IQTextInputViewNotification (1.0.5):
+    - IQKeyboardCore (= 1.0.5)
   - KituraContracts (1.2.1):
     - LoggerAPI (~> 1.7)
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
+  - QRCodeReader.swift (10.1.0)
   - SwiftJWT (3.6.200):
     - BlueCryptor (~> 1.0)
     - BlueECC (~> 1.1)
@@ -37,6 +77,7 @@ DEPENDENCIES:
   - AWSS3 (~> 2.15.1)
   - HandyJSON (from `https://github.com/Miles-Matheson/HandyJSON.git`)
   - IQKeyboardManagerSwift
+  - QRCodeReader.swift (~> 10.1.0)
   - SwiftJWT
   - TagListView (~> 1.0)
   - WCDB.swift
@@ -52,10 +93,14 @@ SPEC REPOS:
     - BlueCryptor
     - BlueECC
     - BlueRSA
+    - IQKeyboardCore
     - IQKeyboardManagerSwift
+    - IQKeyboardNotification
+    - IQTextInputViewNotification
     - KituraContracts
     - LoggerAPI
     - Logging
+    - QRCodeReader.swift
     - SwiftJWT
     - TagListView
     - WCDB.swift
@@ -81,15 +126,19 @@ SPEC CHECKSUMS:
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
   HandyJSON: a9c67202df97805a0ba4a00e30b50e9a30ac28f3
-  IQKeyboardManagerSwift: d7f3d3a562c237a0e7335e657cd598c452f57f1b
+  IQKeyboardCore: 28c8bf3bcd8ba5aa1570b318cbc4da94b861711e
+  IQKeyboardManagerSwift: 12d6ae3632ef744ccd033c048b566af13cc10d49
+  IQKeyboardNotification: d7382c4466c5a5adef92c7452ebf861b36050088
+  IQTextInputViewNotification: 4381fb828881983205fbee38f17da8a9fe2e835c
   KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
+  QRCodeReader.swift: 373a389fe9a22d513c879a32a6f647c58f4ef572
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
   TagListView: a1c236d17960a0cf64156725a76ce6d73ebce2be
   WCDB.swift: 603b32d432a58ec2e6eef8965d8bd6bb3cc7c39a
   WCDBOptimizedSQLCipher: c6451e1dead7ec53e1344a2545aaed2c4c139fc0
 
-PODFILE CHECKSUM: 86aafe2c1cb851905764af3ca1836ceaef12b547
+PODFILE CHECKSUM: af3a1502f81e5eec7e9dc6c337c14f55ad5e014a
 
 COCOAPODS: 1.15.2

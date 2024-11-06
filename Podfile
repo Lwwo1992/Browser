@@ -20,11 +20,11 @@ post_install do |installer|
 end
 
 
-target 'VPNBrowser' do
+target 'Browser' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for VPNBrowser 
+  # Pods for Browser 
  
 
   pod 'AWSMobileClient', '~> 2.15.1'
@@ -34,6 +34,7 @@ target 'VPNBrowser' do
   pod 'IQKeyboardManagerSwift'
   pod 'TagListView', '~> 1.0'
   pod 'HandyJSON', :git => 'https://github.com/Miles-Matheson/HandyJSON.git'
+  pod 'QRCodeReader.swift', '~> 10.1.0'
 
 end
 
