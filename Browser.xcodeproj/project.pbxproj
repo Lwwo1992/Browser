@@ -58,6 +58,7 @@
 		446009F72CBAA39B0085DC74 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F62CBAA39B0085DC74 /* FlowLayout.swift */; };
 		446009F92CBAAA530085DC74 /* BindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F82CBAAA530085DC74 /* BindingView.swift */; };
 		446009FB2CBAB5730085DC74 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009FA2CBAB5730085DC74 /* Extension.swift */; };
+		447A72212CDC6F7200F3C7E2 /* WebView in Frameworks */ = {isa = PBXBuildFile; productRef = 447A72202CDC6F7200F3C7E2 /* WebView */; };
 		4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FA2CBE567F0024381A /* TokenGenerator.swift */; };
 		4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FF2CBE66EF0024381A /* GuideModel.swift */; };
 		4486C9022CBE96520024381A /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9012CBE96520024381A /* GuideView.swift */; };
@@ -286,6 +287,7 @@
 				44AA509B2CB52650005EBC36 /* Then in Frameworks */,
 				8CEB24542CBD3750006F8485 /* WTool in Frameworks */,
 				8CEB245A2CBD3884006F8485 /* WTool in Frameworks */,
+				447A72212CDC6F7200F3C7E2 /* WebView in Frameworks */,
 				44444B022CC7937A002E204B /* WTool in Frameworks */,
 				446009EC2CBA89C40085DC74 /* Kingfisher in Frameworks */,
 				44CF209A2CB8C20B00772B9C /* Moya in Frameworks */,
@@ -792,6 +794,7 @@
 				440F932C2CBCE68A00D94AD0 /* JFPopup */,
 				44CD45F72CBE181E003A415E /* SDWebImageSwiftUI */,
 				44444B012CC7937A002E204B /* WTool */,
+				447A72202CDC6F7200F3C7E2 /* WebView */,
 			);
 			productName = VPNBrowser;
 			productReference = 444C933C2CB4D89D0092FECB /* Browser.app */;
@@ -830,6 +833,7 @@
 				440F932B2CBCE68A00D94AD0 /* XCRemoteSwiftPackageReference "JFPopup" */,
 				44CD45F62CBE181E003A415E /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				44444B002CC7937A002E204B /* XCLocalSwiftPackageReference "../WTool" */,
+				447A721F2CDC6F7200F3C7E2 /* XCLocalSwiftPackageReference "SwiftUI-WebView" */,
 			);
 			productRefGroup = 444C933D2CB4D89D0092FECB /* Products */;
 			projectDirPath = "";
@@ -1280,6 +1284,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../WTool;
 		};
+		447A721F2CDC6F7200F3C7E2 /* XCLocalSwiftPackageReference "SwiftUI-WebView" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "SwiftUI-WebView";
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1355,6 +1363,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 446009EA2CBA89C40085DC74 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		447A72202CDC6F7200F3C7E2 /* WebView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WebView;
 		};
 		44AA507E2CB4DDB4005EBC36 /* WTool */ = {
 			isa = XCSwiftPackageProductDependency;
