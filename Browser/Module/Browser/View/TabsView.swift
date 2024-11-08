@@ -9,10 +9,12 @@ import Kingfisher
 import SDWebImageSwiftUI
 import SwiftUI
 import WebKit
+import WebView
 
 struct TabsView: View {
+    @ObservedObject var webViewStore: WebViewStore
     var bookmarkModel = HistoryModel()
-    var onBookmarkAdded: ((HistoryModel) -> Void)?
+    var onBookmarkAdded: ((WebViewTab) -> Void)?
 
     @State private var bookmarkes: [HistoryModel] = []
     @State private var showingDeleteAlert = false
@@ -27,10 +29,11 @@ struct TabsView: View {
                         GridItem(.flexible(), spacing: 20),
                         GridItem(.flexible(), spacing: 20),
                     ], spacing: 20) {
-                        ForEach(bookmarkes, id: \.self) { model in
+                        ForEach(webViewStore.tabManager.tabs.indices, id: \.self) { index in
                             VStack(spacing: 10) {
                                 ZStack(alignment: .topTrailing) {
-                                    WebImage(url: model.url) { image in
+                                    let tab = webViewStore.tabManager.tabs[index]
+                                    WebImage(url: tab.imageURL) { image in
                                         image
                                             .resizable()
                                             .scaledToFill()
@@ -52,7 +55,7 @@ struct TabsView: View {
                                     }
 
                                     Button(action: {
-                                        delete(model)
+                                        webViewStore.tabManager.removeTab(at: index)
                                     }) {
                                         Image(systemName: "xmark.circle.fill")
                                             .foregroundColor(.gray)
@@ -60,10 +63,10 @@ struct TabsView: View {
                                     }
                                 }
                                 .onTapGesture {
-                                    onBookmarkAdded?(model)
+                                    onBookmarkAdded?(webViewStore.tabManager.tabs[index])
                                 }
 
-                                Text(model.title ?? "")
+                                Text(webViewStore.tabManager.tabs[index].title ?? "")
                                     .font(.system(size: 12))
                                     .foregroundColor(.black)
                             }
@@ -102,16 +105,14 @@ struct TabsView: View {
                 Spacer()
 
                 Button {
-                    let newBookmark = bookmarkModel.copy() as! HistoryModel
                     if let viewControllers = Util.topViewController().navigationController?.viewControllers {
                         if viewControllers.count > 1 {
                             let previousViewController = viewControllers[viewControllers.count - 2]
                             if previousViewController is BrowserWebViewController || S.Config.mode == .web {
-                                DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Table.bookmark)
-                                bookmarkes.insert(newBookmark, at: 0)
+                                webViewStore.createNewTab()
                             } else {
-                                DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Table.guideBookmark)
-                                bookmarkes.insert(newBookmark, at: 0)
+                                DBaseManager.share.insertToDb(objects: [bookmarkModel], intoTable: S.Table.guideBookmark)
+                                bookmarkes.insert(bookmarkModel, at: 0)
                             }
                         }
                     }
@@ -157,28 +158,6 @@ struct TabsView: View {
                     DBaseManager.share.deleteFromDb(fromTable: S.Table.bookmark)
                 } else {
                     DBaseManager.share.deleteFromDb(fromTable: S.Table.guideBookmark)
-                }
-            }
-        }
-    }
-
-    private func delete(_ bookmark: HistoryModel) {
-        // 从 bookmarkes 数组中删除对应的 bookmark
-        bookmarkes.removeAll { $0.id == bookmark.id }
-
-        if let viewControllers = Util.topViewController().navigationController?.viewControllers {
-            if viewControllers.count > 1 {
-                let previousViewController = viewControllers[viewControllers.count - 2]
-                if previousViewController is BrowserWebViewController || S.Config.mode == .web {
-                    DBaseManager.share.deleteFromDb(
-                        fromTable: S.Table.bookmark,
-                        where: HistoryModel.Properties.id == bookmark.id
-                    )
-                } else {
-                    DBaseManager.share.deleteFromDb(
-                        fromTable: S.Table.guideBookmark,
-                        where: HistoryModel.Properties.id == bookmark.id
-                    )
                 }
             }
         }

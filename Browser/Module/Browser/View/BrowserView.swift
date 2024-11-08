@@ -89,7 +89,7 @@ struct BrowserView: View {
                 vc.model = S.Config.mode == .web ? webViewModel.bookmark : webViewModel.guideBookmark
                 vc.onBookmarkAdded = { model in
                     webViewModel.shouldUpdate = true
-                    webViewModel.urlString = model.address ?? ""
+                    webViewModel.urlString = model.url?.absoluteString ?? ""
                 }
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }

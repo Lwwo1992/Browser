@@ -29,6 +29,9 @@
 		442118D22CC7C1A50025A40B /* VipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442118D12CC7C1A50025A40B /* VipViewController.swift */; };
 		442118D42CC7C52C0025A40B /* VipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442118D32CC7C52C0025A40B /* VipView.swift */; };
 		44248FFA2CD38D0500B8741D /* ScanQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44248FF92CD38D0500B8741D /* ScanQRCodeViewController.swift */; };
+		44314C442CDCA743007B10F5 /* WebViewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44314C432CDCA743007B10F5 /* WebViewTab.swift */; };
+		44314C462CDCA7A4007B10F5 /* WebViewTabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44314C452CDCA7A4007B10F5 /* WebViewTabManager.swift */; };
+		44314C482CDCB2FF007B10F5 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44314C472CDCB2FF007B10F5 /* WebView.swift */; };
 		443A817C2CBD55140093BC22 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817B2CBD55140093BC22 /* TabsViewController.swift */; };
 		443A817E2CBD553A0093BC22 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443A817D2CBD553A0093BC22 /* TabsView.swift */; };
 		44444AF92CC747EC002E204B /* MarketModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44444AF82CC747EC002E204B /* MarketModel.swift */; };
@@ -58,7 +61,6 @@
 		446009F72CBAA39B0085DC74 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F62CBAA39B0085DC74 /* FlowLayout.swift */; };
 		446009F92CBAAA530085DC74 /* BindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F82CBAAA530085DC74 /* BindingView.swift */; };
 		446009FB2CBAB5730085DC74 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009FA2CBAB5730085DC74 /* Extension.swift */; };
-		447A72212CDC6F7200F3C7E2 /* WebView in Frameworks */ = {isa = PBXBuildFile; productRef = 447A72202CDC6F7200F3C7E2 /* WebView */; };
 		4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FA2CBE567F0024381A /* TokenGenerator.swift */; };
 		4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FF2CBE66EF0024381A /* GuideModel.swift */; };
 		4486C9022CBE96520024381A /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9012CBE96520024381A /* GuideView.swift */; };
@@ -163,6 +165,9 @@
 		442118D12CC7C1A50025A40B /* VipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipViewController.swift; sourceTree = "<group>"; };
 		442118D32CC7C52C0025A40B /* VipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VipView.swift; sourceTree = "<group>"; };
 		44248FF92CD38D0500B8741D /* ScanQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeViewController.swift; sourceTree = "<group>"; };
+		44314C432CDCA743007B10F5 /* WebViewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTab.swift; sourceTree = "<group>"; };
+		44314C452CDCA7A4007B10F5 /* WebViewTabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTabManager.swift; sourceTree = "<group>"; };
+		44314C472CDCB2FF007B10F5 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		443A817A2CBD4B700093BC22 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		443A817B2CBD55140093BC22 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		443A817D2CBD553A0093BC22 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
@@ -287,7 +292,6 @@
 				44AA509B2CB52650005EBC36 /* Then in Frameworks */,
 				8CEB24542CBD3750006F8485 /* WTool in Frameworks */,
 				8CEB245A2CBD3884006F8485 /* WTool in Frameworks */,
-				447A72212CDC6F7200F3C7E2 /* WebView in Frameworks */,
 				44444B022CC7937A002E204B /* WTool in Frameworks */,
 				446009EC2CBA89C40085DC74 /* Kingfisher in Frameworks */,
 				44CF209A2CB8C20B00772B9C /* Moya in Frameworks */,
@@ -373,6 +377,16 @@
 				44444AF82CC747EC002E204B /* MarketModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		44314C422CDCA730007B10F5 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				44314C472CDCB2FF007B10F5 /* WebView.swift */,
+				44314C432CDCA743007B10F5 /* WebViewTab.swift */,
+				44314C452CDCA7A4007B10F5 /* WebViewTabManager.swift */,
+			);
+			path = WebView;
 			sourceTree = "<group>";
 		};
 		444C93332CB4D89D0092FECB = {
@@ -537,6 +551,7 @@
 		44AA50892CB5016F005EBC36 /* Browser */ = {
 			isa = PBXGroup;
 			children = (
+				44314C422CDCA730007B10F5 /* WebView */,
 				4409D4262CB7A7D400C81871 /* View */,
 				44AA50842CB4E007005EBC36 /* BrowserViewController.swift */,
 				4409D4292CB7AE9300C81871 /* SearchViewController.swift */,
@@ -794,7 +809,6 @@
 				440F932C2CBCE68A00D94AD0 /* JFPopup */,
 				44CD45F72CBE181E003A415E /* SDWebImageSwiftUI */,
 				44444B012CC7937A002E204B /* WTool */,
-				447A72202CDC6F7200F3C7E2 /* WebView */,
 			);
 			productName = VPNBrowser;
 			productReference = 444C933C2CB4D89D0092FECB /* Browser.app */;
@@ -833,7 +847,6 @@
 				440F932B2CBCE68A00D94AD0 /* XCRemoteSwiftPackageReference "JFPopup" */,
 				44CD45F62CBE181E003A415E /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				44444B002CC7937A002E204B /* XCLocalSwiftPackageReference "../WTool" */,
-				447A721F2CDC6F7200F3C7E2 /* XCLocalSwiftPackageReference "SwiftUI-WebView" */,
 			);
 			productRefGroup = 444C933D2CB4D89D0092FECB /* Products */;
 			projectDirPath = "";
@@ -909,12 +922,14 @@
 				44DA8E262CB6645F003B1C34 /* CloudSyncView.swift in Sources */,
 				44984FFA2CC129FB00158380 /* AccountViewController.swift in Sources */,
 				446009DF2CBA251F0085DC74 /* BaseModel.swift in Sources */,
+				44314C482CDCB2FF007B10F5 /* WebView.swift in Sources */,
 				44D3C2A82CC1FE5500E41BEC /* SetupPasswordViewController.swift in Sources */,
 				44D3C2AE2CC23C3600E41BEC /* FolderModel.swift in Sources */,
 				446009E52CBA6D790085DC74 /* LoginManager.swift in Sources */,
 				8CEB245C2CBD3B35006F8485 /* EncryptUtil.swift in Sources */,
 				444C93642CB4D8F50092FECB /* AppDelegate.swift in Sources */,
 				440F932A2CBCC5BB00D94AD0 /* BrowserWebView.swift in Sources */,
+				44314C442CDCA743007B10F5 /* WebViewTab.swift in Sources */,
 				44984FFC2CC12A0800158380 /* AccountView.swift in Sources */,
 				44AA50982CB522BE005EBC36 /* ChangeNicknameViewController.swift in Sources */,
 				44D3C2B02CC23E9100E41BEC /* OperateBottomView.swift in Sources */,
@@ -952,6 +967,7 @@
 				446009D42CBA0D5B0085DC74 /* VerificationCodeView.swift in Sources */,
 				4486C9082CBE9BB20024381A /* Util.swift in Sources */,
 				443A817E2CBD553A0093BC22 /* TabsView.swift in Sources */,
+				44314C462CDCA7A4007B10F5 /* WebViewTabManager.swift in Sources */,
 				44444AFF2CC7928E002E204B /* CustomShareItem.swift in Sources */,
 				446009DA2CBA1AF60085DC74 /* HomeView.swift in Sources */,
 				44984FF42CC0E7E300158380 /* MineBottomView.swift in Sources */,
@@ -1284,10 +1300,6 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../WTool;
 		};
-		447A721F2CDC6F7200F3C7E2 /* XCLocalSwiftPackageReference "SwiftUI-WebView" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "SwiftUI-WebView";
-		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1363,10 +1375,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 446009EA2CBA89C40085DC74 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		447A72202CDC6F7200F3C7E2 /* WebView */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = WebView;
 		};
 		44AA507E2CB4DDB4005EBC36 /* WTool */ = {
 			isa = XCSwiftPackageProductDependency;

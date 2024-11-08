@@ -285,6 +285,7 @@ class HistoryModel: BaseModel, TableCodable, ObservableObject, NSCopying {
     var pageLogo: String?
     var imagePath: String?
     var timestamp: TimeInterval = Date().timeIntervalSince1970
+    var lastAccessed: Date?
     @Published var isSelected = false
 
     var url: URL {
@@ -322,6 +323,7 @@ class HistoryModel: BaseModel, TableCodable, ObservableObject, NSCopying {
         case timestamp
         case parentId
         case name
+        case lastAccessed
     }
 
     func copy(with zone: NSZone? = nil) -> Any {

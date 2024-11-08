@@ -9,15 +9,25 @@ import JFPopup
 import SwiftUI
 
 struct BrowserWebView: View {
+//    var address: String?
     @State private var isCollect = false
     @State private var bookmarNum = "0"
     @ObservedObject var viewModel: WebViewViewModel
+    @StateObject var webViewStore = WebViewStore()
 
     var body: some View {
         VStack {
             searchBar()
 
-            WebViewWrapper(viewModel: viewModel)
+            WebView(webView: webViewStore.webView)
+                .onAppear {
+                    if let url = URL(string: viewModel.urlString) {
+                        self.webViewStore.webView.load(URLRequest(url: url))
+                    }
+                }
+                .onDisappear {
+                    viewModel.urlString = ""
+                }
 
             bottomView()
         }
@@ -74,18 +84,18 @@ struct BrowserWebView: View {
                 .font(.system(size: 20))
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
-                    viewModel.action = .goBack
+                    if webViewStore.webView.canGoBack {
+                        webViewStore.webView.goBack()
+                    } else {
+                        Util.topViewController().navigationController?.popViewController(animated: true)
+                    }
                 }
 
             Image(systemName: "arrow.clockwise")
                 .font(.system(size: 20))
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
-                    withAnimation {
-                        withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
-                            viewModel.refresh = true
-                        }
-                    }
+                    webViewStore.webView.reload()
                 }
 
             RoundedRectangle(cornerRadius: 2)
@@ -102,11 +112,18 @@ struct BrowserWebView: View {
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
                     let vc = TabsViewController()
-                    vc.model = viewModel.bookmark
-                    vc.onBookmarkAdded = { bookmark in
-                        if let address = bookmark.address {
-                            viewModel.shouldUpdate = true
-                            viewModel.urlString = address
+                    vc.webViewStore = webViewStore
+                    vc.onBookmarkAdded = { model in
+                        guard let url = model.url else {
+                            return
+                        }
+
+                        viewModel.urlString = url.absoluteString
+
+                        if model.isExpired {
+                            self.webViewStore.webView.load(URLRequest(url: url))
+                        } else {
+                            self.webViewStore.webView = model.webView
                         }
                     }
                     Util.topViewController().navigationController?.pushViewController(vc, animated: true)
