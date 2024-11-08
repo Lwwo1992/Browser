@@ -20,10 +20,12 @@ class DownloadBottomSheetView: UIView {
             if let url = model.downloadUrl {
                 getFileSize(from: url) { [weak self] size, error in
                     guard let self else { return }
-                    if let size = size {
-                        self.sizeLabel.text = Util.formatFileSize(size)
-                    } else if let error = error {
-                        print("获取文件大小失败: \(error)")
+                    DispatchQueue.main.async {
+                        if let size = size {
+                            self.sizeLabel.text = Util.formatFileSize(size)
+                        } else if let error = error {
+                            print("获取文件大小失败: \(error)")
+                        }
                     }
                 }
                 addressLabel.text(url)
@@ -49,6 +51,7 @@ class DownloadBottomSheetView: UIView {
     private lazy var addressLabel = Label().then {
         $0.text("未知")
             .font(.systemFont(ofSize: 14))
+        $0.numberOfLines = 1
     }
 
     private lazy var sizeLabel = Label().then {
@@ -101,6 +104,7 @@ class DownloadBottomSheetView: UIView {
 
         addressLabel.snp.makeConstraints { make in
             make.left.equalTo(imageView.snp.right).offset(6)
+            make.right.equalToSuperview().inset(80)
             make.top.equalTo(imageView.snp.top)
         }
 

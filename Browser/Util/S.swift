@@ -118,7 +118,7 @@ extension S.Config {
         case testing
 
         static let current: Environment = {
-            .development
+            .production
         }()
     }
 
