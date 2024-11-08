@@ -129,23 +129,13 @@ extension WebViewStore: WKNavigationDelegate, WKDownloadDelegate {
             }
         }
 
-        // 保存 HTML 内容
-        webView.evaluateJavaScript("document.documentElement.outerHTML.toString()") { [weak self] html, error in
-            guard let self = self, let htmlString = html as? String, error == nil else { return }
-            
-        }
-
-        // 保存滚动位置
-        webView.evaluateJavaScript("window.scrollY") { [weak self] scrollY, error in
-            guard let self = self, let scrollPosition = scrollY as? CGFloat, error == nil else { return }
-
-        }
-
         self.model = model
 
         if !S.Config.openNoTrace {
             DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.browseHistory)
         }
+
+        saveHTMLContent()
     }
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -176,6 +166,27 @@ extension WebViewStore: WKNavigationDelegate, WKDownloadDelegate {
 }
 
 extension WebViewStore {
+    private func saveHTMLContent() {
+        if let model {
+            // 保存 HTML 内容
+            webView.evaluateJavaScript("document.documentElement.outerHTML.toString()") { html, error in
+                guard let htmlString = html as? String, error == nil else { return }
+            }
+
+            // 保存滚动位置
+            webView.evaluateJavaScript("window.scrollY") { [weak self] scrollY, error in
+                guard let self = self, let scrollPosition = scrollY as? CGFloat, error == nil else { return }
+                self.saveScrollPosition(scrollPosition)
+            }
+        }
+    }
+
+    private func saveScrollPosition(_ position: CGFloat) {
+        if let address = webView.url?.absoluteString {
+            UserDefaults.standard.set(position, forKey: "scrollPosition_\(address)")
+        }
+    }
+
     private func takeSnapshot(completion: @escaping (String?) -> Void) {
         let config = WKSnapshotConfiguration()
         config.rect = webView.bounds

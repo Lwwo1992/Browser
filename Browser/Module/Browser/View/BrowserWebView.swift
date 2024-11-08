@@ -9,7 +9,6 @@ import JFPopup
 import SwiftUI
 
 struct BrowserWebView: View {
-//    var address: String?
     @State private var isCollect = false
     @State private var bookmarNum = "0"
     @ObservedObject var viewModel: WebViewViewModel
@@ -120,11 +119,7 @@ struct BrowserWebView: View {
 
                         viewModel.urlString = url.absoluteString
 
-                        if model.isExpired {
-                            self.webViewStore.webView.load(URLRequest(url: url))
-                        } else {
-                            self.webViewStore.webView = model.webView
-                        }
+                        self.webViewStore.webView.load(URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad))
                     }
                     Util.topViewController().navigationController?.pushViewController(vc, animated: true)
                 }

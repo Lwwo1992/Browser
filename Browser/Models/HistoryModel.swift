@@ -286,6 +286,7 @@ class HistoryModel: BaseModel, TableCodable, ObservableObject, NSCopying {
     var imagePath: String?
     var timestamp: TimeInterval = Date().timeIntervalSince1970
     var lastAccessed: Date?
+
     @Published var isSelected = false
 
     var url: URL {
