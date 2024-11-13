@@ -48,7 +48,7 @@ struct GuideView: View {
                                             appCell(for: rows[index])
                                         }
                                     } else {
-                                        ForEach(0 ..< displayedRows - 1, id: \.self) { index in
+                                        ForEach(0 ..< displayedRows, id: \.self) { index in
                                             appCell(for: rows[index])
                                         }
                                         if displayedRows == maxAppNum {

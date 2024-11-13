@@ -69,8 +69,8 @@ struct S {
         /// 导航模式，使用 UserDefaults 持久化
         static var mode: WebMode {
             get {
-                let modeString = UserDefaults.standard.string(forKey: Keys.mode) ?? WebMode.web.rawValue
-                return WebMode(rawValue: modeString) ?? .web
+                let modeString = UserDefaults.standard.string(forKey: Keys.mode) ?? WebMode.guide.rawValue
+                return WebMode(rawValue: modeString) ?? .guide
             }
             set {
                 UserDefaults.standard.set(newValue.rawValue, forKey: Keys.mode)

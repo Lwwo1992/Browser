@@ -33,14 +33,14 @@ class WebViewViewModel: ObservableObject {
     }
 
     @Published var scanCode = false
-    
+
     var shouldUpdate: Bool = true
 }
 
 struct WebViewWrapper: UIViewRepresentable {
     @ObservedObject var viewModel: WebViewViewModel
 
-    class Coordinator: NSObject, WKUIDelegate, WKNavigationDelegate {
+    class Coordinator: NSObject, WKUIDelegate, WKNavigationDelegate, UIDocumentInteractionControllerDelegate {
         var parent: WebViewWrapper
         var webView: WKWebView! {
             didSet {
@@ -115,6 +115,31 @@ struct WebViewWrapper: UIViewRepresentable {
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             guard let url = navigationAction.request.url else {
                 decisionHandler(.allow)
+                return
+            }
+
+            // 检测是否是配置文件的请求
+            if url.absoluteString.hasPrefix("data:application/x-apple-aspen-config;base64,") {
+                // 弹窗提示
+                let alertController = UIAlertController(title: "下载配置文件", message: "此网站正尝试下载一个配置描述文件。你要允许吗？", preferredStyle: .alert)
+
+                // 允许按钮
+                let allowAction = UIAlertAction(title: "允许", style: .default) { _ in
+                    self.handleBase64ConfigData(url: url) // 处理配置文件的下载和保存
+                    decisionHandler(.cancel) // 取消默认加载行为
+                }
+
+                // 不允许按钮
+                let denyAction = UIAlertAction(title: "不允许", style: .cancel) { _ in
+                    decisionHandler(.cancel)
+                }
+
+                alertController.addAction(allowAction)
+                alertController.addAction(denyAction)
+
+                // 显示弹窗
+                Util.topViewController().present(alertController, animated: true, completion: nil)
+
                 return
             }
 
@@ -205,6 +230,57 @@ struct WebViewWrapper: UIViewRepresentable {
                 Util.topViewController().navigationController?.popViewController(animated: true)
             }
         }
+
+        // 处理 Base64 配置文件
+        private func handleBase64ConfigData(url: URL) {
+            // 获取 Base64 编码内容
+            let base64Content = url.absoluteString.replacingOccurrences(of: "data:application/x-apple-aspen-config;base64,", with: "")
+
+            // Base64 解码为数据
+            if let data = Data(base64Encoded: base64Content) {
+                let fileURL = saveToFile(data: data)
+
+                // 使用保存的配置文件
+                openMobileConfig(fileURL: fileURL)
+            } else {
+                print("无法解码 Base64 数据")
+            }
+        }
+
+        private func saveToFile(data: Data) -> URL {
+            let tempDirectory = FileManager.default.temporaryDirectory
+            let fileURL = tempDirectory.appendingPathComponent("config.mobileconfig")
+
+            do {
+                try data.write(to: fileURL)
+                print("配置文件已保存到: \(fileURL)")
+            } catch {
+                print("保存配置文件失败: \(error)")
+            }
+            return fileURL
+        }
+
+        private func openMobileConfig(fileURL: URL) {
+            // 检查系统是否支持打开文件 URL
+            if UIApplication.shared.canOpenURL(fileURL) {
+                UIApplication.shared.open(fileURL, options: [:], completionHandler: { success in
+                    if success {
+                        print("已成功打开配置文件")
+                    } else {
+                        print("打开配置文件失败")
+                    }
+                })
+            } else {
+                print("无法打开配置文件：系统限制")
+                if let settingsURL = URL(string: "App-prefs:root=General&path=ManagedConfigurationList") {
+                    if UIApplication.shared.canOpenURL(settingsURL) {
+                        UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+                    }
+                }
+
+            }
+        }
+
     }
 
     func makeCoordinator() -> Coordinator {

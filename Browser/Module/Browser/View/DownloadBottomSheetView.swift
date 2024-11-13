@@ -67,7 +67,9 @@ class DownloadBottomSheetView: UIView {
             .tapAction = { [weak self] in
                 guard let self, let model, let urlString = model.downloadUrl, let url = URL(string: urlString) else { return }
 
-                if BWebViewManager.share.isDownloadLink(url: url) {
+                if Util.canOpenAppStore(url: url) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else if BWebViewManager.share.isDownloadLink(url: url) {
                     downloadFile()
                 } else {
                     HUD.showTipMessage("非下载地址")

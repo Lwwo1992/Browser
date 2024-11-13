@@ -102,6 +102,7 @@ class GuideItem: BaseModel {
     var appIcon: String?
     var downloadUrl: String?
     var type: String?
+    var openType: Int?
 }
 
 // 用于表示返回的数据结构

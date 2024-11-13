@@ -8,54 +8,6 @@
 import Foundation
 
 extension Util {
-    static func getImageUrl(from path: String?) -> URL? {
-        guard let path = path else {
-            print("Invalid path.")
-            return nil
-        }
-
-        let components = path.split(separator: "/")
-        guard let firstComponent = components.first else {
-            print("Invalid path components.")
-            return nil
-        }
-
-        if let guideBucketInfo = S.Config.anonymous?.bucketMap?[String(firstComponent)],
-           let imageUrl = guideBucketInfo.imageUrl {
-            let modifiedUrl = imageUrl.replacingOccurrences(of: "/\(firstComponent)", with: "")
-            let urlString = modifiedUrl + path
-
-            return URL(string: urlString)
-        } else {
-            print("No corresponding guide found in bucketMap or image URL is missing.")
-            return nil
-        }
-    }
-
-    static func getGuideImageUrl(from path: String?) -> URL? {
-        guard let path = path else {
-            print("Invalid path.")
-            return nil
-        }
-
-        let components = path.split(separator: "/")
-        guard let firstComponent = components.first else {
-            print("Invalid path components.")
-            return nil
-        }
-
-        if let guideBucketInfo = S.Config.guideAnonymous?.bucketMap?[String(firstComponent)],
-           let imageUrl = guideBucketInfo.imageUrl {
-            let modifiedUrl = imageUrl.replacingOccurrences(of: "/\(firstComponent)", with: "")
-            let urlString = modifiedUrl + path
-
-            return URL(string: urlString)
-        } else {
-            print("No corresponding guide found in bucketMap or image URL is missing.")
-            return nil
-        }
-    }
-
     static func formattedTime(from timestamp: TimeInterval) -> String {
         let date = Date(timeIntervalSince1970: timestamp)
         let dateFormatter = DateFormatter()
@@ -86,12 +38,19 @@ extension Util {
             vc.path = model.downloadUrl ?? ""
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         case "app":
-            Util.topViewController().popup.bottomSheet {
-                let view = DownloadBottomSheetView(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 260))
-                view.model = model
-                return view
+            // var openType: Int? = null,//5：落地页，4：app下载, 3：html, 2：url
+            if model.openType == 5 {
+                let vc = BrowserWebViewController()
+                vc.path = model.downloadUrl ?? ""
+                Util.topViewController().navigationController?.pushViewController(vc, animated: true)
+            } else {
+                Util.topViewController().popup.bottomSheet {
+                    let view = DownloadBottomSheetView(frame: CGRect(x: 0, y: 0, width: Util.deviceWidth, height: 260))
+                    view.model = model
+                    return view
+                }
             }
-            break
+
         case "applet":
             break
         default:
@@ -197,5 +156,181 @@ extension Util {
     static func formatSeconds(_ timeInterval: TimeInterval) -> String {
         let seconds = Int(timeInterval) % 60
         return String(format: "%02d", seconds)
+    }
+
+    // 判断是否是有效的 App Store 链接
+    static func canOpenAppStore(url: URL) -> Bool {
+        // 检查是否是以 'https://apps.apple.com/' 或 'itms-apps://' 开头的 URL
+        return url.absoluteString.lowercased().hasPrefix("https://apps.apple.com/") || url.absoluteString.lowercased().hasPrefix("itms-apps://")
+    }
+}
+
+extension Util {
+    static func getImageUrl(from path: String?) -> URL? {
+        guard let path = path else {
+            print("Invalid path.")
+            return nil
+        }
+
+        let components = path.split(separator: "/")
+        guard let firstComponent = components.first else {
+            print("Invalid path components.")
+            return nil
+        }
+
+        // 获取对应的 imageUrl
+        if let anonymous = S.Config.anonymous?.bucketMap?[String(firstComponent)],
+           let imageUrl = anonymous.imageUrl {
+            let modifiedUrl = imageUrl.replacingOccurrences(of: "/\(firstComponent)", with: "")
+            let urlString = modifiedUrl + path
+
+            // 判断 urlString 是否包含 sslimg
+            if urlString.lowercased().contains("sslimg") {
+                // 下载并解密图片，返回本地 URL
+                return downloadAndDecryptImageSync(from: urlString)
+            } else {
+                return URL(string: urlString)
+            }
+        } else {
+            print("No corresponding guide found in bucketMap or image URL is missing.")
+            return nil
+        }
+    }
+
+    static func getGuideImageUrl(from path: String?) -> URL? {
+        guard let path = path else {
+            print("Invalid path.")
+            return nil
+        }
+
+        let components = path.split(separator: "/")
+        guard let firstComponent = components.first else {
+            print("Invalid path components.")
+            return nil
+        }
+
+        if let guideBucketInfo = S.Config.guideAnonymous?.bucketMap?[String(firstComponent)],
+           let imageUrl = guideBucketInfo.imageUrl {
+            let modifiedUrl = imageUrl.replacingOccurrences(of: "/\(firstComponent)", with: "")
+            let urlString = modifiedUrl + path
+
+            // 判断 urlString 是否包含 sslimg
+            if urlString.lowercased().contains("sslimg") {
+                // 下载并解密图片，返回本地 URL
+                return downloadAndDecryptImageSync(from: urlString)
+            } else {
+                return URL(string: urlString)
+            }
+        } else {
+            print("No corresponding guide found in bucketMap or image URL is missing.")
+            return nil
+        }
+    }
+
+    // 下载并解密图片（同步方法）
+    private static func downloadAndDecryptImageSync(from urlString: String) -> URL? {
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL")
+            return nil
+        }
+
+        // Create a semaphore to block the current thread until the image is downloaded and decrypted
+        let semaphore = DispatchSemaphore(value: 0)
+
+        var resultURL: URL?
+
+        // 下载图片数据
+        downloadImageData(from: url) { data in
+            // 解密图片数据
+            let decryptedData = decodeIMGFileToString(data: data)
+
+            // 将解密后的数据保存到本地
+            if let fileURL = saveDecryptedData(decryptedData) {
+                print("Image saved to: \(fileURL)")
+                resultURL = fileURL
+            } else {
+                print("Failed to save decrypted image.")
+                resultURL = nil
+            }
+
+            // Signal that the task is complete
+            semaphore.signal()
+        }
+
+        // Block the current thread until the download and decryption is complete
+        semaphore.wait()
+
+        // Return the result URL (it could be nil if there was an issue)
+        return resultURL
+    }
+
+    // 下载图片数据（异步）
+    private static func downloadImageData(from url: URL, completion: @escaping (Data) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                print("Error downloading image: \(error.localizedDescription)")
+                completion(Data()) // Return empty data on failure
+                return
+            }
+            if let data = data {
+                completion(data) // Pass the downloaded data to the completion handler
+            } else {
+                completion(Data()) // Return empty data if no data
+            }
+        }.resume()
+    }
+
+    // 解密数据并保存
+    private static func saveDecryptedData(_ data: [UInt8]?) -> URL? {
+        guard let decryptedData = data else {
+            print("No decrypted data to save.")
+            return nil
+        }
+
+        // 将解密数据保存到本地
+        let fileManager = FileManager.default
+        let filePath = getLocalFilePath()
+
+        let fileData = Data(decryptedData)
+        do {
+            try fileData.write(to: filePath)
+            print("File saved to: \(filePath)")
+            return filePath
+        } catch {
+            print("Failed to save decrypted image: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    // 获取本地保存路径
+    private static func getLocalFilePath() -> URL {
+        let tempDirectory = FileManager.default.temporaryDirectory
+        return tempDirectory.appendingPathComponent("decrypted_image.png")
+    }
+    
+    private static func decodeIMGFileToString(data: Data) -> [UInt8] {
+        var temp: [UInt8] = []
+
+        let startTime = Date()
+
+        let len = data.count
+        guard len > 0 else { return [] }
+
+        // 获取第一个字节作为掩码
+        let mask = data[0]
+
+        // 初始化临时数组
+        temp = [UInt8](repeating: 0, count: len - 1)
+
+        // 对数据进行 XOR 解码（从第1个字节开始）
+        for i in 1 ..< len {
+            temp[i - 1] = data[i] ^ mask
+        }
+
+        // 打印解码所用的时间（可选）
+        let timeElapsed = Date().timeIntervalSince(startTime)
+        print("Decoding took \(timeElapsed) seconds")
+
+        return temp
     }
 }
