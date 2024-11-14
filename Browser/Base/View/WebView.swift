@@ -64,6 +64,28 @@ public class WebViewStore: NSObject, ObservableObject {
 }
 
 extension WebViewStore: WKNavigationDelegate, WKDownloadDelegate {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        let model = HistoryModel()
+        model.title = webView.title
+        model.address = webView.url?.absoluteString
+
+        webView.evaluateJavaScript("document.querySelector('link[rel*=\"icon\"]').href") { result, error in
+            if let logo = result as? String {
+                model.pageLogo = logo
+            } else {
+                print("Failed to get logo: \(String(describing: error?.localizedDescription))")
+            }
+
+            self.takeSnapshot { imagePath in
+                model.imagePath = imagePath
+            }
+        }
+
+        if !S.Config.openNoTrace {
+            DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.browseHistory)
+        }
+    }
+
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         decisionHandler(.allow)
     }
@@ -88,6 +110,46 @@ extension WebViewStore: WKNavigationDelegate, WKDownloadDelegate {
     @available(iOS 14.5, *)
     public func download(_ download: WKDownload, didFailWithError error: Error, resumeData: Data?) {
         print("下载失败: \(error.localizedDescription)")
+    }
+}
+
+extension WebViewStore {
+    private func takeSnapshot(completion: @escaping (String?) -> Void) {
+        let config = WKSnapshotConfiguration()
+        config.rect = webView.bounds
+
+        webView.takeSnapshot(with: config) { image, error in
+            if let error = error {
+                print("Failed to take snapshot: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+
+            if let image = image {
+                let filePath = self.saveImageToCustomDirectory(image: image)
+                completion(filePath)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+
+    private func saveImageToCustomDirectory(image: UIImage) -> String? {
+        // 生成唯一的图片文件名
+        let fileName = UUID().uuidString + ".png"
+        let fileURL = S.Files.imageURL.appendingPathComponent(fileName)
+
+        if let data = image.pngData() {
+            do {
+                // 写入文件
+                try data.write(to: fileURL)
+                return fileName
+            } catch {
+                print("Failed to save image: \(error)")
+                return nil
+            }
+        }
+        return nil
     }
 }
 
