@@ -9,6 +9,7 @@ import UIKit
 
 class TabsViewController: ViewController {
     var model = HistoryModel()
+    var webViewStore = WebViewStore()
     var onBookmarkAdded: ((HistoryModel) -> Void)?
 
     override var rootView: AnyView? {
