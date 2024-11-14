@@ -3,7 +3,7 @@ import SwiftUI
 @preconcurrency import WebKit
 
 @dynamicMemberLookup
-public class WebViewStore: NSObject, ObservableObject {
+class WebViewStore: NSObject, ObservableObject {
     @Published public var webView: WKWebView {
         didSet {
             setupObservers()
@@ -11,11 +11,27 @@ public class WebViewStore: NSObject, ObservableObject {
         }
     }
 
+    private var observers: [NSKeyValueObservation] = []
+
+    private var footprintModel: HistoryModel?
+
     public init(webView: WKWebView = WKWebView()) {
         self.webView = webView
         super.init()
         self.webView.navigationDelegate = self
         setupObservers()
+    }
+}
+
+extension WebViewStore {
+    func addTab() {
+        if let footprintModel {
+            DBaseManager.share.insertToDb(objects: [footprintModel], intoTable: S.Table.bookmark)
+        }
+    }
+
+    public subscript<T>(dynamicMember keyPath: KeyPath<WKWebView, T>) -> T {
+        webView[keyPath: keyPath]
     }
 
     private func setupObservers() {
@@ -55,12 +71,6 @@ public class WebViewStore: NSObject, ObservableObject {
             }
         #endif
     }
-
-    private var observers: [NSKeyValueObservation] = []
-
-    public subscript<T>(dynamicMember keyPath: KeyPath<WKWebView, T>) -> T {
-        webView[keyPath: keyPath]
-    }
 }
 
 extension WebViewStore: WKNavigationDelegate, WKDownloadDelegate {
@@ -84,35 +94,79 @@ extension WebViewStore: WKNavigationDelegate, WKDownloadDelegate {
         if !S.Config.openNoTrace {
             DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.browseHistory)
         }
+
+        self.footprintModel = model
     }
 
-    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        decisionHandler(.allow)
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+
+        // 检测是否是配置文件的请求
+        if url.absoluteString.hasPrefix("data:application/x-apple-aspen-config;base64,") {
+            // 弹窗提示
+            let alertController = UIAlertController(title: "下载配置文件", message: "此网站正尝试下载一个配置描述文件。你要允许吗？", preferredStyle: .alert)
+
+            // 允许按钮
+            let allowAction = UIAlertAction(title: "允许", style: .default) { _ in
+                self.handleBase64ConfigData(url: url) // 处理配置文件的下载和保存
+                decisionHandler(.cancel) // 取消默认加载行为
+            }
+
+            // 不允许按钮
+            let denyAction = UIAlertAction(title: "不允许", style: .cancel) { _ in
+                decisionHandler(.cancel)
+            }
+
+            alertController.addAction(allowAction)
+            alertController.addAction(denyAction)
+
+            // 显示弹窗
+            Util.topViewController().present(alertController, animated: true, completion: nil)
+
+            return
+        }
+
+        isForeignURL(url) { [weak self] isForeign in
+            guard let self else { return }
+            if isForeign {
+                decisionHandler(.cancel)
+                if navigationAction.request.httpMethod == "GET" {
+                    self.handleCustomGetRequest(url: url)
+                } else if navigationAction.request.httpMethod == "POST" {
+                    self.handleCustomPostRequest(url: url, request: navigationAction.request)
+                }
+            } else if isDownloadLink(url: url) {
+                decisionHandler(.cancel)
+                self.handleDownload(url: url)
+            } else {
+                decisionHandler(.allow)
+            }
+        }
     }
 
-    @available(iOS 14.5, *)
-    public func webView(_ webView: WKWebView, navigationResponse: WKNavigationResponse, didBecome download: WKDownload) {
+    func webView(_ webView: WKWebView, navigationResponse: WKNavigationResponse, didBecome download: WKDownload) {
         download.delegate = self
     }
 
-    @available(iOS 14.5, *)
-    public func download(_ download: WKDownload, decideDestinationUsing response: URLResponse, suggestedFilename: String, completionHandler: @escaping (URL?) -> Void) {
+    func download(_ download: WKDownload, decideDestinationUsing response: URLResponse, suggestedFilename: String, completionHandler: @escaping (URL?) -> Void) {
         let downloadsDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
         let destinationURL = downloadsDirectory.appendingPathComponent(suggestedFilename)
         completionHandler(destinationURL)
     }
 
-    @available(iOS 14.5, *)
-    public func downloadDidFinish(_ download: WKDownload) {
+    func downloadDidFinish(_ download: WKDownload) {
         print("下载完成: \(download)")
     }
 
-    @available(iOS 14.5, *)
-    public func download(_ download: WKDownload, didFailWithError error: Error, resumeData: Data?) {
+    func download(_ download: WKDownload, didFailWithError error: Error, resumeData: Data?) {
         print("下载失败: \(error.localizedDescription)")
     }
 }
 
+/// 保存浏览器信息
 extension WebViewStore {
     private func takeSnapshot(completion: @escaping (String?) -> Void) {
         let config = WKSnapshotConfiguration()
@@ -150,6 +204,208 @@ extension WebViewStore {
             }
         }
         return nil
+    }
+}
+
+extension WebViewStore {
+    // 判断是否为下载链接
+    func isDownloadLink(url: URL) -> Bool {
+        let fileExtensions = ["pdf", "zip", "mp3", "jpg", "png"] // 常见的下载文件扩展名
+        return fileExtensions.contains(url.pathExtension.lowercased())
+    }
+
+    // 处理下载操作（使用 URLSession）
+    func handleDownload(url: URL) {
+        let downloadTask = URLSession.shared.downloadTask(with: url) { location, _, error in
+            if let location = location {
+                let destinationURL = self.getDownloadDestinationURL(for: url)
+                do {
+                    try FileManager.default.moveItem(at: location, to: destinationURL)
+                    print("下载完成: \(destinationURL.path)")
+                } catch {
+                    print("下载失败: \(error.localizedDescription)")
+                }
+            }
+        }
+        downloadTask.resume()
+    }
+
+    // 获取下载文件保存路径
+    func getDownloadDestinationURL(for url: URL) -> URL {
+        let downloadsDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first!
+        return downloadsDirectory.appendingPathComponent(url.lastPathComponent)
+    }
+}
+
+extension WebViewStore {
+    /// 保存下载数据
+    func saveDownInfo(url: String, name: String, size: Int64) {
+        let model = DownloadModel()
+        model.url = url
+        model.size = size
+        model.title = name
+        DBaseManager.share.insertToDb(objects: [model], intoTable: S.Table.download)
+        HUD.showTipMessage("下载成功")
+    }
+
+    // 处理 Base64 配置文件
+    private func handleBase64ConfigData(url: URL) {
+        // 获取 Base64 编码内容
+        let base64Content = url.absoluteString.replacingOccurrences(of: "data:application/x-apple-aspen-config;base64,", with: "")
+
+        // Base64 解码为数据
+        if let data = Data(base64Encoded: base64Content) {
+            let fileURL = saveToFile(data: data)
+
+            // 使用保存的配置文件
+            openMobileConfig(fileURL: fileURL)
+        } else {
+            print("无法解码 Base64 数据")
+        }
+    }
+
+    private func saveToFile(data: Data) -> URL {
+        let tempDirectory = FileManager.default.temporaryDirectory
+        let fileURL = tempDirectory.appendingPathComponent("config.mobileconfig")
+
+        do {
+            try data.write(to: fileURL)
+            print("配置文件已保存到: \(fileURL)")
+        } catch {
+            print("保存配置文件失败: \(error)")
+        }
+        return fileURL
+    }
+
+    private func openMobileConfig(fileURL: URL) {
+        // 检查系统是否支持打开文件 URL
+        if UIApplication.shared.canOpenURL(fileURL) {
+            UIApplication.shared.open(fileURL, options: [:], completionHandler: { success in
+                if success {
+                    print("已成功打开配置文件")
+                } else {
+                    print("打开配置文件失败")
+                }
+            })
+        } else {
+            print("无法打开配置文件：系统限制")
+            if let settingsURL = URL(string: "App-prefs:root=General&path=ManagedConfigurationList") {
+                if UIApplication.shared.canOpenURL(settingsURL) {
+                    UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+                }
+            }
+        }
+    }
+}
+
+extension WebViewStore {
+    /// 判断是否为国外的URL
+    private func isForeignURL(_ url: URL, completion: @escaping (Bool) -> Void) {
+        guard let host = url.host else {
+            completion(false)
+            return
+        }
+
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+
+            // 使用 gethostbyname 解析域名到 IP 地址
+            let hostEntry = gethostbyname(host)
+            guard let hostEntry = hostEntry, hostEntry.pointee.h_length > 0 else {
+                completion(false)
+                return
+            }
+
+            // 获取第一个 IP 地址
+            if let addrList = hostEntry.pointee.h_addr_list, let addr = addrList[0] {
+                // 将字节拷贝到 in_addr 结构体
+                var inAddr = in_addr()
+                memcpy(&inAddr, addr, MemoryLayout<in_addr>.size)
+
+                // 将 IP 地址转换为字符串
+                if let ipAddressCString = inet_ntoa(inAddr) {
+                    let ipAddress = String(cString: ipAddressCString)
+
+                    // 调用 fetchCountryForIP 方法查询国家信息
+                    self.fetchCountryForIP(ip: ipAddress) { country in
+                        // 假设 country == "CN" 为国内，其他为国外
+                        let isForeign = country != "CN"
+                        completion(isForeign)
+                    }
+                    return
+                }
+            }
+
+            completion(false) // 解析失败，返回 false
+        }
+    }
+
+    // 示例：使用在线 API 查询 IP 地址对应国家
+    private func fetchCountryForIP(ip: String, completion: @escaping (String) -> Void) {
+        let urlString = "https://ipinfo.io/\(ip)/country" // 示例 API
+        guard let url = URL(string: urlString) else {
+            completion("")
+            return
+        }
+
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data, error == nil, let country = String(data: data, encoding: .utf8) else {
+                completion("")
+                return
+            }
+            completion(country.trimmingCharacters(in: .whitespacesAndNewlines))
+        }.resume()
+    }
+
+    // 自定义 GET 请求方法
+    private func handleCustomGetRequest(url: URL) {
+        let request = HttpProxyRequest.manager()!
+        request.sendGet(withURL: url.absoluteString, parameters: [:]) { res in
+
+            if let res, let data = res.data, let htmlString = String(data: data, encoding: .isoLatin1), let headerData = res.headerData {
+                // 调试输出响应状态码
+//                print("code: \(res.code)")
+//                print("headerData: \(String(describing: String(data: headerData, encoding: .utf8)))")
+
+                DispatchQueue.main.async {
+                    self.webView.loadHTMLString(htmlString, baseURL: url)
+                }
+            } else {
+                print("GET 请求错误：\(res?.message ?? "未知错误")")
+            }
+        }
+    }
+
+    // 自定义 POST 请求方法
+    private func handleCustomPostRequest(url: URL, request: URLRequest) {
+        var parameters: [String: Any] = [:]
+        if let body = request.httpBody,
+           let json = try? JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
+            parameters = json
+        }
+
+        let customRequest = HttpProxyRequest.manager()!
+        customRequest.sendPost(withURL: url.absoluteString, parameters: parameters) { [weak self] res in
+            guard let self else { return }
+            if let data = res?.data, let htmlString = String(data: data, encoding: .utf8) {
+                DispatchQueue.main.async {
+                    self.webView.loadHTMLString(htmlString, baseURL: url)
+                }
+            } else {
+                print("POST请求错误：\(res?.message ?? "")")
+            }
+        }
+    }
+
+    func mapJSON(data: Data) -> Any? {
+        do {
+            // Try to parse the data as JSON
+            let json = try JSONSerialization.jsonObject(with: data, options: [])
+            return json
+        } catch {
+            print("Error parsing JSON: \(error)")
+            return nil
+        }
     }
 }
 

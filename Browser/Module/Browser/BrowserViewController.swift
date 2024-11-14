@@ -11,9 +11,10 @@ import UIKit
 
 class BrowserViewController: ViewController {
     private var viewModel = WebViewViewModel()
+    private var webViewStore = WebViewStore()
 
     private lazy var browserHostingController: UIHostingController = {
-        let rootView = BrowserView(webViewModel: self.viewModel)
+        let rootView = BrowserView(webViewModel: self.viewModel, webViewStore: webViewStore)
         let hosting = UIHostingController(rootView: rootView)
         hosting.view.backgroundColor = .clear
         return hosting
@@ -108,6 +109,10 @@ extension BrowserViewController {
             browserHostingController.didMove(toParent: self)
 
             LoginManager.shared.fetchUserInfo()
+
+            if let url = URL(string: S.Config.defalutUrl) {
+                webViewStore.webView.load(URLRequest(url: url))
+            }
 
             completion?()
         }

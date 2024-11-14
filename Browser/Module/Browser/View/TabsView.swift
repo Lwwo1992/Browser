@@ -11,6 +11,7 @@ import SwiftUI
 import WebKit
 
 struct TabsView: View {
+    @ObservedObject var webViewStore: WebViewStore
     var bookmarkModel = HistoryModel()
     var onBookmarkAdded: ((HistoryModel) -> Void)?
 
@@ -102,21 +103,21 @@ struct TabsView: View {
                 Spacer()
 
                 Button {
-                    let newBookmark = bookmarkModel.copy() as! HistoryModel
                     if let viewControllers = Util.topViewController().navigationController?.viewControllers {
                         if viewControllers.count > 1 {
                             let previousViewController = viewControllers[viewControllers.count - 2]
                             if previousViewController is BrowserWebViewController || S.Config.mode == .web {
-                                DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Table.bookmark)
-                                bookmarkes.insert(newBookmark, at: 0)
+                                if let viewController = viewControllers.first(where: { $0 is SearchViewController }) {
+                                    webViewStore.addTab()
+                                    Util.topViewController().navigationController?.popToViewController(viewController, animated: true)
+                                }
                             } else {
-                                DBaseManager.share.insertToDb(objects: [newBookmark], intoTable: S.Table.guideBookmark)
-                                bookmarkes.insert(newBookmark, at: 0)
+                                DBaseManager.share.insertToDb(objects: [bookmarkModel], intoTable: S.Table.guideBookmark)
+                                Util.topViewController().navigationController?.popViewController(animated: true)
                             }
                         }
                     }
 
-                    Util.topViewController().navigationController?.popViewController(animated: true)
                 } label: {
                     Text("添加")
                 }

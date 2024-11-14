@@ -13,7 +13,7 @@ class TabsViewController: ViewController {
     var onBookmarkAdded: ((HistoryModel) -> Void)?
 
     override var rootView: AnyView? {
-        return AnyView(TabsView(bookmarkModel: model, onBookmarkAdded: { [weak self] newBookmark in
+        return AnyView(TabsView(webViewStore: webViewStore, onBookmarkAdded: { [weak self] newBookmark in
             guard let self else { return }
             self.onBookmarkAdded?(newBookmark)
             self.navigationController?.popViewController(animated: true)

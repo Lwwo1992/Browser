@@ -113,11 +113,11 @@ struct BrowserWebView: View {
                     let vc = TabsViewController()
                     vc.webViewStore = webViewStore
                     vc.onBookmarkAdded = { model in
-                        guard let url = model.url else {
+                        guard let address = model.address, let url = URL(string: address) else {
                             return
                         }
 
-                        viewModel.urlString = url.absoluteString
+                        viewModel.urlString = address
 
                         self.webViewStore.webView.load(URLRequest(url: url))
                     }

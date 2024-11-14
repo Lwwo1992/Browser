@@ -9,8 +9,8 @@ import Kingfisher
 import SwiftUI
 
 struct BrowserView: View {
-    @StateObject var webViewModel = WebViewViewModel()
-//    @StateObject private var viewModel = ViewModel.shared
+    @ObservedObject var webViewModel: WebViewViewModel
+    @ObservedObject var webViewStore: WebViewStore
     @State private var bookmarNum = "0"
 
     var body: some View {
@@ -28,16 +28,11 @@ struct BrowserView: View {
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
-        .onAppear {
-            webViewModel.shouldUpdate = ViewModel.shared.updateWeb
-            webViewModel.urlString = S.Config.defalutUrl
-        }
     }
 
     @ViewBuilder
     private func webView() -> some View {
-        WebViewWrapper(viewModel: webViewModel)
-            .frame(maxHeight: .infinity)
+        WebView(webView: webViewStore.webView)
     }
 
     private var searchBar: some View {
@@ -49,7 +44,7 @@ struct BrowserView: View {
                 .opacity(0.5)
 
             Spacer()
-            
+
             Image(systemName: "viewfinder")
                 .onTapGesture {
                     webViewModel.scanCode = true
