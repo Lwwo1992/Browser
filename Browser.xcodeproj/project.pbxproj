@@ -42,6 +42,7 @@
 		444C93642CB4D8F50092FECB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C93562CB4D8F50092FECB /* AppDelegate.swift */; };
 		444C93662CB4D8F50092FECB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C935E2CB4D8F50092FECB /* ViewController.swift */; };
 		444C936C2CB4D9930092FECB /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 444C936B2CB4D9930092FECB /* NavigationController.swift */; };
+		445294512CE5DF9F00D9294E /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 445294502CE5DF9F00D9294E /* WebView.swift */; };
 		446009D22CBA0D480085DC74 /* VerificationCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009D12CBA0D480085DC74 /* VerificationCodeViewController.swift */; };
 		446009D42CBA0D5B0085DC74 /* VerificationCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009D32CBA0D5B0085DC74 /* VerificationCodeView.swift */; };
 		446009DA2CBA1AF60085DC74 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009D92CBA1AF60085DC74 /* HomeView.swift */; };
@@ -60,7 +61,6 @@
 		446009FB2CBAB5730085DC74 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009FA2CBAB5730085DC74 /* Extension.swift */; };
 		4460238B2CE5C9E0008CD92E /* libNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 446023892CE5C9E0008CD92E /* libNetwork.a */; };
 		4460238D2CE5D9AE008CD92E /* WebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4460238C2CE5D9AE008CD92E /* WebViewManager.swift */; };
-		447A72212CDC6F7200F3C7E2 /* WebView in Frameworks */ = {isa = PBXBuildFile; productRef = 447A72202CDC6F7200F3C7E2 /* WebView */; };
 		4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FA2CBE567F0024381A /* TokenGenerator.swift */; };
 		4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FF2CBE66EF0024381A /* GuideModel.swift */; };
 		4486C9022CBE96520024381A /* GuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C9012CBE96520024381A /* GuideView.swift */; };
@@ -180,6 +180,7 @@
 		444C935B2CB4D8F50092FECB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		444C935E2CB4D8F50092FECB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		444C936B2CB4D9930092FECB /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		445294502CE5DF9F00D9294E /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		446009D12CBA0D480085DC74 /* VerificationCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeViewController.swift; sourceTree = "<group>"; };
 		446009D32CBA0D5B0085DC74 /* VerificationCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationCodeView.swift; sourceTree = "<group>"; };
 		446009D92CBA1AF60085DC74 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -293,7 +294,6 @@
 				44AA509B2CB52650005EBC36 /* Then in Frameworks */,
 				8CEB24542CBD3750006F8485 /* WTool in Frameworks */,
 				8CEB245A2CBD3884006F8485 /* WTool in Frameworks */,
-				447A72212CDC6F7200F3C7E2 /* WebView in Frameworks */,
 				44444B022CC7937A002E204B /* WTool in Frameworks */,
 				446009EC2CBA89C40085DC74 /* Kingfisher in Frameworks */,
 				44CF209A2CB8C20B00772B9C /* Moya in Frameworks */,
@@ -701,6 +701,7 @@
 				446009E62CBA73060085DC74 /* CustomTextField.swift */,
 				446009F62CBAA39B0085DC74 /* FlowLayout.swift */,
 				44444AFE2CC7928E002E204B /* CustomShareItem.swift */,
+				445294502CE5DF9F00D9294E /* WebView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -811,7 +812,6 @@
 				440F932C2CBCE68A00D94AD0 /* JFPopup */,
 				44CD45F72CBE181E003A415E /* SDWebImageSwiftUI */,
 				44444B012CC7937A002E204B /* WTool */,
-				447A72202CDC6F7200F3C7E2 /* WebView */,
 			);
 			productName = VPNBrowser;
 			productReference = 444C933C2CB4D89D0092FECB /* Browser.app */;
@@ -850,7 +850,6 @@
 				440F932B2CBCE68A00D94AD0 /* XCRemoteSwiftPackageReference "JFPopup" */,
 				44CD45F62CBE181E003A415E /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				44444B002CC7937A002E204B /* XCLocalSwiftPackageReference "../WTool" */,
-				447A721F2CDC6F7200F3C7E2 /* XCLocalSwiftPackageReference "SwiftUI-WebView" */,
 			);
 			productRefGroup = 444C933D2CB4D89D0092FECB /* Products */;
 			projectDirPath = "";
@@ -936,6 +935,7 @@
 				44984FFC2CC12A0800158380 /* AccountView.swift in Sources */,
 				44AA50982CB522BE005EBC36 /* ChangeNicknameViewController.swift in Sources */,
 				44D3C2B02CC23E9100E41BEC /* OperateBottomView.swift in Sources */,
+				445294512CE5DF9F00D9294E /* WebView.swift in Sources */,
 				44DA8E362CB68565003B1C34 /* AboutView.swift in Sources */,
 				44984FDC2CBFD2B700158380 /* DownloadModel.swift in Sources */,
 				44D3C2AA2CC1FEE500E41BEC /* SetupPasswordView.swift in Sources */,
@@ -1308,10 +1308,6 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../WTool;
 		};
-		447A721F2CDC6F7200F3C7E2 /* XCLocalSwiftPackageReference "SwiftUI-WebView" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "SwiftUI-WebView";
-		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1387,10 +1383,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 446009EA2CBA89C40085DC74 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		447A72202CDC6F7200F3C7E2 /* WebView */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = WebView;
 		};
 		44AA507E2CB4DDB4005EBC36 /* WTool */ = {
 			isa = XCSwiftPackageProductDependency;
