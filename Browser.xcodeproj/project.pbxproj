@@ -58,6 +58,8 @@
 		446009F72CBAA39B0085DC74 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F62CBAA39B0085DC74 /* FlowLayout.swift */; };
 		446009F92CBAAA530085DC74 /* BindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009F82CBAAA530085DC74 /* BindingView.swift */; };
 		446009FB2CBAB5730085DC74 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446009FA2CBAB5730085DC74 /* Extension.swift */; };
+		4460238B2CE5C9E0008CD92E /* libNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 446023892CE5C9E0008CD92E /* libNetwork.a */; };
+		4460238D2CE5D9AE008CD92E /* WebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4460238C2CE5D9AE008CD92E /* WebViewManager.swift */; };
 		447A72212CDC6F7200F3C7E2 /* WebView in Frameworks */ = {isa = PBXBuildFile; productRef = 447A72202CDC6F7200F3C7E2 /* WebView */; };
 		4486C8FB2CBE567F0024381A /* TokenGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FA2CBE567F0024381A /* TokenGenerator.swift */; };
 		4486C9002CBE66EF0024381A /* GuideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4486C8FF2CBE66EF0024381A /* GuideModel.swift */; };
@@ -193,6 +195,9 @@
 		446009F62CBAA39B0085DC74 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		446009F82CBAAA530085DC74 /* BindingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingView.swift; sourceTree = "<group>"; };
 		446009FA2CBAB5730085DC74 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		446023882CE5C9E0008CD92E /* HttpProxyRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpProxyRequest.h; sourceTree = "<group>"; };
+		446023892CE5C9E0008CD92E /* libNetwork.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNetwork.a; sourceTree = "<group>"; };
+		4460238C2CE5D9AE008CD92E /* WebViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewManager.swift; sourceTree = "<group>"; };
 		4486C8FA2CBE567F0024381A /* TokenGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenGenerator.swift; sourceTree = "<group>"; };
 		4486C8FF2CBE66EF0024381A /* GuideModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideModel.swift; sourceTree = "<group>"; };
 		4486C9012CBE96520024381A /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
@@ -283,6 +288,7 @@
 			files = (
 				8CEB24572CBD3820006F8485 /* WTool in Frameworks */,
 				44CD45F82CBE181E003A415E /* SDWebImageSwiftUI in Frameworks */,
+				4460238B2CE5C9E0008CD92E /* libNetwork.a in Frameworks */,
 				44AA507F2CB4DDB4005EBC36 /* WTool in Frameworks */,
 				44AA509B2CB52650005EBC36 /* Then in Frameworks */,
 				8CEB24542CBD3750006F8485 /* WTool in Frameworks */,
@@ -460,6 +466,7 @@
 				8CEB245B2CBD3B35006F8485 /* EncryptUtil.swift */,
 				8CEB245D2CBD530B006F8485 /* ImagePicker.swift */,
 				442118CE2CC7BCCB0025A40B /* CountdownTimer.swift */,
+				4460238A2CE5C9E0008CD92E /* libFramework */,
 				44984F162CBFC22000158380 /* TFPopup */,
 			);
 			path = Tools;
@@ -471,6 +478,15 @@
 				446009FA2CBAB5730085DC74 /* Extension.swift */,
 			);
 			path = Extenon;
+			sourceTree = "<group>";
+		};
+		4460238A2CE5C9E0008CD92E /* libFramework */ = {
+			isa = PBXGroup;
+			children = (
+				446023882CE5C9E0008CD92E /* HttpProxyRequest.h */,
+				446023892CE5C9E0008CD92E /* libNetwork.a */,
+			);
+			path = libFramework;
 			sourceTree = "<group>";
 		};
 		44984E4B2CBF650C00158380 /* View */ = {
@@ -672,6 +688,7 @@
 				44CF20B72CB933A400772B9C /* DBManager.swift */,
 				446009E42CBA6D790085DC74 /* LoginManager.swift */,
 				44984E522CBFBD6200158380 /* BWebViewManager.swift */,
+				4460238C2CE5D9AE008CD92E /* WebViewManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -911,6 +928,7 @@
 				446009DF2CBA251F0085DC74 /* BaseModel.swift in Sources */,
 				44D3C2A82CC1FE5500E41BEC /* SetupPasswordViewController.swift in Sources */,
 				44D3C2AE2CC23C3600E41BEC /* FolderModel.swift in Sources */,
+				4460238D2CE5D9AE008CD92E /* WebViewManager.swift in Sources */,
 				446009E52CBA6D790085DC74 /* LoginManager.swift in Sources */,
 				8CEB245C2CBD3B35006F8485 /* EncryptUtil.swift in Sources */,
 				444C93642CB4D8F50092FECB /* AppDelegate.swift in Sources */,
@@ -1076,6 +1094,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Browser/Tools/aws-sdk-ios-main/AWSLex/Bluefront",
 					"$(PROJECT_DIR)/Browser/Tools/aws-sdk-ios-main/AWSCoreTests/OCMock",
+					"$(PROJECT_DIR)/Browser/Tools/libFramework",
 				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.motley.browser;
@@ -1124,6 +1143,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Browser/Tools/aws-sdk-ios-main/AWSLex/Bluefront",
 					"$(PROJECT_DIR)/Browser/Tools/aws-sdk-ios-main/AWSCoreTests/OCMock",
+					"$(PROJECT_DIR)/Browser/Tools/libFramework",
 				);
 				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = NO;

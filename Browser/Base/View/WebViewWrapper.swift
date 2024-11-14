@@ -118,20 +118,29 @@ struct WebViewWrapper: UIViewRepresentable {
                 return
             }
 
-            // 检测是否是配置文件的请求
+            var decisionMade = false
+
+            // 确保 decisionHandler 只调用一次
+            func safeDecisionHandler(_ policy: WKNavigationActionPolicy) {
+                if !decisionMade {
+                    decisionMade = true
+                    DispatchQueue.main.async {
+                        decisionHandler(policy)
+                    }
+                }
+            }
+
+            // 1. 检查是否是配置文件请求
             if url.absoluteString.hasPrefix("data:application/x-apple-aspen-config;base64,") {
-                // 弹窗提示
                 let alertController = UIAlertController(title: "下载配置文件", message: "此网站正尝试下载一个配置描述文件。你要允许吗？", preferredStyle: .alert)
 
-                // 允许按钮
                 let allowAction = UIAlertAction(title: "允许", style: .default) { _ in
                     self.handleBase64ConfigData(url: url) // 处理配置文件的下载和保存
-                    decisionHandler(.cancel) // 取消默认加载行为
+                    safeDecisionHandler(.cancel) // 取消默认加载行为
                 }
 
-                // 不允许按钮
                 let denyAction = UIAlertAction(title: "不允许", style: .cancel) { _ in
-                    decisionHandler(.cancel)
+                    safeDecisionHandler(.cancel) // 取消加载
                 }
 
                 alertController.addAction(allowAction)
@@ -139,20 +148,39 @@ struct WebViewWrapper: UIViewRepresentable {
 
                 // 显示弹窗
                 Util.topViewController().present(alertController, animated: true, completion: nil)
-
                 return
             }
 
+            // 2. 检查地理位置（是否是国外网站）
+            handleRequestWithGeoLocationCheck(url: url) { [weak self] isForeign in
+                guard let self else { return }
+                if isForeign {
+                    safeDecisionHandler(.cancel)
+
+                    // 使用自定义方法发送请求
+                    if navigationAction.request.httpMethod == "GET" {
+                        self.handleCustomGetRequest(url: url)
+                    } else if navigationAction.request.httpMethod == "POST" {
+                        self.handleCustomPostRequest(url: url, request: navigationAction.request)
+                    }
+                } else {
+                    safeDecisionHandler(.allow) // 允许加载
+                }
+            }
+
+            // 3. 检测是否是下载链接
             if BWebViewManager.share.isDownloadLink(url: url) {
                 BWebViewManager.share.handleDownload(url: url) { [self] url1, name, size in
                     if let url1 {
                         self.saveDownInfo(url: url1.absoluteString, name: name ?? "", size: size ?? 0)
                     }
                 }
-                decisionHandler(.cancel)
-            } else {
-                decisionHandler(.allow)
+                safeDecisionHandler(.cancel) // 下载链接处理后不继续执行
+                return // 下载链接处理后不继续执行
             }
+
+            // 对于所有其他请求，允许加载
+            safeDecisionHandler(.allow)
         }
 
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
@@ -277,10 +305,123 @@ struct WebViewWrapper: UIViewRepresentable {
                         UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
                     }
                 }
-
             }
         }
 
+        private func shouldHandleRequestWithCustomMethod(url: URL) -> Bool {
+            guard let host = url.host else { return false }
+
+            // 常见的国外顶级域名（TLD）列表
+            let foreignTLDs = ["com", "org", "net", "gov", "io", "co", "tv", "me", "us"]
+
+            // 获取 URL 的最后一个域名后缀（即 TLD）
+            let domainComponents = host.split(separator: ".")
+            if let lastComponent = domainComponents.last {
+                // 检查域名后缀是否在国外域名列表中
+                if foreignTLDs.contains(String(lastComponent)) {
+                    return true // 认为是国外网站，需要翻墙
+                }
+            }
+
+            return false // 如果是国内的域名或其他，则不拦截
+        }
+
+        func handleRequestWithGeoLocationCheck(url: URL, completion: @escaping (Bool) -> Void) {
+            // 使用IP地理位置API检查IP是否来自国外
+            let request = HttpProxyRequest.manager()!
+            request.sendGet(withURL: "http://ip-api.com/json/\(url.host ?? "")", parameters: [:]) { res in
+                if let data = res?.data {
+                    // 解析IP返回的地理位置数据
+                    if let json = self.mapJSON(data: data) as? [String: Any], let country = json["country"] as? String {
+                        if country != "China" {
+                            // 如果不是来自中国，认为是国外网站
+                            print("需要翻墙的网站：\(url.host ?? "")")
+                            completion(true) // 表示是国外网站
+                        } else {
+                            // 如果是中国的IP地址，正常加载
+                            print("国内网站：\(url.host ?? "")")
+                            completion(false) // 表示是国内网站
+                        }
+                    }
+                } else {
+                    completion(false) // 无法获取地理位置时认为是国内网站
+                }
+            }
+        }
+
+        // 自定义 GET 请求方法
+        private func handleCustomGetRequest(url: URL) {
+            let request = HttpProxyRequest.manager()!
+            request.sendGet(withURL: url.absoluteString, parameters: [:]) { res in
+                if let data = res?.data, let htmlString = self.parseResponseToHTML(data: data) {
+                    // 将 HTML 字符串加载到 WebView 中
+                    DispatchQueue.main.async {
+                        self.webView.loadHTMLString(htmlString, baseURL: url)
+                    }
+                } else {
+                    print("GET请求错误：\(res?.message ?? "")")
+                }
+            }
+        }
+
+        // 自定义 POST 请求方法
+        private func handleCustomPostRequest(url: URL, request: URLRequest) {
+            var parameters: [String: Any] = [:]
+            if let body = request.httpBody,
+               let json = try? JSONSerialization.jsonObject(with: body, options: []) as? [String: Any] {
+                parameters = json
+            }
+
+            let customRequest = HttpProxyRequest.manager()!
+            customRequest.sendPost(withURL: url.absoluteString, parameters: parameters) { [weak self] res in
+                guard let self else { return }
+                if let data = res?.data, let htmlString = self.parseResponseToHTML(data: data) {
+                    // 将 HTML 字符串加载到 WebView 中
+                    DispatchQueue.main.async {
+                        self.webView.loadHTMLString(htmlString, baseURL: url)
+                    }
+                } else {
+                    print("POST请求错误：\(res?.message ?? "")")
+                }
+            }
+        }
+
+        // 将返回的数据转换为 HTML 字符串的方法
+        private func parseResponseToHTML(data: Data) -> String? {
+            // 尝试将 data 转换为 JSON 对象
+            if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+               let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted),
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                // 创建简单的 HTML 模板
+                return """
+                <html>
+                <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 16px; }
+                        pre { white-space: pre-wrap; word-wrap: break-word; }
+                    </style>
+                </head>
+                <body>
+                    <h1>请求结果</h1>
+                    <pre>\(jsonString)</pre>
+                </body>
+                </html>
+                """
+            }
+            return nil
+        }
+
+        func mapJSON(data: Data) -> Any? {
+            do {
+                // Try to parse the data as JSON
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                return json
+            } catch {
+                print("Error parsing JSON: \(error)")
+                return nil
+            }
+        }
     }
 
     func makeCoordinator() -> Coordinator {
