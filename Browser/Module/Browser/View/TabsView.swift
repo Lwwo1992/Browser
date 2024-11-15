@@ -106,7 +106,7 @@ struct TabsView: View {
                     if let viewControllers = Util.topViewController().navigationController?.viewControllers {
                         if viewControllers.count > 1 {
                             let previousViewController = viewControllers[viewControllers.count - 2]
-                            if previousViewController is BrowserWebViewController || S.Config.mode == .web {
+                            if previousViewController is WebViewController || S.Config.mode == .web {
                                 if let viewController = viewControllers.first(where: { $0 is SearchViewController }) {
                                     webViewStore.addTab()
                                     Util.topViewController().navigationController?.popToViewController(viewController, animated: true)
@@ -136,7 +136,7 @@ struct TabsView: View {
         if let viewControllers = Util.topViewController().navigationController?.viewControllers {
             if viewControllers.count > 1 {
                 let previousViewController = viewControllers[viewControllers.count - 2]
-                if previousViewController is BrowserWebViewController || S.Config.mode == .web {
+                if previousViewController is WebViewController || S.Config.mode == .web {
                     if let bookmarkes = DBaseManager.share.qureyFromDb(fromTable: S.Table.bookmark, cls: HistoryModel.self) {
                         self.bookmarkes = bookmarkes.reversed()
                     }
@@ -154,7 +154,7 @@ struct TabsView: View {
         if let viewControllers = Util.topViewController().navigationController?.viewControllers {
             if viewControllers.count > 1 {
                 let previousViewController = viewControllers[viewControllers.count - 2]
-                if previousViewController is BrowserWebViewController || S.Config.mode == .web {
+                if previousViewController is WebViewController || S.Config.mode == .web {
                     DBaseManager.share.deleteFromDb(fromTable: S.Table.bookmark)
                 } else {
                     DBaseManager.share.deleteFromDb(fromTable: S.Table.guideBookmark)
@@ -170,7 +170,7 @@ struct TabsView: View {
         if let viewControllers = Util.topViewController().navigationController?.viewControllers {
             if viewControllers.count > 1 {
                 let previousViewController = viewControllers[viewControllers.count - 2]
-                if previousViewController is BrowserWebViewController || S.Config.mode == .web {
+                if previousViewController is WebViewController || S.Config.mode == .web {
                     DBaseManager.share.deleteFromDb(
                         fromTable: S.Table.bookmark,
                         where: HistoryModel.Properties.id == bookmark.id

@@ -106,7 +106,7 @@ struct HistoryView: View {
         .padding(.horizontal, 16)
         .background(Color(hex: 0xF8F5F5))
         .onTapGesture {
-            let vc = BrowserWebViewController()
+            let vc = WebViewController()
             vc.path = model.address ?? ""
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         }

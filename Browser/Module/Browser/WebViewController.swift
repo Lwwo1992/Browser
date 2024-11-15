@@ -9,7 +9,7 @@ import Combine
 import UIKit
 import WebKit
 
-class BrowserWebViewController: ViewController {
+class WebViewController: ViewController {
     var path: String = ""
     var viewModel = WebViewViewModel()
 

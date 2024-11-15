@@ -39,7 +39,7 @@ class BrowserViewController: ViewController {
                         guard let self else { return }
                         // 判断结果是否是有效的 URL
                         if let url = URL(string: result), UIApplication.shared.canOpenURL(url) {
-                            let vc = BrowserWebViewController()
+                            let vc = WebViewController()
                             vc.path = result
                             self.navigationController?.pushViewController(vc, animated: false)
                             // 在这里处理 URL，例如打开链接

@@ -138,9 +138,13 @@ extension WebViewStore: WKNavigationDelegate, WKDownloadDelegate {
                 } else if navigationAction.request.httpMethod == "POST" {
                     self.handleCustomPostRequest(url: url, request: navigationAction.request)
                 }
-            } else if isDownloadLink(url: url) {
+            } else if BWebViewManager.share.isDownloadLink(url: url) {
                 decisionHandler(.cancel)
-                self.handleDownload(url: url)
+                BWebViewManager.share.handleDownload(url: url) { [self] url1, name, size in
+                    if let url1 {
+                        self.saveDownInfo(url: url1.absoluteString, name: name ?? "", size: size ?? 0)
+                    }
+                }
             } else {
                 decisionHandler(.allow)
             }
@@ -362,7 +366,7 @@ extension WebViewStore {
         let request = HttpProxyRequest.manager()!
         request.sendGet(withURL: url.absoluteString, parameters: [:]) { res in
 
-            if let res, let data = res.data, let htmlString = String(data: data, encoding: .isoLatin1), let headerData = res.headerData {
+            if let res, let data = res.data, let htmlString = String(data: data, encoding: .isoLatin1) {
                 // 调试输出响应状态码
 //                print("code: \(res.code)")
 //                print("headerData: \(String(describing: String(data: headerData, encoding: .utf8)))")

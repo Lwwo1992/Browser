@@ -114,7 +114,7 @@ class SearchViewController: ViewController {
                 saveInfo(text)
 
                 if let record = selectedRecord, let address = record.address, let keyword = record.keyword {
-                    let vc = BrowserWebViewController()
+                    let vc = WebViewController()
                     vc.path = address + "/" + keyword + text
                     self.navigationController?.pushViewController(vc, animated: true)
                 } else {

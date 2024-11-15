@@ -34,13 +34,13 @@ extension Util {
     static func guideItemTap(_ model: GuideItem) {
         switch model.type {
         case "h5":
-            let vc = BrowserWebViewController()
+            let vc = WebViewController()
             vc.path = model.downloadUrl ?? ""
             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
         case "app":
             // var openType: Int? = null,//5：落地页，4：app下载, 3：html, 2：url
             if model.openType == 5 {
-                let vc = BrowserWebViewController()
+                let vc = WebViewController()
                 vc.path = model.downloadUrl ?? ""
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             } else {

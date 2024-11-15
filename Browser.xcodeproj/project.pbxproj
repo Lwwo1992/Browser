@@ -14,7 +14,7 @@
 		4409D4322CB7CF0B00C81871 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4409D4312CB7CF0B00C81871 /* LoginView.swift */; };
 		440F93242CBCABFD00D94AD0 /* ReplaceBindingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93232CBCABFD00D94AD0 /* ReplaceBindingViewController.swift */; };
 		440F93262CBCAC6C00D94AD0 /* ReplaceBindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93252CBCAC6C00D94AD0 /* ReplaceBindingView.swift */; };
-		440F93282CBCC09200D94AD0 /* BrowserWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93272CBCC09200D94AD0 /* BrowserWebViewController.swift */; };
+		440F93282CBCC09200D94AD0 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93272CBCC09200D94AD0 /* WebViewController.swift */; };
 		440F932A2CBCC5BB00D94AD0 /* BrowserWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F93292CBCC5BB00D94AD0 /* BrowserWebView.swift */; };
 		440F932D2CBCE68A00D94AD0 /* JFPopup in Frameworks */ = {isa = PBXBuildFile; productRef = 440F932C2CBCE68A00D94AD0 /* JFPopup */; };
 		440F932F2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 440F932E2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift */; };
@@ -151,7 +151,7 @@
 		4409D4312CB7CF0B00C81871 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		440F93232CBCABFD00D94AD0 /* ReplaceBindingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaceBindingViewController.swift; sourceTree = "<group>"; };
 		440F93252CBCAC6C00D94AD0 /* ReplaceBindingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaceBindingView.swift; sourceTree = "<group>"; };
-		440F93272CBCC09200D94AD0 /* BrowserWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserWebViewController.swift; sourceTree = "<group>"; };
+		440F93272CBCC09200D94AD0 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		440F93292CBCC5BB00D94AD0 /* BrowserWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserWebView.swift; sourceTree = "<group>"; };
 		440F932E2CBCE95D00D94AD0 /* BrowserWebBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserWebBottomSheet.swift; sourceTree = "<group>"; };
 		440F93302CBCEF5600D94AD0 /* RankingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingModel.swift; sourceTree = "<group>"; };
@@ -556,7 +556,7 @@
 				4409D4262CB7A7D400C81871 /* View */,
 				44AA50842CB4E007005EBC36 /* BrowserViewController.swift */,
 				4409D4292CB7AE9300C81871 /* SearchViewController.swift */,
-				440F93272CBCC09200D94AD0 /* BrowserWebViewController.swift */,
+				440F93272CBCC09200D94AD0 /* WebViewController.swift */,
 				443A817B2CBD55140093BC22 /* TabsViewController.swift */,
 				4486C9032CBE98840024381A /* MoreGuideViewController.swift */,
 				44248FF92CD38D0500B8741D /* ScanQRCodeViewController.swift */,
@@ -1024,7 +1024,7 @@
 				44CF20A02CB8CE5800772B9C /* ConfigByTypeModel.swift in Sources */,
 				44984FDE2CBFD59600158380 /* DownloadView.swift in Sources */,
 				44AA50832CB4DFC3005EBC36 /* HomeViewController.swift in Sources */,
-				440F93282CBCC09200D94AD0 /* BrowserWebViewController.swift in Sources */,
+				440F93282CBCC09200D94AD0 /* WebViewController.swift in Sources */,
 				4413A62E2CC8A1580042C019 /* VipViewModel.swift in Sources */,
 				44984E552CBFBD6200158380 /* BWebViewManager.swift in Sources */,
 				44DA8E232CB66417003B1C34 /* CloudSyncViewController.swift in Sources */,

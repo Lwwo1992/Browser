@@ -61,7 +61,7 @@ struct SearchView: View {
                     .font(.system(size: 12))
             }
             .onTapGesture {
-                let vc = BrowserWebViewController()
+                let vc = WebViewController()
                 vc.path = record.address ?? ""
                 Util.topViewController().navigationController?.pushViewController(vc, animated: true)
             }
@@ -110,7 +110,7 @@ struct SearchView: View {
                                            let value = item.title {
                                             recordStore.content = value
 
-                                            let vc = BrowserWebViewController()
+                                            let vc = WebViewController()
                                             vc.path = address + "/" + keyword + value
                                             Util.topViewController().navigationController?.pushViewController(vc, animated: true)
                                         }
@@ -174,7 +174,7 @@ struct SearchView: View {
                                    let value = model.keyword {
                                     recordStore.content = value
 
-                                    let vc = BrowserWebViewController()
+                                    let vc = WebViewController()
                                     vc.path = address + "/" + keyword + value
                                     Util.topViewController().navigationController?.pushViewController(vc, animated: true)
                                 }
